@@ -1,0 +1,329 @@
+/* 
+    Wings Fly - MODERN GRADIENT THEME
+    Ultra-Modern Smooth Gradients with Neon Accents & Depth
+*/
+
+:root {
+    --primary: #00D9FF;
+    --primary-dark: #0099CC;
+    --accent: #FF0080;
+    --accent-secondary: #7F39FB;
+    --bg-light: #0F172A;
+    --bg-dark: #020617;
+    --text-dark: #F1F5F9;
+    --text-muted: #94A3B8;
+    --white: #FFFFFF;
+    --glass: rgba(255, 255, 255, 0.08);
+    --glass-border: rgba(0, 217, 255, 0.15);
+    --shadow: 0 10px 30px rgba(0, 217, 255, 0.1);
+    --glow: 0 0 30px rgba(0, 217, 255, 0.4);
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background: linear-gradient(135deg, #020617 0%, #0F172A 50%, #0D1B2A 100%);
+    color: var(--text-dark);
+}
+
+/* --- MODERN GRADIENT HERO SECTION --- */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #020617 0%, #0F172A 25%, #1E3A8A 50%, #0D1B2A 100%);
+    color: var(--white);
+    overflow: hidden;
+}
+
+/* Animated Pulsing Network Background */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 80% 80%, rgba(127, 57, 251, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 50% 50%, rgba(0, 217, 255, 0.05) 0%, transparent 30%),
+        linear-gradient(135deg, transparent 40%, rgba(0, 217, 255, 0.02) 50%, transparent 60%);
+    animation: networkPulse 8s ease-in-out infinite, networkShift 20s linear infinite;
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes networkPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@keyframes networkShift {
+    0% { background-position: 0 0, 0 0, 0 0; }
+    100% { background-position: 100px 100px, 100px 100px, 100px 100px; }
+}
+
+/* Node Pulse Animation */
+@keyframes nodePulse {
+    0%, 100% { 
+        r: 4px;
+        opacity: 0.6;
+    }
+    50% { 
+        r: 8px;
+        opacity: 0.3;
+    }
+}
+
+/* Connection Line Animation */
+@keyframes connectionGlow {
+    0%, 100% { stroke-width: 1px; opacity: 0.5; }
+    50% { stroke-width: 2px; opacity: 1; }
+}
+
+/* Gradient Shift Animation */
+@keyframes gradientPulse {
+    0% { filter: brightness(0.8); }
+    50% { filter: brightness(1.2); }
+    100% { filter: brightness(0.8); }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.hero-overlay::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 217, 255, 0.25) 0%, transparent 70%);
+    filter: blur(80px);
+    animation: modernBlobMove 15s infinite alternate;
+    box-shadow: 0 0 80px rgba(0, 217, 255, 0.3);
+}
+
+.hero-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: -10%;
+    left: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(127, 57, 251, 0.2) 0%, transparent 70%);
+    filter: blur(80px);
+    animation: modernBlobMove 12s infinite alternate-reverse;
+    box-shadow: 0 0 80px rgba(127, 57, 251, 0.3);
+}
+
+@keyframes modernBlobMove {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, 100px) scale(1.1); }
+    100% { transform: translate(-30px, -50px) scale(0.9); }
+}
+
+.hero-bg-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.hero-grid {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    color: var(--white);
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.hero h1 .highlight {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 15px rgba(0, 217, 255, 0.3));
+}
+
+.hero p {
+    color: var(--text-muted);
+}
+
+.badge {
+    display: inline-block;
+    background: rgba(0, 217, 255, 0.1);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+/* Enhanced Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--accent-secondary));
+    color: #020617;
+    border: none;
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.4), 0 0 60px rgba(127, 57, 251, 0.2);
+    font-weight: 700;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.6), 0 0 80px rgba(127, 57, 251, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    border: 2px solid rgba(0, 217, 255, 0.5);
+    color: var(--primary);
+    background: rgba(0, 217, 255, 0.08);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.15);
+}
+
+.btn-outline:hover {
+    background: rgba(0, 217, 255, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.4);
+}
+
+/* Floating Card */
+.floating-card {
+    background: rgba(0, 217, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+}
+
+.floating-card i {
+    color: var(--primary);
+    filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.5));
+}
+
+/* Slider */
+.dot {
+    background: rgba(0, 217, 255, 0.2);
+}
+
+.dot.active {
+    background: var(--primary);
+    box-shadow: 0 0 25px var(--primary);
+}
+
+.parallax-img {
+    border: 2px solid rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.2), 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Partners Section */
+.partners {
+    background: #0F172A;
+    border-top: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.partner-card {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(127, 57, 251, 0.05) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.1);
+}
+
+.partner-card:hover {
+    border-color: rgba(0, 217, 255, 0.3);
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.2);
+}
+
+/* Courses Section */
+.courses {
+    background: #0F172A;
+}
+
+.course-card {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(127, 57, 251, 0.03) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.08);
+}
+
+.course-card:hover {
+    border-color: rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 40px rgba(0, 217, 255, 0.15);
+}
+
+.course-info h3 {
+    color: var(--text-dark);
+}
+
+.course-price {
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.course-tag {
+    background: linear-gradient(135deg, var(--primary), var(--accent-secondary));
+    color: #020617;
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.4);
+}
+
+/* Chairman Section */
+.chairman-section {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #020617 100%);
+    color: var(--white);
+    border-top: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.chairman-name {
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(127, 57, 251, 0.1) 100%);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.15);
+}
+
+.chairman-name h4 {
+    color: var(--primary);
+    text-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+}
+
+.img-placeholder {
+    background: rgba(0, 217, 255, 0.05);
+    border: 1px solid rgba(0, 217, 255, 0.1);
+    box-shadow: 0 0 30px rgba(0, 217, 255, 0.1);
+}
+
+/* Navbar */
+.navbar {
+    background: rgba(2, 6, 23, 0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.btn-login {
+    border-color: rgba(0, 217, 255, 0.5);
+    color: var(--primary);
+}
+
+.btn-login:hover {
+    background: var(--primary);
+    color: #020617;
+    box-shadow: 0 0 25px rgba(0, 217, 255, 0.5);
+}
