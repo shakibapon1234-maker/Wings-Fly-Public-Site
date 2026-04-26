@@ -73,7 +73,7 @@
     /* ===== THEME SWITCHER WIDGET ===== */
     #theme-switcher {
         position: fixed;
-        right: 0;
+        right: -148px;
         top: 50%;
         transform: translateY(-50%);
         z-index: 99999;
@@ -85,7 +85,9 @@
         box-shadow: -4px 0 30px rgba(0,0,0,0.4);
         border: 1px solid rgba(255,255,255,0.15);
         border-right: none;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+    #theme-switcher.open { right: 0 !important; }
     
     .theme-toggle-tab {
         position: fixed;
@@ -93,7 +95,7 @@
         top: calc(50% - 60px);
         transform: translateY(-50%);
         z-index: 99998;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: linear-gradient(135deg, #031b33, #7303c0);
         color: white;
         width: 32px;
         height: 120px;
@@ -108,15 +110,10 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         box-shadow: -3px 0 20px rgba(0,0,0,0.3);
-        transition: width 0.3s ease;
+        transition: width 0.3s ease, right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
     .theme-toggle-tab:hover { width: 38px; }
-    
-    #theme-switcher.open { right: 0 !important; }
-    #theme-switcher { right: -148px; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     #theme-switcher.open ~ .theme-toggle-tab { right: 148px; }
-    .theme-toggle-tab { transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     
     .theme-btn {
         width: 140px;
@@ -135,7 +132,6 @@
         position: relative;
         overflow: hidden;
     }
-    
     .theme-btn::before {
         content: '';
         position: absolute;
@@ -144,9 +140,18 @@
         opacity: 0;
         transition: opacity 0.3s;
     }
-    
     .theme-btn.active::before { opacity: 1; }
     
+    /* Original Night Sky Button */
+    .theme-btn-original {
+        background: linear-gradient(135deg, #031b33, #7303c0);
+        color: #00d4ff;
+    }
+    .theme-btn-original::before { background: #00d4ff; }
+    .theme-btn-original .t-icon { color: #FFD700; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
+    .theme-btn-original:hover, .theme-btn-original.active { background: linear-gradient(135deg,#050a12,#7303c0); box-shadow: inset 0 0 20px rgba(0,212,255,0.15); }
+    
+    /* Neon Cyberpunk Button */
     .theme-btn-neon {
         background: linear-gradient(135deg, #0D1117, #1a1a2e);
         color: #00FF9F;
@@ -155,6 +160,7 @@
     .theme-btn-neon .t-icon { color: #00FF9F; text-shadow: 0 0 8px #00FF9F; }
     .theme-btn-neon:hover, .theme-btn-neon.active { background: #1a1a2e; box-shadow: inset 0 0 20px rgba(0,255,159,0.1); }
     
+    /* Gradient Deep Button */
     .theme-btn-gradient {
         background: linear-gradient(135deg, #020617, #0F172A);
         color: #00D9FF;
@@ -163,6 +169,7 @@
     .theme-btn-gradient .t-icon { color: #7F39FB; text-shadow: 0 0 8px #7F39FB; }
     .theme-btn-gradient:hover, .theme-btn-gradient.active { background: #0F172A; box-shadow: inset 0 0 20px rgba(0,217,255,0.1); }
     
+    /* American Eagle Button */
     .theme-btn-american {
         background: linear-gradient(135deg, #0A1628, #1B3A8C);
         color: #FFD700;
@@ -171,43 +178,8 @@
     .theme-btn-american .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.8); }
     .theme-btn-american:hover, .theme-btn-american.active { background: #1B3A8C; box-shadow: inset 0 0 20px rgba(255,215,0,0.15); }
     
-    .theme-btn-classic {
-        background: linear-gradient(135deg, #001F3F, #003d80);
-        color: #FFD700;
-    }
-    .theme-btn-classic::before { background: #0074D9; }
-    .theme-btn-classic .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.6); }
-    .theme-btn-classic:hover, .theme-btn-classic.active { background: #002a5c; box-shadow: inset 0 0 20px rgba(0,116,217,0.2); }
-
-    .theme-btn-original {
-        background: linear-gradient(135deg, #031b33, #7303c0);
-        color: #00d4ff;
-    }
-    .theme-btn-original::before { background: #00d4ff; }
-    .theme-btn-original .t-icon { color: #FFD700; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
-    .theme-btn-original:hover, .theme-btn-original.active { background: linear-gradient(135deg,#050a12,#7303c0); box-shadow: inset 0 0 20px rgba(0,212,255,0.15); }
-
-    .theme-btn-daylight {
-        background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
-        color: #0074D9;
-        border-top: 1px solid rgba(0,116,217,0.15);
-    }
-    .theme-btn-daylight::before { background: #FFD700; }
-    .theme-btn-daylight .t-icon { color: #0074D9; text-shadow: none; }
-    .theme-btn-daylight:hover, .theme-btn-daylight.active { background: #dbeafe; box-shadow: inset 0 0 20px rgba(0,116,217,0.1); }
-
-    .theme-btn-clean {
-        background: linear-gradient(135deg, #0056b3, #0074D9);
-        color: #ffffff;
-    }
-    .theme-btn-clean::before { background: #FFD700; }
-    .theme-btn-clean .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.8); }
-    .theme-btn-clean:hover, .theme-btn-clean.active { background: #0074D9; box-shadow: inset 0 0 20px rgba(255,215,0,0.2); }
-
     .t-icon { font-size: 16px; min-width: 20px; }
     .t-label { font-size: 10px; line-height: 1.2; }
-    
-    /* Active indicator dot */
     .theme-btn.active .t-icon::after {
         content: '●';
         position: absolute;
@@ -216,15 +188,8 @@
         top: 50%;
         transform: translateY(-50%);
     }
-
-    /* Enhanced Animations for all themes */
-    @keyframes gradientShiftNight {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
     
-    /* Particle cursor trail */
+    /* Cursor particle trail */
     .cursor-particle {
         position: fixed;
         pointer-events: none;
@@ -232,55 +197,17 @@
         z-index: 99997;
         animation: particleFade 0.8s ease forwards;
     }
-    
     @keyframes particleFade {
         0% { opacity: 1; transform: scale(1); }
         100% { opacity: 0; transform: scale(0); }
     }
-    
-    /* Enhanced Hero Badge */
-    .hero .badge {
-        animation: badgePulse 3s ease-in-out infinite !important;
-    }
-    
-    @keyframes badgePulse {
-        0%, 100% { box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        50% { box-shadow: 0 4px 30px rgba(255,255,255,0.2), 0 0 40px currentColor; }
-    }
-    
-    /* Smooth section transitions */
     section { transition: background 0.5s ease; }
-    
-    /* Floating animation for stat numbers */
-    .stat-num {
-        animation: floatNumber 3s ease-in-out infinite;
-        display: inline-block;
-    }
-    
-    @keyframes floatNumber {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-5px); }
-    }
-    
-    /* Glow pulse for CTA buttons */
-    .btn-primary {
-        animation: btnGlowPulse 3s ease-in-out infinite;
-    }
-    
-    @keyframes btnGlowPulse {
-        0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
-        50% { box-shadow: 0 8px 40px rgba(255,255,255,0.15), 0 4px 20px rgba(0,0,0,0.3); }
-    }
     </style>
 </head>
 <body>
     <!-- ===== THEME SWITCHER ===== -->
     <div id="theme-switcher">
-        <button class="theme-btn theme-btn-classic active" data-theme="classic" title="Classic Elegant">
-            <span class="t-icon">✈️</span>
-            <span class="t-label">CLASSIC<br>ELEGANT</span>
-        </button>
-        <button class="theme-btn theme-btn-original" data-theme="original" title="Original Night Sky">
+        <button class="theme-btn theme-btn-original active" data-theme="original" title="Original Night Sky">
             <span class="t-icon">🌙</span>
             <span class="t-label">ORIGINAL<br>NIGHT SKY</span>
         </button>
@@ -298,6 +225,7 @@
         </button>
     </div>
     <div class="theme-toggle-tab" id="themeTab">THEME</div>
+    
     <!-- Global Animated Background -->
     <div class="global-bg-anim">
         <div class="color-layer"></div>
@@ -1099,93 +1027,6 @@
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        // ===== ADVANCED THEME SWITCHER =====
-        const themeMap = {
-            classic:  'css/theme-classic.css',
-            neon:     'css/theme-neon.css',
-            gradient: 'css/theme-gradient.css',
-            american: 'css/theme-american.css',
-            original: 'css/theme-original.css',
-        };
-
-        const themeColors = {
-            classic:  { cursor: '#00d4ff',  tab: 'linear-gradient(135deg,#001F3F,#0074D9)' },
-            neon:     { cursor: '#00FF9F',  tab: 'linear-gradient(135deg,#00FF9F,#FF006E)' },
-            gradient: { cursor: '#7F39FB',  tab: 'linear-gradient(135deg,#00D9FF,#7F39FB)' },
-            american: { cursor: '#FFD700',  tab: 'linear-gradient(135deg,#E31B23,#1B3A8C)' },
-            original: { cursor: '#00d4ff',  tab: 'linear-gradient(135deg,#031b33,#7303c0)' },
-        };
-
-        function applyTheme(themeName) {
-            const cssEl = document.getElementById('theme-css');
-            cssEl.href = themeMap[themeName] || '';
-            
-            // Update active button
-            document.querySelectorAll('.theme-btn').forEach(b => {
-                b.classList.toggle('active', b.dataset.theme === themeName);
-            });
-
-            // Update tab color
-            const tab = document.getElementById('themeTab');
-            tab.style.background = themeColors[themeName]?.tab || '';
-            
-            // Save preference
-            localStorage.setItem('wf-theme', themeName);
-            
-            // Animate body transition
-            document.body.style.transition = 'background 0.6s ease, color 0.4s ease';
-        }
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('wf-theme') || 'classic';
-        applyTheme(savedTheme);
-
-        // Theme button clicks
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                applyTheme(btn.dataset.theme);
-                // Close panel after selection
-                setTimeout(() => {
-                    document.getElementById('theme-switcher').classList.remove('open');
-                    document.getElementById('themeTab').style.right = '0';
-                }, 400);
-            });
-        });
-
-        // Toggle theme panel
-        document.getElementById('themeTab').addEventListener('click', () => {
-            const panel = document.getElementById('theme-switcher');
-            const tab = document.getElementById('themeTab');
-            panel.classList.toggle('open');
-            tab.style.right = panel.classList.contains('open') ? '148px' : '0';
-        });
-
-        // ===== CURSOR PARTICLE TRAIL =====
-        let lastParticle = 0;
-        document.addEventListener('mousemove', (e) => {
-            const now = Date.now();
-            if (now - lastParticle < 80) return;
-            lastParticle = now;
-            
-            const currentTheme = localStorage.getItem('wf-theme') || 'neon';
-            const color = themeColors[currentTheme]?.cursor || '#fff';
-            
-            const p = document.createElement('div');
-            p.className = 'cursor-particle';
-            const size = Math.random() * 6 + 3;
-            p.style.cssText = `
-                left: ${e.clientX - size/2}px;
-                top: ${e.clientY - size/2}px;
-                width: ${size}px;
-                height: ${size}px;
-                background: ${color};
-                box-shadow: 0 0 ${size * 2}px ${color};
-                opacity: 0.7;
-            `;
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 800);
-        });
-
         // Failsafe for Auth Modal
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('authModal');
@@ -1204,6 +1045,70 @@
                     modal.classList.remove('active');
                 };
             }
+        });
+    </script>
+    <script>
+        // ===== THEME SWITCHER =====
+        const themeMap = {
+            original: 'css/theme-original.css',
+            neon:     'css/theme-neon.css',
+            gradient: 'css/theme-gradient.css',
+            american: 'css/theme-american.css',
+        };
+
+        const themeColors = {
+            original: { cursor: '#00d4ff',  tab: 'linear-gradient(135deg,#031b33,#7303c0)' },
+            neon:     { cursor: '#00FF9F',  tab: 'linear-gradient(135deg,#00FF9F,#FF006E)' },
+            gradient: { cursor: '#7F39FB',  tab: 'linear-gradient(135deg,#00D9FF,#7F39FB)' },
+            american: { cursor: '#FFD700',  tab: 'linear-gradient(135deg,#E31B23,#1B3A8C)' },
+        };
+
+        function applyTheme(themeName) {
+            const cssEl = document.getElementById('theme-css');
+            if (themeName === 'original') {
+                cssEl.href = '';
+            } else {
+                cssEl.href = themeMap[themeName] || '';
+            }
+            document.querySelectorAll('.theme-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.theme === themeName);
+            });
+            const tab = document.getElementById('themeTab');
+            tab.style.background = themeColors[themeName]?.tab || '';
+            localStorage.setItem('wf-theme', themeName);
+            document.body.style.transition = 'background 0.6s ease, color 0.4s ease';
+        }
+
+        const savedTheme = localStorage.getItem('wf-theme') || 'original';
+        applyTheme(savedTheme);
+
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                applyTheme(btn.dataset.theme);
+                setTimeout(() => {
+                    document.getElementById('theme-switcher').classList.remove('open');
+                }, 400);
+            });
+        });
+
+        document.getElementById('themeTab').addEventListener('click', () => {
+            document.getElementById('theme-switcher').classList.toggle('open');
+        });
+
+        // Cursor particle trail
+        let lastParticle = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastParticle < 80) return;
+            lastParticle = now;
+            const currentTheme = localStorage.getItem('wf-theme') || 'original';
+            const color = themeColors[currentTheme]?.cursor || '#fff';
+            const p = document.createElement('div');
+            p.className = 'cursor-particle';
+            const size = Math.random() * 6 + 3;
+            p.style.cssText = `left:${e.clientX-size/2}px;top:${e.clientY-size/2}px;width:${size}px;height:${size}px;background:${color};box-shadow:0 0 ${size*2}px ${color};opacity:0.7;`;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
         });
     </script>
 </body>
