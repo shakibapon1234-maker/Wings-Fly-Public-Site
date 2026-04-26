@@ -179,6 +179,31 @@
     .theme-btn-classic .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.6); }
     .theme-btn-classic:hover, .theme-btn-classic.active { background: #002a5c; box-shadow: inset 0 0 20px rgba(0,116,217,0.2); }
 
+    .theme-btn-original {
+        background: linear-gradient(135deg, #031b33, #7303c0);
+        color: #00d4ff;
+    }
+    .theme-btn-original::before { background: #00d4ff; }
+    .theme-btn-original .t-icon { color: #FFD700; text-shadow: 0 0 10px rgba(255,215,0,0.8); }
+    .theme-btn-original:hover, .theme-btn-original.active { background: linear-gradient(135deg,#050a12,#7303c0); box-shadow: inset 0 0 20px rgba(0,212,255,0.15); }
+
+    .theme-btn-daylight {
+        background: linear-gradient(135deg, #e8f4fd, #f0f8ff);
+        color: #0074D9;
+        border-top: 1px solid rgba(0,116,217,0.15);
+    }
+    .theme-btn-daylight::before { background: #FFD700; }
+    .theme-btn-daylight .t-icon { color: #0074D9; text-shadow: none; }
+    .theme-btn-daylight:hover, .theme-btn-daylight.active { background: #dbeafe; box-shadow: inset 0 0 20px rgba(0,116,217,0.1); }
+
+    .theme-btn-clean {
+        background: linear-gradient(135deg, #0056b3, #0074D9);
+        color: #ffffff;
+    }
+    .theme-btn-clean::before { background: #FFD700; }
+    .theme-btn-clean .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.8); }
+    .theme-btn-clean:hover, .theme-btn-clean.active { background: #0074D9; box-shadow: inset 0 0 20px rgba(255,215,0,0.2); }
+
     .t-icon { font-size: 16px; min-width: 20px; }
     .t-label { font-size: 10px; line-height: 1.2; }
     
@@ -251,9 +276,13 @@
 <body>
     <!-- ===== THEME SWITCHER ===== -->
     <div id="theme-switcher">
-        <button class="theme-btn theme-btn-classic active" data-theme="classic" title="Original Classic">
+        <button class="theme-btn theme-btn-classic active" data-theme="classic" title="Classic Elegant">
             <span class="t-icon">✈️</span>
-            <span class="t-label">CLASSIC<br>ORIGINAL</span>
+            <span class="t-label">CLASSIC<br>ELEGANT</span>
+        </button>
+        <button class="theme-btn theme-btn-original" data-theme="original" title="Original Night Sky">
+            <span class="t-icon">🌙</span>
+            <span class="t-label">ORIGINAL<br>NIGHT SKY</span>
         </button>
         <button class="theme-btn theme-btn-neon" data-theme="neon" title="Neon Cyberpunk">
             <span class="t-icon">⚡</span>
@@ -1072,17 +1101,19 @@
     <script>
         // ===== ADVANCED THEME SWITCHER =====
         const themeMap = {
-            classic: 'css/theme-classic.css',
-            neon: 'css/theme-neon.css',
+            classic:  'css/theme-classic.css',
+            neon:     'css/theme-neon.css',
             gradient: 'css/theme-gradient.css',
             american: 'css/theme-american.css',
+            original: 'css/theme-original.css',
         };
 
         const themeColors = {
-            classic: { cursor: '#0074D9', tab: 'linear-gradient(135deg,#0074D9,#FFD700)' },
-            neon: { cursor: '#00FF9F', tab: 'linear-gradient(135deg,#00FF9F,#FF006E)' },
-            gradient: { cursor: '#7F39FB', tab: 'linear-gradient(135deg,#00D9FF,#7F39FB)' },
-            american: { cursor: '#FFD700', tab: 'linear-gradient(135deg,#E31B23,#1B3A8C)' },
+            classic:  { cursor: '#00d4ff',  tab: 'linear-gradient(135deg,#001F3F,#0074D9)' },
+            neon:     { cursor: '#00FF9F',  tab: 'linear-gradient(135deg,#00FF9F,#FF006E)' },
+            gradient: { cursor: '#7F39FB',  tab: 'linear-gradient(135deg,#00D9FF,#7F39FB)' },
+            american: { cursor: '#FFD700',  tab: 'linear-gradient(135deg,#E31B23,#1B3A8C)' },
+            original: { cursor: '#00d4ff',  tab: 'linear-gradient(135deg,#031b33,#7303c0)' },
         };
 
         function applyTheme(themeName) {

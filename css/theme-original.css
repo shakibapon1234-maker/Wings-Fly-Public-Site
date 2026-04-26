@@ -1,0 +1,545 @@
+/* 
+    Wings Fly — ORIGINAL NIGHT SKY THEME
+    The real original running design
+    Color-shifting night sky · Moving Stars · Floating Planets
+    Hero Slider Animations · Floating Cards
+*/
+
+/* ============================================================
+   CSS VARIABLES
+   ============================================================ */
+:root {
+    --primary:      #0074D9;
+    --primary-dark: #001F3F;
+    --accent:       #FFD700;
+    --bg-light:     #F8F9FA;
+    --text-dark:    #1A1A1A;
+    --text-muted:   #666;
+    --white:        #FFFFFF;
+    --glass:        rgba(255,255,255,0.1);
+    --glass-border: rgba(255,255,255,0.2);
+    --shadow:       0 10px 30px rgba(0,0,0,0.1);
+    --transition:   all 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ============================================================
+   KILL anything other themes injected on body
+   ============================================================ */
+body::before,
+body::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* ============================================================
+   ANIMATED NIGHT SKY — full restore
+   ============================================================ */
+
+.global-bg-anim {
+    display:          block    !important;
+    visibility:       visible  !important;
+    opacity:          1        !important;
+    position:         fixed    !important;
+    top: 0; left: 0;
+    width:            100vw    !important;
+    height:           100vh    !important;
+    z-index:          -999     !important;
+    overflow:         hidden   !important;
+    background-color: #000     !important;
+}
+
+/* Colour-cycling gradient: Red/Pink → Purple → Black Night → Dark Blue */
+.global-bg-anim .color-layer {
+    display:         block    !important;
+    position:        absolute !important;
+    inset:           0        !important;
+    background:      linear-gradient(-45deg,#f00b51,#7303c0,#050a12,#000000,#031b33,#f64f59) !important;
+    background-size: 400% 400% !important;
+    animation:       origNightShift 30s ease infinite !important;
+    opacity:         1        !important;
+}
+
+@keyframes origNightShift {
+    0%   { background-position: 0%   50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0%   50%; }
+}
+
+/* Moving Stars — layer 1 */
+.global-bg-anim .stars-layer-1 {
+    display:   block    !important;
+    position:  absolute !important;
+    top: 0; left: 0;
+    width:     200%     !important;
+    height:    200%     !important;
+    opacity:   0.8      !important;
+    animation: origStars1 60s linear infinite !important;
+    background-image: url('data:image/svg+xml;utf8,<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="50" r="1" fill="%23fff" opacity="0.6"/><circle cx="100" cy="120" r="1.5" fill="%23fff" opacity="0.9"/><circle cx="220" cy="80" r="2" fill="%23fff" opacity="1"/><circle cx="180" cy="210" r="1" fill="%23fff" opacity="0.5"/><circle cx="50" cy="250" r="1.5" fill="%23fff" opacity="0.8"/><circle cx="280" cy="270" r="1.2" fill="%23fff" opacity="0.7"/></svg>') !important;
+}
+
+/* Moving Stars — layer 2 (glowing, slower) */
+.global-bg-anim .stars-layer-2 {
+    display:   block    !important;
+    position:  absolute !important;
+    top: 0; left: 0;
+    width:     200%     !important;
+    height:    200%     !important;
+    opacity:   1        !important;
+    filter:    drop-shadow(0 0 6px #fff) !important;
+    animation: origStars2 100s linear infinite !important;
+    background-image: url('data:image/svg+xml;utf8,<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"><circle cx="80" cy="100" r="2" fill="%23fff" opacity="1"/><circle cx="300" cy="50" r="1.5" fill="%23fff" opacity="0.8"/><circle cx="200" cy="300" r="2.5" fill="%23fff" opacity="1"/><circle cx="350" cy="250" r="1" fill="%23fff" opacity="0.6"/><circle cx="120" cy="350" r="1.8" fill="%23fff" opacity="0.9"/></svg>') !important;
+}
+
+@keyframes origStars1 {
+    0%   { transform: translate(0,0); }
+    100% { transform: translate(-50%,-50%); }
+}
+@keyframes origStars2 {
+    0%   { transform: translate(0,0); }
+    100% { transform: translate(-50%,-50%); }
+}
+
+/* Planet 1 — warm orange/pink */
+.global-bg-anim .planet-1 {
+    display:       block    !important;
+    visibility:    visible  !important;
+    position:      absolute !important;
+    top:           15%      !important;
+    right:         5%       !important;
+    width:         180px    !important;
+    height:        180px    !important;
+    border-radius: 50%      !important;
+    background:    radial-gradient(circle at 30% 30%,#ff8a00,#e52e71,#2a0845) !important;
+    box-shadow:    inset -25px -25px 40px rgba(0,0,0,0.8), 0 0 30px rgba(229,46,113,0.4) !important;
+    opacity:       0.85     !important;
+    animation:     origPlanet1 180s linear infinite alternate !important;
+    z-index:       1        !important;
+}
+
+/* Planet 2 — cool blue */
+.global-bg-anim .planet-2 {
+    display:       block    !important;
+    visibility:    visible  !important;
+    position:      absolute !important;
+    bottom:        20%      !important;
+    left:          8%       !important;
+    width:         120px    !important;
+    height:        120px    !important;
+    border-radius: 50%      !important;
+    background:    radial-gradient(circle at 20% 20%,#00c6ff,#0072ff,#001133) !important;
+    box-shadow:    inset -15px -15px 30px rgba(0,0,0,0.8), 0 0 25px rgba(0,114,255,0.4) !important;
+    opacity:       0.8      !important;
+    animation:     origPlanet2 140s linear infinite alternate !important;
+    z-index:       1        !important;
+}
+
+@keyframes origPlanet1 {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    100% { transform: translate(-20vw,15vh) rotate(45deg); }
+}
+@keyframes origPlanet2 {
+    0%   { transform: translate(0,0) rotate(0deg); }
+    100% { transform: translate(25vw,-10vh) rotate(-30deg); }
+}
+
+/* ============================================================
+   BODY
+   ============================================================ */
+body {
+    background-color: transparent !important;
+    color: var(--text-dark);
+}
+
+/* ============================================================
+   NAVBAR — white glass, dark links
+   ============================================================ */
+.navbar {
+    background:      rgba(255,255,255,0.85) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border-bottom:   1px solid rgba(255,255,255,0.2) !important;
+    box-shadow:      none !important;
+}
+.logo-spin-ring {
+    border:       3px solid transparent !important;
+    border-top:   3px solid #00d4ff !important;
+    border-right: 3px solid #FFD700 !important;
+    box-shadow:   none !important;
+}
+.nav-links a {
+    color:       var(--text-dark) !important;
+    font-weight: 500 !important;
+    text-shadow: none !important;
+}
+.nav-links a::after { display: none !important; }
+.nav-links a:hover  { color: var(--primary) !important; }
+
+.btn-login {
+    background:    transparent !important;
+    color:         var(--primary) !important;
+    border:        2px solid var(--primary) !important;
+    border-radius: 50px !important;
+    padding:       8px 20px !important;
+}
+.btn-login:hover {
+    background: var(--primary) !important;
+    color:      white !important;
+    box-shadow: 0 4px 15px rgba(0,116,217,0.3) !important;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+    background:    linear-gradient(135deg,var(--primary),#0056b3) !important;
+    color:         white !important;
+    border:        none !important;
+    border-radius: 50px !important;
+    font-weight:   600 !important;
+    box-shadow:    0 4px 15px rgba(0,116,217,0.3) !important;
+    animation:     none !important;
+}
+.btn-primary::before { display: none !important; }
+.btn-primary:hover {
+    background:  linear-gradient(135deg,#0056b3,var(--primary)) !important;
+    color:       white !important;
+    transform:   translateY(-3px) !important;
+    box-shadow:  0 8px 25px rgba(0,116,217,0.4) !important;
+}
+.btn-outline {
+    background:    transparent !important;
+    border:        2px solid rgba(255,255,255,0.6) !important;
+    color:         white !important;
+    border-radius: 50px !important;
+}
+.btn-outline:hover {
+    background:   rgba(255,255,255,0.15) !important;
+    border-color: white !important;
+}
+
+/* ============================================================
+   HERO — transparent so night sky shows through
+   ============================================================ */
+.hero {
+    background: transparent !important;
+    color:      white !important;
+}
+.hero-overlay::before {
+    background: radial-gradient(circle,rgba(0,116,217,0.3) 0%,transparent 70%) !important;
+    box-shadow: none !important;
+    animation:  origBlob1 15s infinite alternate !important;
+}
+.hero-overlay::after {
+    background: radial-gradient(circle,rgba(255,215,0,0.1) 0%,transparent 70%) !important;
+    animation:  origBlob2 12s infinite alternate-reverse !important;
+}
+@keyframes origBlob1 {
+    0%   { transform: translate(0,0)       scale(1);   }
+    50%  { transform: translate(50px,100px) scale(1.1); }
+    100% { transform: translate(-30px,-50px) scale(0.9);}
+}
+@keyframes origBlob2 {
+    0%   { transform: translate(0,0)        scale(1);   }
+    100% { transform: translate(-40px,60px) scale(1.15);}
+}
+
+.hero-bg-pattern {
+    opacity:   0.08  !important;
+    animation: none  !important;
+}
+.hero-waves path { fill: rgba(248,249,250,0.9) !important; }
+
+.hero-content .badge {
+    background: rgba(0,116,217,0.2) !important;
+    border:     1px solid rgba(255,255,255,0.3) !important;
+    color:      white !important;
+    animation:  none !important;
+}
+.hero-content h1 {
+    color:       white !important;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3) !important;
+}
+
+/* Highlight text — cyan to gold */
+.highlight {
+    background:              linear-gradient(135deg,#00d4ff,#FFD700) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip:         text !important;
+    animation:               none !important;
+    filter:                  none !important;
+}
+
+/* Stats */
+.stat-num {
+    color:       #FFD700 !important;
+    text-shadow: 0 0 15px rgba(255,215,0,0.4) !important;
+    animation:   origStatFloat 3s ease-in-out infinite !important;
+    display:     inline-block !important;
+}
+@keyframes origStatFloat {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-6px); }
+}
+.stat-label { color: rgba(255,255,255,0.8) !important; }
+
+/* ============================================================
+   HERO SLIDER ANIMATIONS (exact originals)
+   ============================================================ */
+.hero-slide:nth-child(1).leaving {
+    animation: origRollOut 1s forwards !important;
+}
+@keyframes origRollOut {
+    0%   { transform: translateX(0) rotate(0deg);     opacity: 1; }
+    100% { transform: translateX(-150%) rotate(-120deg); opacity: 0; }
+}
+
+.hero-slide:nth-child(2).active {
+    animation: origScaleFloat 1.2s cubic-bezier(0.34,1.56,0.64,1) forwards !important;
+}
+@keyframes origScaleFloat {
+    0%   { transform: scale(0) translateY(100px); opacity: 0; }
+    60%  { transform: scale(1.1) translateY(0);   opacity: 1; }
+    100% { transform: scale(1) translateY(-20px); opacity: 1; }
+}
+
+.hero-slide:nth-child(3).active {
+    animation: origDropShake 1s cubic-bezier(0.25,0.46,0.45,0.94) forwards !important;
+}
+@keyframes origDropShake {
+    0%   { transform: translateY(-150%) scale(0.8); opacity: 0; }
+    60%  { transform: translateY(20px)  scale(1);   opacity: 1; }
+    75%  { transform: translateY(-10px); }
+    90%  { transform: translateY(5px);  }
+    100% { transform: translateY(0);    }
+}
+
+.hero-slide:nth-child(4).active {
+    animation: origFlipIn 1s cubic-bezier(0.175,0.885,0.32,1.275) forwards !important;
+}
+@keyframes origFlipIn {
+    0%   { transform: rotateY(-90deg) scale(0.5); opacity: 0; }
+    100% { transform: rotateY(0deg)   scale(1);   opacity: 1; }
+}
+
+/* ============================================================
+   FLOATING CARDS
+   ============================================================ */
+.floating-card {
+    background:      rgba(255,255,255,0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    border:          1px solid rgba(255,255,255,0.2) !important;
+    box-shadow:      0 15px 35px rgba(0,0,0,0.2) !important;
+    color:           white !important;
+    animation:       origFloat 4s ease-in-out infinite !important;
+}
+@keyframes origFloat {
+    0%   { transform: translateY(0px);  }
+    50%  { transform: translateY(-20px);}
+    100% { transform: translateY(0px);  }
+}
+.card-1 { top: 10%; right: -20px; animation-delay: 0s !important; }
+.floating-card i { color: #FFD700 !important; }
+
+/* ============================================================
+   PARTNERS
+   ============================================================ */
+.partners {
+    background:      rgba(255,255,255,0.85) !important;
+    backdrop-filter: blur(15px) !important;
+    border-top:      none !important;
+    border-bottom:   none !important;
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.section-header h2 { color: var(--text-dark) !important; }
+
+.section-header .highlight,
+h2 .highlight, h3 .highlight, span.highlight {
+    background:              linear-gradient(135deg,var(--primary),#00d4ff) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip:         text !important;
+    animation:               none !important;
+    filter:                  none !important;
+}
+
+/* ============================================================
+   COURSE CARDS
+   ============================================================ */
+.course-card {
+    background:    white !important;
+    border:        none !important;
+    border-top:    none !important;
+    border-radius: 20px !important;
+    box-shadow:    0 5px 25px rgba(0,0,0,0.08) !important;
+    color:         var(--text-dark) !important;
+}
+.course-card:hover {
+    transform:  translateY(-8px) !important;
+    box-shadow: 0 20px 50px rgba(0,116,217,0.15) !important;
+    border-top: none !important;
+}
+
+/* ============================================================
+   CHAIRMAN
+   ============================================================ */
+.chairman-section {
+    background: linear-gradient(135deg,#f0f8ff,#e8f4fd) !important;
+    border-top: none !important;
+}
+.chairman-img-wrapper, .chairman-portrait {
+    border:     4px solid rgba(0,116,217,0.2) !important;
+    box-shadow: 0 20px 60px rgba(0,116,217,0.2) !important;
+}
+
+/* ============================================================
+   HOLOGRAM / FEATURE CARDS
+   ============================================================ */
+.hologram-card {
+    background:  rgba(255,255,255,0.8) !important;
+    border:      1px solid rgba(0,116,217,0.1) !important;
+    border-left: 3px solid var(--primary) !important;
+    box-shadow:  0 5px 20px rgba(0,0,0,0.06) !important;
+    color:       var(--text-dark) !important;
+}
+.hologram-card:hover {
+    border-left-color: #00d4ff !important;
+    box-shadow:        0 10px 40px rgba(0,116,217,0.12) !important;
+    background:        white !important;
+}
+.hologram-icon {
+    background:  linear-gradient(135deg,var(--primary),#00d4ff) !important;
+    color:       white !important;
+    box-shadow:  0 4px 15px rgba(0,116,217,0.3) !important;
+    border:      none !important;
+    text-shadow: none !important;
+}
+.hologram-number { color: rgba(0,116,217,0.1) !important; }
+
+/* ============================================================
+   EXECUTIVE GALLERY
+   ============================================================ */
+.executive-gallery {
+    background: linear-gradient(135deg,#0a1628,#001540,#0a0f2e) !important;
+}
+.gallery-bg-anim .glow-orb:first-child {
+    background: radial-gradient(circle,rgba(0,116,217,0.2),transparent 70%) !important;
+}
+.gallery-bg-anim .glow-orb:not(:first-child) {
+    background: radial-gradient(circle,rgba(255,215,0,0.1),transparent 70%) !important;
+}
+.luxury-frame {
+    border:     3px solid rgba(255,215,0,0.5) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.1) !important;
+}
+.luxury-frame.gold-heavy {
+    border-color: #FFD700 !important;
+    box-shadow:   0 0 30px rgba(255,215,0,0.3) !important;
+}
+.gallery-nav-btn {
+    background: linear-gradient(135deg,var(--primary),#0056b3) !important;
+    border:     none !important;
+    color:      white !important;
+}
+
+/* ============================================================
+   SUCCESS SECTION
+   ============================================================ */
+.success-section {
+    background: linear-gradient(160deg,#020a1a,#001540,#020a1a) !important;
+}
+.aurora-wave {
+    background: linear-gradient(90deg,transparent,rgba(0,116,217,0.1),rgba(255,215,0,0.05),transparent) !important;
+}
+.success-card-premium {
+    background: rgba(255,255,255,0.06) !important;
+    border:     1px solid rgba(255,255,255,0.1) !important;
+}
+.glow-ring {
+    border:     2px solid rgba(0,116,217,0.6) !important;
+    box-shadow: 0 0 20px rgba(0,116,217,0.3) !important;
+}
+.congrats-text { color: #FFD700 !important; }
+.batch-tag {
+    background: rgba(0,116,217,0.2) !important;
+    border:     1px solid rgba(0,116,217,0.3) !important;
+    color:      white !important;
+}
+
+/* ============================================================
+   GALLERY / FILTER
+   ============================================================ */
+.gallery-section { background: var(--bg-light) !important; }
+.filter-btn.active, .filter-btn:hover {
+    background:   var(--primary) !important;
+    color:        white !important;
+    border-color: var(--primary) !important;
+}
+
+/* ============================================================
+   ADMISSION
+   ============================================================ */
+.admission-section {
+    background: linear-gradient(135deg,#f8f9fa,#e8f4fd) !important;
+}
+.admission-card {
+    background:    white !important;
+    border:        none !important;
+    border-top:    none !important;
+    border-radius: 20px !important;
+    box-shadow:    0 20px 60px rgba(0,116,217,0.1) !important;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+    border:        2px solid rgba(0,0,0,0.1) !important;
+    border-radius: 10px !important;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow:   0 0 0 3px rgba(0,116,217,0.1) !important;
+    outline:      none !important;
+}
+.benefit-list li i { color: var(--primary) !important; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+    background: linear-gradient(135deg,#001F3F,#001540) !important;
+    border-top: none !important;
+}
+.footer h4 { color: #FFD700 !important; }
+.social-links a {
+    background: rgba(255,255,255,0.08) !important;
+    border:     1px solid rgba(255,255,255,0.15) !important;
+    color:      rgba(255,255,255,0.8) !important;
+    box-shadow: none !important;
+}
+.social-links a:hover {
+    background:   var(--primary) !important;
+    border-color: var(--primary) !important;
+    color:        white !important;
+    box-shadow:   0 4px 15px rgba(0,116,217,0.4) !important;
+}
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.1) !important; }
+
+/* ============================================================
+   DOTS & MISC
+   ============================================================ */
+.dot.active, .dot-gallery.active, .dot-success.active {
+    background: #FFD700 !important;
+    box-shadow: 0 0 8px rgba(255,215,0,0.5) !important;
+}
+.badge {
+    background: rgba(0,116,217,0.15) !important;
+    color:      var(--primary) !important;
+    border:     1px solid rgba(0,116,217,0.2) !important;
+}
+/* Remove scan-lines from neon theme */
+body::after { display: none !important; }
