@@ -830,5 +830,26 @@
 
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
+    <script>
+        // Failsafe for Auth Modal
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('authModal');
+            const btn = document.getElementById('openAuthBtn');
+            const close = document.getElementById('closeAuth');
+
+            if (btn && modal) {
+                btn.onclick = () => {
+                    modal.style.display = 'flex';
+                    modal.classList.add('active');
+                };
+            }
+            if (close && modal) {
+                close.onclick = () => {
+                    modal.style.display = 'none';
+                    modal.classList.remove('active');
+                };
+            }
+        });
+    </script>
 </body>
 </html>
