@@ -33,6 +33,7 @@
                 <li data-tab="payment-verification"><i class="fa-solid fa-money-check-dollar"></i> পেমেন্ট ভেরিফিকেশন</li>
                 <li data-tab="course-manager"><i class="fa-solid fa-graduation-cap"></i> কোর্স ম্যানেজার</li>
                 <li data-tab="instructor-manager"><i class="fa-solid fa-user-tie"></i> ইন্সট্রাক্টর ম্যানেজার</li>
+                <li data-tab="certificate-manager"><i class="fa-solid fa-certificate"></i> সার্টিফিকেট ম্যানেজার</li>
                 <li data-tab="site-config"><i class="fa-solid fa-gears"></i> সাইট সেটিংস</li>
                 <li id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</li>
             </ul>
@@ -240,6 +241,59 @@
                             </tr>
                         </thead>
                         <tbody id="instructors-list"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Certificate Manager -->
+            <div id="certificate-manager" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>সার্টিফিকেট ম্যানেজমেন্ট</h2>
+                </div>
+
+                <div class="upload-section">
+                    <h3>নতুন সার্টিফিকেট ইস্যু করুন</h3>
+                    <form id="certificate-form" class="upload-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>শিক্ষার্থীর নাম</label>
+                                <input type="text" id="cert-student-name" placeholder="যেমন: Md. Kawsar Mia" required>
+                            </div>
+                            <div class="form-group">
+                                <label>কোর্সের নাম</label>
+                                <input type="text" id="cert-course-name" placeholder="যেমন: Professional Visa Processing" required>
+                            </div>
+                            <div class="form-group">
+                                <label>সার্টিফিকেট আইডি</label>
+                                <input type="text" id="cert-id" placeholder="যেমন: WF-2024-001" required>
+                            </div>
+                            <div class="form-group">
+                                <label>ইস্যুর তারিখ</label>
+                                <input type="date" id="cert-issue-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label>গ্রেড/রেজাল্ট</label>
+                                <input type="text" id="cert-grade" placeholder="যেমন: A+" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="add-cert-btn-submit" class="btn-primary">সার্টিফিকেট যুক্ত করুন <i class="fa-solid fa-plus"></i></button>
+                    </form>
+                    <div id="cert-status" style="margin-top: 10px;"></div>
+                </div>
+
+                <div class="table-container" style="margin-top: 30px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>সার্টিফিকেট আইডি</th>
+                                <th>শিক্ষার্থীর নাম</th>
+                                <th>কোর্স</th>
+                                <th>তারিখ</th>
+                                <th>গ্রেড</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="certificates-list"></tbody>
                     </table>
                 </div>
             </div>

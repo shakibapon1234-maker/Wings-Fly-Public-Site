@@ -457,9 +457,81 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Certificate Verification ---
+    function initCertVerification() {
+        const verifyBtn = document.getElementById('verify-btn');
+        if (!verifyBtn) return;
+
+        verifyBtn.addEventListener('click', async () => {
+            const certId = document.getElementById('verify-cert-id').value.trim();
+            const resultBox = document.getElementById('verify-result');
+
+            if (!certId) {
+                resultBox.style.display = 'block';
+                resultBox.className = 'verify-result-box result-invalid';
+                resultBox.innerHTML = '<p style="color:#ff4d4d; text-align:center;"><i class="fa-solid fa-circle-xmark"></i> অনুগ্রহ করে একটি সার্টিফিকেট আইডি দিন।</p>';
+                return;
+            }
+
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = 'যাচাই হচ্ছে... <i class="fa-solid fa-spinner fa-spin"></i>';
+            resultBox.style.display = 'none';
+
+            try {
+                const { data, error } = await window.supabase
+                    .from('certificates')
+                    .select('*')
+                    .eq('certificate_id', certId)
+                    .single();
+
+                resultBox.style.display = 'block';
+
+                if (error || !data) {
+                    resultBox.className = 'verify-result-box result-invalid';
+                    resultBox.innerHTML = `
+                        <div style="text-align:center;">
+                            <i class="fa-solid fa-circle-xmark" style="font-size:2.5rem; color:#ff4d4d; margin-bottom:10px;"></i>
+                            <h3 style="color:#ff4d4d; margin:0;">সার্টিফিকেট যাচাই হয়নি!</h3>
+                            <p style="color:#ddd; margin-top:8px;">এই আইডির কোনো সার্টিফিকেট আমাদের ডেটাবেজে পাওয়া যায়নি।<br>আইডিটি আবার যাচাই করুন অথবা একাডেমিতে যোগাযোগ করুন।</p>
+                        </div>
+                    `;
+                } else {
+                    resultBox.className = 'verify-result-box result-valid';
+                    resultBox.innerHTML = `
+                        <div style="text-align:center; margin-bottom:20px;">
+                            <i class="fa-solid fa-circle-check" style="font-size:2.5rem; color:#00ffa3; margin-bottom:10px;"></i>
+                            <h3 style="color:#00ffa3; margin:0;">সার্টিফিকেট যাচাই সফল!</h3>
+                            <p style="color:#ddd; margin-top:5px;">এই সার্টিফিকেটটি Wings Fly Aviation Academy কর্তৃক অনুমোদিত এবং বৈধ।</p>
+                        </div>
+                        <div class="verify-detail">
+                            <p><strong><i class="fa-solid fa-user" style="color:#00d4ff; margin-right:8px;"></i>শিক্ষার্থীর নাম</strong><br>${data.student_name}</p>
+                            <p><strong><i class="fa-solid fa-book" style="color:#00d4ff; margin-right:8px;"></i>কোর্সের নাম</strong><br>${data.course_name}</p>
+                            <p><strong><i class="fa-solid fa-id-card" style="color:#00d4ff; margin-right:8px;"></i>সার্টিফিকেট আইডি</strong><br>${data.certificate_id}</p>
+                            <p><strong><i class="fa-solid fa-calendar" style="color:#00d4ff; margin-right:8px;"></i>ইস্যুর তারিখ</strong><br>${new Date(data.issue_date).toLocaleDateString('bn-BD', {year:'numeric', month:'long', day:'numeric'})}</p>
+                            <p><strong><i class="fa-solid fa-star" style="color:#FFD700; margin-right:8px;"></i>গ্রেড / ফলাফল</strong><br><span style="color:#FFD700; font-size:1.2rem; font-weight:700;">${data.grade}</span></p>
+                        </div>
+                    `;
+                }
+            } catch(e) {
+                resultBox.style.display = 'block';
+                resultBox.className = 'verify-result-box result-invalid';
+                resultBox.innerHTML = `<p style="color:#ff4d4d; text-align:center;"><i class="fa-solid fa-circle-xmark"></i> ভুল হয়েছে: ${e.message}</p>`;
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = 'ভেরিফাই করুন <i class="fa-solid fa-magnifying-glass"></i>';
+            }
+        });
+
+        // Also allow Enter key
+        document.getElementById('verify-cert-id').addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') verifyBtn.click();
+        });
+    }
+
     // Init All
     initHeroSlider();
     loadSiteDynamicContent();
     loadLiveGallery();
     initReveal();
+    initCertVerification();
 });

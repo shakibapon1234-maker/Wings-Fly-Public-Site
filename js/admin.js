@@ -688,4 +688,86 @@ document.addEventListener('DOMContentLoaded', () => {
         await window.supabase.from('gallery_items').delete().eq('id', id);
         loadGallery();
     };
+
+    // ============================================
+    // CERTIFICATE MANAGER
+    // ============================================
+    const certForm = document.getElementById('certificate-form');
+    if (certForm) {
+        certForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('add-cert-btn-submit');
+            const status = document.getElementById('cert-status');
+
+            const certData = {
+                student_name: document.getElementById('cert-student-name').value,
+                course_name: document.getElementById('cert-course-name').value,
+                certificate_id: document.getElementById('cert-id').value,
+                issue_date: document.getElementById('cert-issue-date').value,
+                grade: document.getElementById('cert-grade').value
+            };
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'যুক্ত হচ্ছে... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+                const { error } = await window.supabase.from('certificates').insert([certData]);
+                if (error) {
+                    if (error.code === '23505') throw new Error('এই সার্টিফিকেট আইডিটি ইতোমধ্যে আছে!');
+                    throw error;
+                }
+
+                status.innerHTML = '<p class="status-success"><i class="fa-solid fa-circle-check"></i> সফলভাবে সার্টিফিকেট ইস্যু হয়েছে!</p>';
+                certForm.reset();
+                loadCertificates();
+                setTimeout(() => status.innerHTML = '', 4000);
+            } catch (err) {
+                status.innerHTML = `<p class="status-error"><i class="fa-solid fa-circle-xmark"></i> ভুল: ${err.message}</p>`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'সার্টিফিকেট যুক্ত করুন <i class="fa-solid fa-plus"></i>';
+            }
+        });
+    }
+
+    async function loadCertificates() {
+        const tbody = document.getElementById('certificates-list');
+        if (!tbody) return;
+
+        const { data, error } = await window.supabase
+            .from('certificates')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (data && data.length > 0) {
+            tbody.innerHTML = '';
+            data.forEach(cert => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color:#00d4ff; font-weight:bold;">${cert.certificate_id}</td>
+                    <td>${cert.student_name}</td>
+                    <td>${cert.course_name}</td>
+                    <td>${cert.issue_date}</td>
+                    <td><span class="status-badge" style="background:rgba(255,215,0,0.2); color:#FFD700;">${cert.grade}</span></td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteCertificate('${cert.id}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">কোনো সার্টিফিকেট পাওয়া যায়নি।</td></tr>';
+        }
+    }
+
+    window.deleteCertificate = async (id) => {
+        if (!confirm('আপনি কি এই সার্টিফিকেট মুছে ফেলতে চান?')) return;
+        await window.supabase.from('certificates').delete().eq('id', id);
+        loadCertificates();
+    };
+
+    // Load initial data
+    loadCertificates();
 });
