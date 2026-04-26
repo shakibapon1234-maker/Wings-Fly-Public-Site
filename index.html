@@ -66,8 +66,197 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/auth.css">
+    <!-- Theme CSS (loaded dynamically) -->
+    <link rel="stylesheet" href="" id="theme-css">
+    
+    <style>
+    /* ===== THEME SWITCHER WIDGET ===== */
+    #theme-switcher {
+        position: fixed;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        border-radius: 16px 0 0 16px;
+        overflow: hidden;
+        box-shadow: -4px 0 30px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-right: none;
+    }
+    
+    .theme-toggle-tab {
+        position: fixed;
+        right: 0;
+        top: calc(50% - 60px);
+        transform: translateY(-50%);
+        z-index: 99998;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        width: 32px;
+        height: 120px;
+        border-radius: 10px 0 0 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        writing-mode: vertical-rl;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        box-shadow: -3px 0 20px rgba(0,0,0,0.3);
+        transition: width 0.3s ease;
+    }
+    
+    .theme-toggle-tab:hover { width: 38px; }
+    
+    #theme-switcher.open { right: 0 !important; }
+    #theme-switcher { right: -140px; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    #theme-switcher.open ~ .theme-toggle-tab { right: 140px; }
+    .theme-toggle-tab { transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    
+    .theme-btn {
+        width: 140px;
+        padding: 14px 12px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Outfit', sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .theme-btn::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 0;
+        width: 3px; height: 100%;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    
+    .theme-btn.active::before { opacity: 1; }
+    
+    .theme-btn-neon {
+        background: linear-gradient(135deg, #0D1117, #1a1a2e);
+        color: #00FF9F;
+    }
+    .theme-btn-neon::before { background: #00FF9F; }
+    .theme-btn-neon .t-icon { color: #00FF9F; text-shadow: 0 0 8px #00FF9F; }
+    .theme-btn-neon:hover, .theme-btn-neon.active { background: #1a1a2e; box-shadow: inset 0 0 20px rgba(0,255,159,0.1); }
+    
+    .theme-btn-gradient {
+        background: linear-gradient(135deg, #020617, #0F172A);
+        color: #00D9FF;
+    }
+    .theme-btn-gradient::before { background: #00D9FF; }
+    .theme-btn-gradient .t-icon { color: #7F39FB; text-shadow: 0 0 8px #7F39FB; }
+    .theme-btn-gradient:hover, .theme-btn-gradient.active { background: #0F172A; box-shadow: inset 0 0 20px rgba(0,217,255,0.1); }
+    
+    .theme-btn-american {
+        background: linear-gradient(135deg, #0A1628, #1B3A8C);
+        color: #FFD700;
+    }
+    .theme-btn-american::before { background: #E31B23; }
+    .theme-btn-american .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.8); }
+    .theme-btn-american:hover, .theme-btn-american.active { background: #1B3A8C; box-shadow: inset 0 0 20px rgba(255,215,0,0.15); }
+
+    .t-icon { font-size: 16px; min-width: 20px; }
+    .t-label { font-size: 10px; line-height: 1.2; }
+    
+    /* Active indicator dot */
+    .theme-btn.active .t-icon::after {
+        content: '●';
+        position: absolute;
+        right: 8px;
+        font-size: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* Enhanced Animations for all themes */
+    @keyframes gradientShiftNight {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Particle cursor trail */
+    .cursor-particle {
+        position: fixed;
+        pointer-events: none;
+        border-radius: 50%;
+        z-index: 99997;
+        animation: particleFade 0.8s ease forwards;
+    }
+    
+    @keyframes particleFade {
+        0% { opacity: 1; transform: scale(1); }
+        100% { opacity: 0; transform: scale(0); }
+    }
+    
+    /* Enhanced Hero Badge */
+    .hero .badge {
+        animation: badgePulse 3s ease-in-out infinite !important;
+    }
+    
+    @keyframes badgePulse {
+        0%, 100% { box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        50% { box-shadow: 0 4px 30px rgba(255,255,255,0.2), 0 0 40px currentColor; }
+    }
+    
+    /* Smooth section transitions */
+    section { transition: background 0.5s ease; }
+    
+    /* Floating animation for stat numbers */
+    .stat-num {
+        animation: floatNumber 3s ease-in-out infinite;
+        display: inline-block;
+    }
+    
+    @keyframes floatNumber {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+    
+    /* Glow pulse for CTA buttons */
+    .btn-primary {
+        animation: btnGlowPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes btnGlowPulse {
+        0%, 100% { box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        50% { box-shadow: 0 8px 40px rgba(255,255,255,0.15), 0 4px 20px rgba(0,0,0,0.3); }
+    }
+    </style>
 </head>
 <body>
+    <!-- ===== THEME SWITCHER ===== -->
+    <div id="theme-switcher">
+        <button class="theme-btn theme-btn-neon active" data-theme="neon" title="Neon Cyberpunk">
+            <span class="t-icon">⚡</span>
+            <span class="t-label">NEON<br>CYBER</span>
+        </button>
+        <button class="theme-btn theme-btn-gradient" data-theme="gradient" title="Modern Gradient">
+            <span class="t-icon">🌌</span>
+            <span class="t-label">GRADIENT<br>DEEP</span>
+        </button>
+        <button class="theme-btn theme-btn-american" data-theme="american" title="American Patriotic">
+            <span class="t-icon">🦅</span>
+            <span class="t-label">AMERICAN<br>EAGLE</span>
+        </button>
+    </div>
+    <div class="theme-toggle-tab" id="themeTab">THEME</div>
     <!-- Global Animated Background -->
     <div class="global-bg-anim">
         <div class="color-layer"></div>
@@ -869,6 +1058,89 @@
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
     <script>
+        // ===== ADVANCED THEME SWITCHER =====
+        const themeMap = {
+            neon: 'css/theme-neon.css',
+            gradient: 'css/theme-gradient.css',
+            american: 'css/theme-american.css',
+        };
+
+        const themeColors = {
+            neon: { cursor: '#00FF9F', tab: 'linear-gradient(135deg,#00FF9F,#FF006E)' },
+            gradient: { cursor: '#7F39FB', tab: 'linear-gradient(135deg,#00D9FF,#7F39FB)' },
+            american: { cursor: '#FFD700', tab: 'linear-gradient(135deg,#E31B23,#1B3A8C)' },
+        };
+
+        function applyTheme(themeName) {
+            const cssEl = document.getElementById('theme-css');
+            cssEl.href = themeMap[themeName] || '';
+            
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.theme === themeName);
+            });
+
+            // Update tab color
+            const tab = document.getElementById('themeTab');
+            tab.style.background = themeColors[themeName]?.tab || '';
+            
+            // Save preference
+            localStorage.setItem('wf-theme', themeName);
+            
+            // Animate body transition
+            document.body.style.transition = 'background 0.6s ease, color 0.4s ease';
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('wf-theme') || 'neon';
+        applyTheme(savedTheme);
+
+        // Theme button clicks
+        document.querySelectorAll('.theme-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                applyTheme(btn.dataset.theme);
+                // Close panel after selection
+                setTimeout(() => {
+                    document.getElementById('theme-switcher').classList.remove('open');
+                    document.getElementById('themeTab').style.right = '0';
+                }, 400);
+            });
+        });
+
+        // Toggle theme panel
+        document.getElementById('themeTab').addEventListener('click', () => {
+            const panel = document.getElementById('theme-switcher');
+            const tab = document.getElementById('themeTab');
+            panel.classList.toggle('open');
+            tab.style.right = panel.classList.contains('open') ? '140px' : '0';
+        });
+
+        // ===== CURSOR PARTICLE TRAIL =====
+        let lastParticle = 0;
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastParticle < 80) return;
+            lastParticle = now;
+            
+            const currentTheme = localStorage.getItem('wf-theme') || 'neon';
+            const color = themeColors[currentTheme]?.cursor || '#fff';
+            
+            const p = document.createElement('div');
+            p.className = 'cursor-particle';
+            const size = Math.random() * 6 + 3;
+            p.style.cssText = `
+                left: ${e.clientX - size/2}px;
+                top: ${e.clientY - size/2}px;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${color};
+                box-shadow: 0 0 ${size * 2}px ${color};
+                opacity: 0.7;
+            `;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        });
+
         // Failsafe for Auth Modal
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('authModal');

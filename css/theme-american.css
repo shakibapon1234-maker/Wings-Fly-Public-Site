@@ -1,0 +1,459 @@
+/* 
+    Wings Fly - AMERICAN PATRIOTIC THEME
+    Bold Red, White & Blue with Gold Accents — Stars & Stripes Energy
+*/
+
+:root {
+    --primary: #1B3A8C;
+    --primary-dark: #0D2260;
+    --accent: #E31B23;
+    --accent-secondary: #FFD700;
+    --bg-light: #F0F4FF;
+    --bg-dark: #0A1628;
+    --text-dark: #0D1B3E;
+    --text-muted: #4A5568;
+    --white: #FFFFFF;
+    --glass: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 215, 0, 0.3);
+    --shadow: 0 10px 40px rgba(27, 58, 140, 0.25);
+    --gold-glow: 0 0 20px rgba(255, 215, 0, 0.5);
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --red: #E31B23;
+    --blue: #1B3A8C;
+    --gold: #FFD700;
+}
+
+body {
+    background: linear-gradient(160deg, #F0F4FF 0%, #E8EEFF 50%, #F5F0FF 100%);
+    color: var(--text-dark);
+}
+
+/* === ANIMATED STARS BACKGROUND === */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image:
+        radial-gradient(circle 2px at 10% 15%, rgba(27,58,140,0.3) 0%, transparent 100%),
+        radial-gradient(circle 1px at 30% 40%, rgba(255,215,0,0.4) 0%, transparent 100%),
+        radial-gradient(circle 2px at 60% 20%, rgba(227,27,35,0.3) 0%, transparent 100%),
+        radial-gradient(circle 1px at 80% 60%, rgba(27,58,140,0.3) 0%, transparent 100%),
+        radial-gradient(circle 2px at 50% 80%, rgba(255,215,0,0.3) 0%, transparent 100%);
+    background-size: 200px 200px, 150px 150px, 180px 180px, 160px 160px, 220px 220px;
+    animation: starsFloat 30s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes starsFloat {
+    0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+    100% { background-position: 200px 200px, -150px 150px, 180px -180px, -160px 160px, 220px -220px; }
+}
+
+/* === HERO SECTION === */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    padding-top: 100px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #0A1628 0%, #1B3A8C 40%, #0D2260 70%, #0A1628 100%);
+    color: var(--white);
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,255,255,0.02) 40px, rgba(255,255,255,0.02) 42px),
+        repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(255,215,0,0.03) 60px, rgba(255,215,0,0.03) 62px);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-overlay {
+    position: absolute; inset: 0; z-index: 1; overflow: hidden;
+}
+
+.hero-overlay::before {
+    content: '';
+    position: absolute;
+    top: -10%; right: -5%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(255,215,0,0.12) 0%, rgba(227,27,35,0.08) 40%, transparent 70%);
+    filter: blur(60px);
+    animation: americanPulse 10s ease-in-out infinite alternate;
+}
+
+.hero-overlay::after {
+    content: '';
+    position: absolute;
+    bottom: -10%; left: -5%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(27,58,140,0.3) 0%, rgba(255,215,0,0.08) 50%, transparent 70%);
+    filter: blur(80px);
+    animation: americanPulse 14s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes americanPulse {
+    0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+    100% { transform: scale(1.3) translate(20px, -20px); opacity: 1; }
+}
+
+/* Flying Stars in Hero */
+.hero-bg-pattern {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+        radial-gradient(circle 3px at 5% 25%, rgba(255,215,0,0.6) 0%, transparent 100%),
+        radial-gradient(circle 2px at 15% 60%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(circle 3px at 25% 15%, rgba(255,215,0,0.7) 0%, transparent 100%),
+        radial-gradient(circle 2px at 45% 75%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(circle 3px at 55% 35%, rgba(255,215,0,0.6) 0%, transparent 100%),
+        radial-gradient(circle 2px at 70% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(circle 3px at 85% 20%, rgba(255,215,0,0.7) 0%, transparent 100%),
+        radial-gradient(circle 2px at 92% 55%, rgba(255,255,255,0.4) 0%, transparent 100%);
+    animation: starTwinkle 4s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* === NAVBAR === */
+.navbar {
+    background: rgba(10, 22, 40, 0.92) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 30px rgba(227, 27, 35, 0.2);
+}
+
+.navbar .container {
+    background: transparent !important;
+}
+
+.logo-spin-ring {
+    border: 2px solid var(--gold) !important;
+    box-shadow: 0 0 15px rgba(255,215,0,0.5) !important;
+}
+
+.nav-links a {
+    color: rgba(255,255,255,0.85) !important;
+    font-weight: 600;
+    position: relative;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--gold));
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: var(--gold) !important; }
+
+.btn-login {
+    background: transparent !important;
+    color: var(--gold) !important;
+    border: 1px solid var(--gold) !important;
+    border-radius: 6px;
+}
+
+.btn-login:hover {
+    background: var(--gold) !important;
+    color: var(--blue) !important;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--red), #B71C1C) !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 20px rgba(227,27,35,0.4) !important;
+    transition: var(--transition) !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #FFD700, #FFA000) !important;
+    color: #0A1628 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 30px rgba(255,215,0,0.5) !important;
+}
+
+/* === HERO CONTENT === */
+.hero-content .badge {
+    background: linear-gradient(135deg, var(--red), #8B0000) !important;
+    border: 1px solid rgba(255,215,0,0.4) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(227,27,35,0.4) !important;
+}
+
+.hero-content h1 { color: #ffffff !important; text-shadow: 0 2px 20px rgba(0,0,0,0.5); }
+.hero-content .highlight {
+    background: linear-gradient(135deg, #FFD700, #FFA000, #E31B23) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    filter: drop-shadow(0 0 10px rgba(255,215,0,0.4)) !important;
+}
+
+.stat-num { color: var(--gold) !important; text-shadow: 0 0 20px rgba(255,215,0,0.5) !important; }
+.stat-label { color: rgba(255,255,255,0.75) !important; }
+
+/* Floating Cards */
+.floating-card {
+    background: linear-gradient(135deg, rgba(10,22,40,0.9), rgba(27,58,140,0.8)) !important;
+    border: 1px solid rgba(255,215,0,0.4) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(255,215,0,0.2) !important;
+    color: white !important;
+}
+
+.floating-card i { color: var(--gold) !important; }
+
+/* === SECTION STYLING === */
+.section-header h2 { color: var(--blue) !important; }
+.section-header .highlight {
+    background: linear-gradient(135deg, var(--red), var(--blue)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+/* === PARTNERS SECTION === */
+.partners {
+    background: linear-gradient(180deg, #0A1628 0%, #1B3A8C 100%) !important;
+    border-top: 3px solid var(--gold) !important;
+    border-bottom: 3px solid var(--gold) !important;
+}
+
+/* === COURSE CARDS === */
+.course-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(27,58,140,0.15) !important;
+    border-top: 3px solid var(--blue) !important;
+    box-shadow: 0 8px 30px rgba(27,58,140,0.1) !important;
+    transition: var(--transition) !important;
+}
+
+.course-card:hover {
+    transform: translateY(-8px) !important;
+    border-top-color: var(--red) !important;
+    box-shadow: 0 20px 50px rgba(227,27,35,0.2) !important;
+}
+
+/* === HOLOGRAM CARDS === */
+.hologram-card {
+    background: linear-gradient(135deg, rgba(27,58,140,0.06), rgba(227,27,35,0.04)) !important;
+    border: 1px solid rgba(27,58,140,0.2) !important;
+    border-left: 3px solid var(--gold) !important;
+    box-shadow: 0 5px 20px rgba(27,58,140,0.1) !important;
+}
+
+.hologram-card:hover {
+    border-left-color: var(--red) !important;
+    box-shadow: 0 10px 40px rgba(227,27,35,0.15) !important;
+}
+
+.hologram-icon {
+    background: linear-gradient(135deg, var(--blue), var(--red)) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(27,58,140,0.4) !important;
+}
+
+.hologram-number {
+    color: rgba(27,58,140,0.15) !important;
+    font-weight: 900 !important;
+}
+
+/* === EXECUTIVE GALLERY === */
+.executive-gallery {
+    background: linear-gradient(135deg, #0A1628 0%, #1B3A8C 50%, #0D2260 100%) !important;
+}
+
+.gallery-bg-anim .glow-orb {
+    background: radial-gradient(circle, rgba(255,215,0,0.15), transparent 70%) !important;
+}
+
+.gallery-bg-anim .glow-orb:last-of-type {
+    background: radial-gradient(circle, rgba(227,27,35,0.15), transparent 70%) !important;
+}
+
+.luxury-frame {
+    border: 3px solid rgba(255,215,0,0.6) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(255,215,0,0.2) !important;
+}
+
+.luxury-frame.gold-heavy {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 40px rgba(255,215,0,0.4) !important;
+}
+
+.gallery-nav-btn {
+    background: linear-gradient(135deg, var(--red), #8B0000) !important;
+    border: 2px solid var(--gold) !important;
+    color: white !important;
+    box-shadow: 0 4px 20px rgba(227,27,35,0.4) !important;
+}
+
+/* === SUCCESS SECTION === */
+.success-section {
+    background: linear-gradient(160deg, #0A1628 0%, #1B3A8C 40%, #0D2260 80%, #0A1628 100%) !important;
+}
+
+.aurora-wave {
+    background: linear-gradient(90deg, transparent, rgba(255,215,0,0.08), rgba(227,27,35,0.08), transparent) !important;
+}
+
+.success-card-premium {
+    background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(27,58,140,0.15)) !important;
+    border: 1px solid rgba(255,215,0,0.2) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
+}
+
+.glow-ring {
+    border: 2px solid var(--gold) !important;
+    box-shadow: 0 0 20px rgba(255,215,0,0.5) !important;
+}
+
+.congrats-text {
+    color: var(--gold) !important;
+    text-shadow: 0 0 10px rgba(255,215,0,0.5) !important;
+}
+
+.batch-tag {
+    background: linear-gradient(135deg, var(--red), #8B0000) !important;
+    border: 1px solid rgba(255,215,0,0.3) !important;
+    color: white !important;
+}
+
+/* === ADMISSION SECTION === */
+.admission-section {
+    background: linear-gradient(135deg, #F0F4FF 0%, #E8F0FF 100%) !important;
+}
+
+.admission-card {
+    background: white !important;
+    border: 1px solid rgba(27,58,140,0.2) !important;
+    border-top: 4px solid var(--red) !important;
+    box-shadow: 0 20px 60px rgba(27,58,140,0.15) !important;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    border: 2px solid rgba(27,58,140,0.2) !important;
+    border-radius: 8px !important;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold) !important;
+    box-shadow: 0 0 0 3px rgba(255,215,0,0.2) !important;
+}
+
+.benefit-list li i {
+    color: var(--red) !important;
+}
+
+/* === FOOTER === */
+.footer {
+    background: linear-gradient(135deg, #0A1628 0%, #0D2260 50%, #0A1628 100%) !important;
+    border-top: 3px solid var(--gold) !important;
+}
+
+.footer h4 { color: var(--gold) !important; }
+.footer a:hover { color: var(--gold) !important; }
+
+.social-links a {
+    background: rgba(255,215,0,0.1) !important;
+    border: 1px solid rgba(255,215,0,0.3) !important;
+    color: var(--gold) !important;
+}
+
+.social-links a:hover {
+    background: var(--gold) !important;
+    color: #0A1628 !important;
+    box-shadow: 0 4px 20px rgba(255,215,0,0.4) !important;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,215,0,0.2) !important;
+}
+
+/* === DOTS & BADGES === */
+.dot.active, .dot-gallery.active, .dot-success.active {
+    background: var(--gold) !important;
+    box-shadow: 0 0 10px rgba(255,215,0,0.6) !important;
+}
+
+/* === HIGHLIGHT SPANS globally === */
+span.highlight, .highlight {
+    background: linear-gradient(135deg, var(--red), var(--gold)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+/* === FILTER BUTTONS === */
+.filter-btn.active, .filter-btn:hover {
+    background: linear-gradient(135deg, var(--red), #8B0000) !important;
+    color: white !important;
+    border-color: var(--red) !important;
+}
+
+/* === CHAIRMAN SECTION === */
+.chairman-section {
+    background: linear-gradient(135deg, #F5F8FF 0%, #EEF3FF 100%) !important;
+}
+
+.chairman-img-wrapper {
+    border: 4px solid var(--gold) !important;
+    box-shadow: 0 20px 60px rgba(27,58,140,0.25), 0 0 40px rgba(255,215,0,0.15) !important;
+}
+
+/* === WAVE / HERO BOTTOM === */
+.hero-waves path {
+    fill: rgba(240, 244, 255, 0.9) !important;
+}
+
+/* === SCROLL REVEAL OVERRIDE === */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+[data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* === GLOBAL BACKGROUND ANIMATION OVERRIDE === */
+.global-bg-anim .color-layer {
+    background: radial-gradient(ellipse at top, rgba(27,58,140,0.15), transparent 60%),
+                radial-gradient(ellipse at bottom, rgba(227,27,35,0.1), transparent 60%) !important;
+}
+
+/* American Flag Stripe Accent for special sections */
+.about-why::before,
+.features-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--red) 33%, white 33%, white 66%, var(--blue) 66%);
+    z-index: 1;
+}
+
+/* Glowing outline buttons */
+.btn-outline {
+    border-color: rgba(255,255,255,0.6) !important;
+    color: white !important;
+}
+
+.btn-outline:hover {
+    background: rgba(255,255,255,0.15) !important;
+    border-color: var(--gold) !important;
+    color: var(--gold) !important;
+}

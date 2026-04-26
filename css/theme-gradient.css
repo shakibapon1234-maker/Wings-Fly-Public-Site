@@ -327,3 +327,117 @@ body {
     color: #020617;
     box-shadow: 0 0 25px rgba(0, 217, 255, 0.5);
 }
+
+/* ===== ENHANCED GRADIENT ANIMATIONS ===== */
+
+/* Moving mesh gradient background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: 
+        radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(127,57,251,0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(0,217,255,0.1) 0%, transparent 30%),
+        radial-gradient(circle at 20% 80%, rgba(255,0,128,0.1) 0%, transparent 30%);
+    pointer-events: none;
+    z-index: 0;
+    transition: background 0.3s ease;
+}
+
+/* Navbar blur */
+.navbar {
+    background: rgba(2, 6, 23, 0.85) !important;
+    border-bottom: 1px solid rgba(0, 217, 255, 0.15) !important;
+    backdrop-filter: blur(20px) !important;
+}
+
+.nav-links a {
+    color: rgba(255,255,255,0.8) !important;
+    position: relative;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 2px;
+    background: linear-gradient(90deg, #00D9FF, #7F39FB);
+    transition: width 0.3s;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* Highlight gradient text */
+.highlight {
+    background: linear-gradient(135deg, #00D9FF, #7F39FB, #FF0080) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    background-size: 200% auto !important;
+    animation: gradientTextFlow 3s linear infinite !important;
+}
+
+@keyframes gradientTextFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* btn-primary gradient */
+.btn-primary {
+    background: linear-gradient(135deg, #7F39FB, #00D9FF) !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: 0 4px 20px rgba(127,57,251,0.4) !important;
+    background-size: 200% auto !important;
+    transition: all 0.3s ease !important;
+}
+.btn-primary:hover {
+    background-position: right center !important;
+    box-shadow: 0 8px 40px rgba(127,57,251,0.6) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Course cards */
+.course-card {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border: 1px solid rgba(0,217,255,0.15) !important;
+    backdrop-filter: blur(10px) !important;
+}
+.course-card:hover {
+    border-color: rgba(127,57,251,0.4) !important;
+    box-shadow: 0 20px 50px rgba(127,57,251,0.2) !important;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #020617, #0F172A) !important;
+    border-top: 1px solid rgba(0,217,255,0.15) !important;
+}
+.footer h4 { color: var(--primary) !important; }
+.social-links a {
+    background: rgba(0,217,255,0.1) !important;
+    border: 1px solid rgba(0,217,255,0.2) !important;
+    color: var(--primary) !important;
+}
+.social-links a:hover {
+    background: linear-gradient(135deg, #00D9FF, #7F39FB) !important;
+    color: white !important;
+    box-shadow: 0 4px 20px rgba(0,217,255,0.4) !important;
+}
+
+/* Floating cards */
+.floating-card {
+    background: rgba(5,10,30,0.9) !important;
+    border: 1px solid rgba(0,217,255,0.2) !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 20px rgba(127,57,251,0.2) !important;
+}
+
+/* Hologram icon */
+.hologram-icon {
+    background: linear-gradient(135deg, #7F39FB, #00D9FF) !important;
+    color: white !important;
+}
+
+/* Dot active */
+.dot.active, .dot-gallery.active, .dot-success.active {
+    background: #00D9FF !important;
+    box-shadow: 0 0 10px rgba(0,217,255,0.6) !important;
+}

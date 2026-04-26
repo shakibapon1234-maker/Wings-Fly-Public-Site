@@ -328,3 +328,149 @@ body {
     color: var(--bg-dark);
     box-shadow: 0 0 20px var(--primary);
 }
+
+/* ===== ENHANCED NEON ANIMATIONS ===== */
+
+/* Scan line effect */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 159, 0.015) 2px,
+        rgba(0, 255, 159, 0.015) 4px
+    );
+    pointer-events: none;
+    z-index: 9998;
+    animation: scanLineMove 8s linear infinite;
+}
+
+@keyframes scanLineMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100px; }
+}
+
+/* Navbar links neon underline */
+.nav-links a {
+    color: rgba(255,255,255,0.8) !important;
+    position: relative;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+    transition: width 0.3s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* Hero badge neon */
+.hero .badge {
+    background: transparent !important;
+    border: 1px solid var(--primary) !important;
+    color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(0,255,159,0.3), inset 0 0 10px rgba(0,255,159,0.05) !important;
+}
+
+/* Hero highlight text */
+.highlight {
+    background: linear-gradient(135deg, #00FF9F, #00D4FF, #FF006E) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: neonTextShift 4s linear infinite !important;
+    background-size: 200% auto !important;
+}
+
+@keyframes neonTextShift {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* Course cards neon border */
+.course-card:hover {
+    box-shadow: 0 0 30px rgba(0,255,159,0.3), 0 20px 50px rgba(0,0,0,0.5) !important;
+    border-color: rgba(0,255,159,0.3) !important;
+}
+
+/* Hologram cards */
+.hologram-icon {
+    background: transparent !important;
+    border: 1px solid var(--primary) !important;
+    color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(0,255,159,0.3) !important;
+}
+
+/* Btn primary neon */
+.btn-primary {
+    background: transparent !important;
+    border: 1px solid var(--primary) !important;
+    color: var(--primary) !important;
+    box-shadow: 0 0 15px rgba(0,255,159,0.3) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary), #00D4FF);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+}
+
+.btn-primary:hover {
+    color: #000 !important;
+    box-shadow: 0 0 30px rgba(0,255,159,0.6) !important;
+}
+
+.btn-primary:hover::before { opacity: 1; }
+
+/* Glitch effect on h1 on hover */
+.hero-content h1:hover {
+    animation: glitchText 0.3s steps(2) !important;
+}
+
+@keyframes glitchText {
+    0% { text-shadow: 2px 2px #FF006E, -2px -2px #00D4FF; }
+    25% { text-shadow: -2px 2px #FF006E, 2px -2px #00D4FF; }
+    50% { text-shadow: 2px -2px #FF006E, -2px 2px #00D4FF; }
+    75% { text-shadow: -2px -2px #FF006E, 2px 2px #00D4FF; }
+    100% { text-shadow: none; }
+}
+
+/* Floating card neon glow */
+.floating-card {
+    background: rgba(0,20,15,0.9) !important;
+    border: 1px solid rgba(0,255,159,0.3) !important;
+    box-shadow: 0 0 20px rgba(0,255,159,0.2), inset 0 0 10px rgba(0,255,159,0.05) !important;
+}
+
+.floating-card i { color: var(--primary) !important; }
+
+/* Footer neon */
+.footer {
+    background: var(--bg-dark) !important;
+    border-top: 1px solid rgba(0,255,159,0.2) !important;
+}
+
+.footer h4 { color: var(--primary) !important; text-shadow: 0 0 10px rgba(0,255,159,0.4) !important; }
+
+.social-links a {
+    background: transparent !important;
+    border: 1px solid rgba(0,255,159,0.3) !important;
+    color: var(--primary) !important;
+}
+.social-links a:hover {
+    background: var(--primary) !important;
+    color: #000 !important;
+    box-shadow: 0 0 20px rgba(0,255,159,0.5) !important;
+}
