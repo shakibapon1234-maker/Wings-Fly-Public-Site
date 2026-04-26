@@ -333,61 +333,204 @@
         }
     </style>
 
-    <!-- Welcome Speech System -->
+    <!-- Welcome Splash Screen -->
+    <div id="welcomeSplash" class="welcome-splash">
+        <div class="splash-content">
+            <div class="splash-logo-ring">
+                <div class="splash-ring-glow"></div>
+                <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/03/wingsflyacademy-logo.svg" alt="Logo" class="splash-logo">
+            </div>
+            <h1 class="splash-title">Wings Fly Aviation Academy</h1>
+            <p class="splash-subtitle">Your Gateway to Aviation Excellence</p>
+            <button id="enterSiteBtn" class="splash-enter-btn">
+                <span>✈ Enter Website</span>
+                <div class="btn-glow"></div>
+            </button>
+        </div>
+        <div class="splash-particles" id="splashParticles"></div>
+    </div>
+
+    <style>
+        .welcome-splash {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            background: radial-gradient(ellipse at center, #0a1628 0%, #020510 70%, #000 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .welcome-splash.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .splash-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            animation: splashFadeIn 1s ease forwards;
+        }
+        @keyframes splashFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .splash-logo-ring {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .splash-ring-glow {
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #00d4ff;
+            border-right-color: #7b2ff7;
+            animation: ringRotate 2s linear infinite;
+            box-shadow: 0 0 30px rgba(0,212,255,0.3);
+        }
+        @keyframes ringRotate { to { transform: rotate(360deg); } }
+        .splash-logo {
+            width: 80px;
+            filter: drop-shadow(0 0 20px rgba(0,212,255,0.5));
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .splash-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #ffffff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        .splash-subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 1rem;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+        .splash-enter-btn {
+            position: relative;
+            padding: 16px 50px;
+            background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+            overflow: hidden;
+            transition: all 0.4s;
+            animation: btnPulse 2s ease-in-out infinite;
+        }
+        .splash-enter-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 10px 40px rgba(0,212,255,0.4);
+        }
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 5px 25px rgba(0,212,255,0.3); }
+            50% { box-shadow: 0 5px 40px rgba(123,47,247,0.5); }
+        }
+        .btn-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
+            animation: glowMove 3s ease-in-out infinite;
+        }
+        @keyframes glowMove {
+            0%, 100% { transform: translate(-30%, -30%); }
+            50% { transform: translate(30%, 30%); }
+        }
+        .splash-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .s-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(0, 212, 255, 0.6);
+            border-radius: 50%;
+            animation: floatUp 6s ease-in-out infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-20px) scale(1); opacity: 0; }
+        }
+    </style>
+
     <script>
         (function() {
-            let hasWelcomed = false;
-            let voicesReady = false;
-            
-            // Pre-load voices
-            function loadVoices() {
-                const voices = speechSynthesis.getVoices();
-                if (voices.length > 0) voicesReady = true;
+            // Create splash particles
+            const particleContainer = document.getElementById('splashParticles');
+            for (let i = 0; i < 30; i++) {
+                const p = document.createElement('div');
+                p.className = 's-particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 6 + 's';
+                p.style.animationDuration = (4 + Math.random() * 4) + 's';
+                p.style.width = p.style.height = (2 + Math.random() * 3) + 'px';
+                particleContainer.appendChild(p);
             }
-            loadVoices();
-            speechSynthesis.onvoiceschanged = loadVoices;
-            
-            function speakWelcome() {
-                if (hasWelcomed) return;
-                if (!('speechSynthesis' in window)) return;
-                hasWelcomed = true;
+
+            // Pre-load voices
+            if ('speechSynthesis' in window) {
+                speechSynthesis.getVoices();
+                speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+            }
+
+            // Enter button click
+            document.getElementById('enterSiteBtn').addEventListener('click', function() {
+                const splash = document.getElementById('welcomeSplash');
+                splash.classList.add('hide');
+                setTimeout(() => splash.style.display = 'none', 900);
                 
-                // Cancel any pending speech
-                speechSynthesis.cancel();
-                
-                setTimeout(() => {
+                // Play welcome speech NOW (user just clicked = browser allows audio)
+                if ('speechSynthesis' in window) {
+                    speechSynthesis.cancel();
                     const msg = new SpeechSynthesisUtterance('Welcome to Wings Fly Aviation Academy!');
                     msg.lang = 'en-US';
                     msg.rate = 0.85;
                     msg.pitch = 1.05;
                     msg.volume = 1.0;
                     
-                    // Pick best available voice
                     const voices = speechSynthesis.getVoices();
                     if (voices.length > 0) {
-                        const googleVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en'));
-                        const microsoftVoice = voices.find(v => v.name.includes('Microsoft') && v.lang.includes('en'));
-                        const anyEnglish = voices.find(v => v.lang.startsWith('en'));
-                        msg.voice = googleVoice || microsoftVoice || anyEnglish || voices[0];
+                        const best = voices.find(v => v.name.includes('Google') && v.lang.includes('en'))
+                                  || voices.find(v => v.name.includes('Microsoft') && v.lang.includes('en'))
+                                  || voices.find(v => v.lang.startsWith('en'));
+                        if (best) msg.voice = best;
                     }
                     
                     speechSynthesis.speak(msg);
-                    
-                    // Chrome bug fix: keep speech alive
-                    const keepAlive = setInterval(() => {
-                        if (!speechSynthesis.speaking) {
-                            clearInterval(keepAlive);
-                        }
-                    }, 200);
-                }, 500);
-            }
-
-            // Trigger on first user interaction (browser policy requires this)
-            ['click', 'scroll', 'touchstart', 'keydown'].forEach(evt => {
-                document.addEventListener(evt, speakWelcome, { once: true });
+                }
             });
-            
-            // Shooting stars effect
+        })();
+    </script>
+    <script>
+        // Shooting stars effect
+        (function() {
             function createShootingStar() {
                 const star = document.createElement('div');
                 star.className = 'shooting-star';
@@ -397,13 +540,9 @@
                 document.body.appendChild(star);
                 setTimeout(() => star.remove(), 1500);
             }
-            
-            // Create shooting stars randomly
             setInterval(() => {
                 if (Math.random() > 0.6) createShootingStar();
             }, 4000);
-            
-            // Add shooting star keyframe
             const style = document.createElement('style');
             style.textContent = `
                 @keyframes shootStar {
