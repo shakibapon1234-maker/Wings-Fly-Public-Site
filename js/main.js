@@ -247,13 +247,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (error) throw error;
 
             if (data && data.length > 0) {
-                galleryGrid.innerHTML = ''; // Clear hardcoded items
+                galleryGrid.innerHTML = ''; // Clear hardcoded items only when we have data
                 data.forEach(item => {
                     const galleryItem = document.createElement('div');
                     galleryItem.className = `gallery-item ${item.category}`;
+                    galleryItem.style.display = 'block';
                     galleryItem.innerHTML = `
                         <div class="gallery-card">
-                            <img src="${item.image_url}" alt="${item.title}">
+                            <img src="${item.image_url}" alt="${item.title}" loading="lazy">
                             <div class="gallery-overlay">
                                 <span class="category">${item.category === 'events' ? 'ইভেন্টস' : item.category === 'ceremony' ? 'সার্টিফিকেট বিতরণ' : 'মিডিয়া নিউজ'}</span>
                                 <h3>${item.title}</h3>
@@ -263,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     galleryGrid.appendChild(galleryItem);
                 });
-                console.log('Live Gallery Loaded!');
             }
         } catch (err) {
             console.error('Error loading gallery:', err);
