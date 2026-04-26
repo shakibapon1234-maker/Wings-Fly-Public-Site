@@ -341,12 +341,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // --- Send Email Notification via EmailJS ---
                     try {
                         await emailjs.send("service_1v33wgb", "template_5qo6h0i", {
-                            full_name: formData.full_name,
-                            phone: formData.phone,
-                            email: formData.email,
-                            course: formData.course,
-                            message: formData.message,
-                            created_at: new Date().toLocaleString('bn-BD')
+                            name: formData.full_name,
+                            time: new Date().toLocaleString('bn-BD'),
+                            message: `নতুন আবেদন এসেছে!\n\nনাম: ${formData.full_name}\nফোন: ${formData.phone}\nইমেইল: ${formData.email}\nকোর্স: ${formData.course}\nমেসেজ: ${formData.message}`
                         });
                         console.log('Email sent successfully!');
                     } catch (emailErr) {
