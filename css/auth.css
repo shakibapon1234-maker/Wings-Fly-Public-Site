@@ -19,8 +19,15 @@
 }
 
 @keyframes authFadeIn {
-    from { opacity: 0; transform: scale(1.1); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .auth-card {
@@ -31,8 +38,8 @@
     width: 90%;
     max-width: 480px;
     position: relative;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 
-                inset 0 0 20px rgba(255, 255, 255, 0.05);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
     overflow: hidden;
 }
 
@@ -50,8 +57,13 @@
 }
 
 @keyframes orbRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .close-auth {
@@ -71,7 +83,10 @@
     transition: 0.3s;
 }
 
-.close-auth:hover { background: #ff4d4d; transform: rotate(90deg); }
+.close-auth:hover {
+    background: #ff4d4d;
+    transform: rotate(90deg);
+}
 
 .auth-tabs {
     display: flex;
@@ -101,6 +116,16 @@
     color: white;
     box-shadow: 0 10px 20px rgba(0, 116, 217, 0.3);
     transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.auth-content {
+    display: none;
+    animation: authFadeIn 0.4s ease forwards;
+}
+
+.auth-content.active {
+    display: block;
 }
 
 .auth-content h3 {
@@ -119,7 +144,9 @@
     font-size: 15px;
 }
 
-.form-group { margin-bottom: 25px; }
+.form-group {
+    margin-bottom: 25px;
+}
 
 .form-group label {
     display: flex;
@@ -131,9 +158,13 @@
     font-weight: 500;
 }
 
-.form-group label i { color: #00c6ff; }
+.form-group label i {
+    color: #00c6ff;
+}
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
     width: 100%;
     padding: 16px 25px;
     background: rgba(0, 0, 0, 0.2);
@@ -143,9 +174,27 @@
     font-size: 16px;
     outline: none;
     transition: 0.3s;
+    font-family: inherit;
 }
 
-.form-group input:focus {
+/* Fix for browser autofill background in dark theme */
+.form-group input:-webkit-autofill,
+.form-group input:-webkit-autofill:hover,
+.form-group input:-webkit-autofill:focus,
+.form-group input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0 30px #061325 inset !important;
+}
+
+.form-group select option {
+    background: #001F3F;
+    color: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
     border-color: #0074D9;
     background: rgba(0, 0, 0, 0.4);
     box-shadow: 0 0 20px rgba(0, 116, 217, 0.2);
@@ -169,4 +218,25 @@
     transform: translateY(-3px);
     box-shadow: 0 20px 40px rgba(0, 116, 217, 0.5);
     filter: brightness(1.1);
+}
+
+/* Wider Admission Modal styling */
+.admission-card-modal {
+    max-width: 850px;
+}
+
+.admission-card-modal #enrollment-form-modal {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.admission-card-modal .form-group {
+    margin-bottom: 0;
+}
+
+.admission-card-modal .form-group:nth-child(5),
+.admission-card-modal .btn-primary.w-100 {
+    grid-column: span 2;
 }
