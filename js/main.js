@@ -233,35 +233,42 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalCards = cards.length;
         
         function updateCarousel() {
-            // Check if we need to reset to the beginning for infinite loop effect
             if (currentIndex >= totalCards) {
                 currentIndex = 0;
             } else if (currentIndex < 0) {
                 currentIndex = totalCards - 1;
             }
             
-            // Calculate the width of one card + gap (assuming gap is standard or we measure the first card's offsetWidth)
-            const cardWidth = cards[0].offsetWidth + parseInt(window.getComputedStyle(track).gap || 30);
-            const offset = -(currentIndex * cardWidth);
+            const containerWidth = track.parentElement.offsetWidth;
+            const cardWidth = containerWidth * 0.5;
+            const gap = 30;
+            const offset = -(currentIndex * (cardWidth + gap));
             
-            track.style.transition = 'transform 0.5s ease-in-out';
+            track.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
             track.style.transform = `translateX(${offset}px)`;
         }
 
-        // Auto slide
         let autoSlideInterval = setInterval(() => {
             currentIndex++;
             updateCarousel();
-        }, 3000);
+        }, 4000);
 
-        // Pause on hover
         track.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
         track.addEventListener('mouseleave', () => {
             autoSlideInterval = setInterval(() => {
                 currentIndex++;
                 updateCarousel();
-            }, 3000);
+            }, 4000);
         });
+
+        // Connect nav buttons
+        const prevBtn = document.querySelector('.carousel-nav .prev');
+        const nextBtn = document.querySelector('.carousel-nav .next');
+        if (prevBtn) prevBtn.addEventListener('click', () => { currentIndex--; updateCarousel(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { currentIndex++; updateCarousel(); });
+
+        window.addEventListener('resize', updateCarousel);
+        updateCarousel();
     };
 
     // --- Hero Slider Logic (with diverse animations) ---
@@ -322,30 +329,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Trainer Slider Logic ---
+    window.initTrainerSlider = initTrainerSlider;
     function initTrainerSlider() {
         const track = document.querySelector('.gallery-track');
         const trainers = document.querySelectorAll('.trainer-card');
         if (!track || trainers.length === 0) return;
 
-        // Start at the middle card (or 0 if only 1 card)
-        let trainerIndex = trainers.length <= 2 ? 0 : Math.floor(trainers.length / 2);
+        let trainerIndex = 0;
 
         function updateTrainer() {
             trainers.forEach((t, idx) => {
                 t.classList.toggle('active', idx === trainerIndex);
             });
-            
-            if (trainers.length === 1) {
-                // Single card: center it, no transform needed
-                track.style.transform = 'translateX(0)';
-                track.style.justifyContent = 'center';
-            } else {
-                track.style.justifyContent = 'flex-start';
-                const cardWidth = trainers[0].offsetWidth + 80; // Include negative margins
-                const containerWidth = track.parentElement.offsetWidth;
-                const offset = (containerWidth / 2) - (trainers[0].offsetWidth / 2) - (trainerIndex * cardWidth);
-                track.style.transform = `translateX(${offset}px)`;
-            }
+            // Update dots
+            const dots = document.querySelectorAll('.dot-gallery');
+            dots.forEach((d, idx) => {
+                d.classList.toggle('active', idx === trainerIndex);
+            });
         }
 
         // Remove old event listeners by cloning buttons
@@ -369,10 +369,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        window.addEventListener('resize', updateTrainer);
         updateTrainer();
 
-        // Auto-rotate every 4 seconds if more than 1 card
+        // Auto-rotate
         if (trainers.length > 1) {
             setInterval(() => {
                 trainerIndex = (trainerIndex + 1) % trainers.length;
@@ -530,6 +529,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Init All
     initHeroSlider();
+    initTrainerSlider();
+    if (window.initSuccessCarousel) window.initSuccessCarousel();
     loadSiteDynamicContent();
     loadLiveGallery();
     initReveal();
