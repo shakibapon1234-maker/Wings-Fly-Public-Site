@@ -105,19 +105,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const fileName = `${Math.random()}.${fileExt}`;
             const filePath = `gallery/${fileName}`;
 
-            const { data: storageData, error: storageError } = await supabase.storage
+            const { data: storageData, error: storageError } = await window.supabase.storage
                 .from('wingsfly-gallery')
                 .upload(filePath, file);
 
             if (storageError) throw storageError;
 
             // 2. Get Public URL
-            const { data: { publicUrl } } = supabase.storage
+            const { data: { publicUrl } } = window.supabase.storage
                 .from('wingsfly-gallery')
                 .getPublicUrl(filePath);
 
             // 3. Save to Database Table
-            const { error: dbError } = await supabase
+            const { error: dbError } = await window.supabase
                 .from('gallery_items')
                 .insert([{ title, category, image_url: publicUrl }]);
 

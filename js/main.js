@@ -236,18 +236,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Load Live Gallery from Supabase ---
     async function loadLiveGallery() {
         const galleryGrid = document.querySelector('.gallery-grid');
-        if (!galleryGrid) return;
+        if (!galleryGrid || typeof window.supabase === 'undefined') {
+            console.log('Supabase or gallery grid not found, keeping default items.');
+            return;
+        }
 
         try {
-            const { data, error } = await supabase
+            const { data, error } = await window.supabase
                 .from('gallery_items')
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.error('Gallery Fetch Error:', error);
+                return;
+            }
 
             if (data && data.length > 0) {
-                galleryGrid.innerHTML = ''; // Clear hardcoded items only when we have data
+                galleryGrid.innerHTML = ''; // Clear hardcoded items only when we have real data
                 data.forEach(item => {
                     const galleryItem = document.createElement('div');
                     galleryItem.className = `gallery-item ${item.category}`;
@@ -264,13 +270,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     `;
                     galleryGrid.appendChild(galleryItem);
                 });
+                
+                // Re-run filter logic for new items
+                updateGallery();
             }
         } catch (err) {
-            console.error('Error loading gallery:', err);
+            console.warn('Gallery System Notice:', err.message);
         }
     }
 
-    loadLiveGallery();
+    // Call gallery loader safely
+    setTimeout(loadLiveGallery, 500);
 
     // --- Gallery Filtering Logic ---
     const filterBtns = document.querySelectorAll('.filter-btn');
