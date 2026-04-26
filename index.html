@@ -779,6 +779,55 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabase-config.js"></script>
+    <!-- Auth Modal -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-card">
+            <button class="close-auth" id="closeAuth">&times;</button>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-target="loginSection">লগইন</button>
+                <button class="tab-btn" data-target="signupSection">রেজিস্ট্রেশন</button>
+            </div>
+
+            <!-- Login Section -->
+            <div id="loginSection" class="auth-content active">
+                <h3>স্বাগতম!</h3>
+                <p>আপনার ড্যাশবোর্ডে প্রবেশ করুন</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-envelope"></i> ইমেইল</label>
+                        <input type="email" placeholder="আপনার ইমেইল দিন" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> পাসওয়ার্ড</label>
+                        <input type="password" placeholder="পাসওয়ার্ড দিন" required>
+                    </div>
+                    <button type="submit" class="btn-primary w-100">প্রবেশ করুন</button>
+                </form>
+            </div>
+
+            <!-- Signup Section -->
+            <div id="signupSection" class="auth-content">
+                <h3>নতুন অ্যাকাউন্ট</h3>
+                <p>আমাদের একাডেমির সাথে যুক্ত হোন</p>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-user"></i> আপনার নাম</label>
+                        <input type="text" placeholder="পুরো নাম দিন" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-envelope"></i> ইমেইল</label>
+                        <input type="email" placeholder="আপনার ইমেইল দিন" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-lock"></i> পাসওয়ার্ড</label>
+                        <input type="password" placeholder="একটি স্ট্রং পাসওয়ার্ড দিন" required>
+                    </div>
+                    <button type="submit" class="btn-primary w-100">রেজিস্ট্রেশন করুন</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
 </body>

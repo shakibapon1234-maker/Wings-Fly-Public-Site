@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্টুডেন্ট ড্যাশবোর্ড | Wings Fly Aviation Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/admin.css"> <!-- Reusing admin layouts for consistency -->
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0074D9 0%, #001f3f 100%);
+        }
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        .course-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+        .course-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .course-banner { height: 150px; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; }
+        .course-banner i { font-size: 50px; color: white; opacity: 0.3; }
+        .course-info { padding: 20px; }
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 12px; background: rgba(0, 255, 163, 0.1); color: #00ffa3; }
+    </style>
+</head>
+<body class="admin-body">
+    
+    <div class="admin-container" id="student-panel">
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/03/wingsflyacademy-logo.svg" alt="Logo">
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-tab="overview"><i class="fa-solid fa-gauge"></i> ওভারভিউ</li>
+                <li data-tab="my-courses"><i class="fa-solid fa-graduation-cap"></i> আমার কোর্সসমূহ</li>
+                <li data-tab="profile"><i class="fa-solid fa-user-gear"></i> প্রোফাইল সেটিংস</li>
+                <li id="student-logout"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</li>
+            </ul>
+        </nav>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>স্টুডেন্ট ড্যাশবোর্ড</h1>
+                <div class="admin-user">
+                    <span id="user-display-name">লোড হচ্ছে...</span>
+                    <div class="user-avatar" id="user-initial">?</div>
+                </div>
+            </header>
+
+            <!-- Overview Tab -->
+            <div id="overview" class="admin-tab-content active">
+                <div class="dashboard-card">
+                    <h2>স্বাগতম, <span class="student-name-text">স্টুডেন্ট</span>!</h2>
+                    <p>আপনার অ্যাভিয়েশন ক্যারিয়ারের যাত্রায় আমরা আপনার সাথে আছি।</p>
+                </div>
+
+                <div class="content-header">
+                    <h2>সাম্প্রতিক কার্যক্রম</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>কার্যক্রম</th>
+                                <th>তারিখ</th>
+                                <th>অবস্থা</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>অ্যাকাউন্ট ভেরিফিকেশন</td>
+                                <td>আজ</td>
+                                <td><span class="status-badge">সফল</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- My Courses Tab -->
+            <div id="my-courses" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>আমার কোর্সসমূহ</h2>
+                </div>
+                <div class="course-grid">
+                    <div class="course-card">
+                        <div class="course-banner"><i class="fa-solid fa-plane"></i></div>
+                        <div class="course-info">
+                            <h3>Air Ticketing & GDS</h3>
+                            <p style="color:rgba(255,255,255,0.5); font-size:14px; margin-bottom:15px;">ভর্তি হওয়ার জন্য আমাদের ভর্তি ফরমটি পূরণ করুন।</p>
+                            <span class="status-badge">নতুন স্টুডেন্ট</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profile" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>প্রোফাইল সেটিংস</h2>
+                </div>
+                <div class="dashboard-card" style="max-width: 600px;">
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label>ইমেইল এড্রেস</label>
+                            <input type="email" id="profile-email" readonly style="opacity: 0.5;">
+                        </div>
+                        <div class="form-group">
+                            <label>আপনার নাম</label>
+                            <input type="text" id="profile-name">
+                        </div>
+                        <button type="submit" class="btn-primary">প্রোফাইল আপডেট করুন</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script>
+        // Simple Dashboard Logic
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { user } } = await window.supabase.auth.getUser();
+            
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display User Info
+            const fullName = user.user_metadata.full_name || 'Student';
+            document.getElementById('user-display-name').textContent = fullName;
+            document.querySelectorAll('.student-name-text').forEach(el => el.textContent = fullName);
+            document.getElementById('user-initial').textContent = fullName.charAt(0).toUpperCase();
+            
+            document.getElementById('profile-email').value = user.email;
+            document.getElementById('profile-name').value = fullName;
+
+            // Tab Switching
+            const menuItems = document.querySelectorAll('.sidebar-menu li[data-tab]');
+            const tabContents = document.querySelectorAll('.admin-tab-content');
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const target = item.getAttribute('data-tab');
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    item.classList.add('active');
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === target) content.classList.add('active');
+                    });
+                });
+            });
+
+            // Logout
+            document.getElementById('student-logout').addEventListener('click', async () => {
+                await window.supabase.auth.signOut();
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
