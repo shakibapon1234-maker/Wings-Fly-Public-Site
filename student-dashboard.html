@@ -80,10 +80,11 @@
                                 <th>টাকা</th>
                                 <th>ট্রানজেকশন আইডি</th>
                                 <th>অবস্থা</th>
+                                <th>অ্যাকশন</th>
                             </tr>
                         </thead>
                         <tbody id="student-payment-history">
-                            <tr><td colspan="4" style="text-align:center;">কোনো পেমেন্ট পাওয়া যায়নি।</td></tr>
+                            <tr><td colspan="5" style="text-align:center;">কোনো পেমেন্ট পাওয়া যায়নি।</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -179,6 +180,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="js/supabase-config.js"></script>
     <script>
         // Simple Dashboard Logic
@@ -272,11 +274,70 @@
                             <td>${p.amount} TK</td>
                             <td>${p.transaction_id}</td>
                             <td><span style="color:${statusColor}">${p.status.toUpperCase()}</span></td>
+                            <td>
+                                ${p.status === 'approved' ? `<button class="btn-primary" style="padding: 5px 10px; font-size: 12px;" onclick='generateInvoice(${JSON.stringify(p).replace(/'/g, "&#39;")})'><i class="fa-solid fa-file-pdf"></i> Download Invoice</button>` : '-'}
+                            </td>
                         `;
                         historyBody.appendChild(row);
                     });
                 }
             }
+
+            window.generateInvoice = function(payment) {
+                const invoiceHtml = `
+                    <div style="font-family: Arial, sans-serif; padding: 40px; color: #333; max-width: 800px; margin: 0 auto; background: #fff;">
+                        <div style="text-align: center; border-bottom: 2px solid #00d4ff; padding-bottom: 20px; margin-bottom: 30px;">
+                            <h1 style="color: #020510; margin: 0;">WINGS FLY AVIATION ACADEMY</h1>
+                            <p style="color: #666; margin: 5px 0;">Official Payment Invoice</p>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 30px;">
+                            <div>
+                                <h3 style="margin-bottom: 5px; color: #020510;">Billed To:</h3>
+                                <p style="margin: 0;"><strong>Name:</strong> ${payment.student_name}</p>
+                                <p style="margin: 0;"><strong>Payment Date:</strong> ${new Date(payment.created_at).toLocaleDateString()}</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <h3 style="margin-bottom: 5px; color: #020510;">Invoice Details:</h3>
+                                <p style="margin: 0;"><strong>Transaction ID:</strong> ${payment.transaction_id}</p>
+                                <p style="margin: 0;"><strong>Method:</strong> ${payment.payment_method}</p>
+                                <p style="margin: 0;"><strong>Status:</strong> <span style="color: #00ffa3; font-weight: bold;">PAID</span></p>
+                            </div>
+                        </div>
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                            <thead>
+                                <tr style="background: #020510; color: #fff;">
+                                    <th style="padding: 12px; text-align: left;">Description / Course</th>
+                                    <th style="padding: 12px; text-align: right;">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #ddd;">
+                                    <td style="padding: 12px;">${payment.course_name} Admission Fee</td>
+                                    <td style="padding: 12px; text-align: right;">${payment.amount} TK</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px; text-align: right; font-weight: bold;">Total Paid:</td>
+                                    <td style="padding: 12px; text-align: right; font-weight: bold; font-size: 1.2rem; color: #00d4ff;">${payment.amount} TK</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 50px; text-align: center; color: #888; font-size: 12px; border-top: 1px solid #eee; padding-top: 20px;">
+                            <p>Thank you for choosing Wings Fly Aviation Academy.</p>
+                            <p>This is a computer-generated invoice and requires no physical signature.</p>
+                        </div>
+                    </div>
+                `;
+
+                const opt = {
+                    margin: 1,
+                    filename: \`Invoice_\${payment.transaction_id}.pdf\`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+
+                html2pdf().from(invoiceHtml).set(opt).save();
+            };
 
             // Logout
             document.getElementById('student-logout').addEventListener('click', async () => {

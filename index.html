@@ -556,12 +556,26 @@
     </script>
 
 
+    <!-- Top Notice Bar -->
+    <div id="top-notice-bar" style="display: none; background: #020510; border-bottom: 2px solid #ff004c; color: #ff004c; padding: 10px 0; font-size: 16px; font-weight: 800; text-align: center; overflow: hidden; position: relative; z-index: 1000; letter-spacing: 1px;">
+        <div class="notice-content" style="white-space: nowrap; animation: scrollingNotice 20s linear infinite; display: inline-block;">
+            <i class="fa-solid fa-bullhorn" style="margin-right: 15px; color: #ff004c;"></i>
+            <span id="top-notice-text">Notice goes here</span>
+            <i class="fa-solid fa-bullhorn" style="margin-left: 15px; color: #ff004c;"></i>
+        </div>
+        <style>
+            @keyframes scrollingNotice {
+                0% { transform: translateX(100vw); }
+                100% { transform: translateX(-100%); }
+            }
+        </style>
+    </div>
+
     <!-- Header / Navbar -->
     <header class="navbar">
         <div class="container">
             <div class="logo">
                 <div class="logo-wrapper">
-                    <div class="logo-spin-ring"></div>
                     <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/03/wingsflyacademy-logo.svg" alt="Wings Fly Logo">
                 </div>
             </div>

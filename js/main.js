@@ -1,15 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Navbar Scroll Effect
     const navbar = document.querySelector('.navbar');
+    const noticeBar = document.getElementById('top-notice-bar');
+    
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.background = 'rgba(2, 5, 16, 0.95)';
             navbar.style.padding = '10px 0';
-            navbar.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+            navbar.style.boxShadow = '0 5px 20px rgba(0,212,255,0.2)';
+            if (noticeBar && noticeBar.style.display === 'block') {
+                navbar.style.top = '0';
+                noticeBar.style.transform = 'translateY(-100%)';
+            }
         } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.85)';
+            navbar.style.background = 'rgba(2, 5, 16, 0.7)';
             navbar.style.padding = '15px 0';
             navbar.style.boxShadow = 'none';
+            if (noticeBar && noticeBar.style.display === 'block') {
+                navbar.style.top = '40px';
+                noticeBar.style.transform = 'translateY(0)';
+            }
         }
     });
 
@@ -48,6 +58,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (item.key === 'chairman_image') {
                         const imgEl = document.getElementById('dynamic-chairman-img');
                         if (imgEl && item.value) imgEl.src = item.value;
+                    }
+                    if (item.key === 'top_notice' && item.value && item.value.trim() !== '') {
+                        const noticeBar = document.getElementById('top-notice-bar');
+                        const noticeText = document.getElementById('top-notice-text');
+                        if (noticeBar && noticeText) {
+                            noticeText.textContent = item.value;
+                            noticeBar.style.display = 'block';
+                            noticeBar.style.transition = 'transform 0.3s ease';
+                            
+                            // Initialize navbar position
+                            if (window.scrollY <= 50) {
+                                document.querySelector('.navbar').style.top = '40px';
+                            }
+                        }
                     }
                 });
             }

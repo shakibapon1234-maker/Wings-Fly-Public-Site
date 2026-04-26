@@ -162,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const updates = [
+                { key: 'top_notice', value: document.getElementById('set-top-notice').value },
                 { key: 'phone', value: document.getElementById('set-phone').value },
                 { key: 'address', value: document.getElementById('set-address').value },
                 { key: 'chairman_name', value: document.getElementById('set-chairman-name').value },
