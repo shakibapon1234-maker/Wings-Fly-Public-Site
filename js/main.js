@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <img src="${c.image_url}" alt="${c.title}">
                                 <div class="course-overlay">
                                     <button class="btn-primary" onclick="var m=document.getElementById('admissionModal');if(m){m.style.display='flex';m.classList.add('active');}">Enroll Now</button>
+                                    <button class="btn-secondary" onclick="window.openCourseDetails('${encodeURIComponent(c.title)}', '${encodeURIComponent(c.level || '')}', '${encodeURIComponent(c.certificate_type || '')}', '${encodeURIComponent(c.description || '')}', '${encodeURIComponent(c.syllabus || '')}')" style="margin-top: 10px; padding: 12px 30px; font-weight: 600;">বিস্তারিত</button>
                                 </div>
                             </div>
                             <div class="course-content">
@@ -86,6 +87,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (e) { console.error('Courses Load Error:', e); }
+
+        window.openCourseDetails = (title, level, cert, desc, syllabus) => {
+            document.getElementById('modalCourseTitle').textContent = decodeURIComponent(title);
+            document.getElementById('modalCourseLevel').innerHTML = `<i class="fa-solid fa-layer-group"></i> ` + (decodeURIComponent(level) || 'প্রফেশনাল');
+            document.getElementById('modalCourseCert').innerHTML = `<i class="fa-solid fa-certificate"></i> ` + (decodeURIComponent(cert) || 'আন্তর্জাতিক মানের');
+            document.getElementById('modalCourseDesc').textContent = decodeURIComponent(desc);
+            document.getElementById('modalCourseSyllabus').textContent = decodeURIComponent(syllabus);
+            document.getElementById('courseDetailsModal').style.display = 'flex';
+        };
 
         // 3. Load Instructors
         try {
@@ -145,10 +155,90 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (e) { console.error('Gallery Load Error:', e); }
+
+        // 5. Load Success Stories
+        try {
+            const { data: dbStories } = await window.supabase.from('success_stories').select('*').order('created_at', { ascending: false });
+            if (dbStories && dbStories.length > 0) {
+                const track = document.querySelector('.success-track');
+                if (track) {
+                    track.innerHTML = '';
+                    dbStories.forEach(s => {
+                        const card = document.createElement('div');
+                        card.className = 'success-card-premium';
+                        card.innerHTML = `
+                            <div class="success-card-inner">
+                                <div class="student-photo-wrapper">
+                                    <div class="glow-ring"></div>
+                                    <div class="student-photo">
+                                        <img src="${s.image_url}" alt="${s.name}">
+                                    </div>
+                                </div>
+                                <div class="success-info-premium">
+                                    <span class="congrats-text">Congratulations!</span>
+                                    <h3 class="student-name">${s.name}</h3>
+                                    <p class="achievement-text">${s.achievement}</p>
+                                    <div class="batch-tag">
+                                        <i class="fa-solid fa-user-graduate"></i> ${s.batch}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        track.appendChild(card);
+                    });
+                    
+                    // Reinitialize success carousel if exists
+                    if (typeof initSuccessCarousel === 'function') {
+                        initSuccessCarousel();
+                    }
+                }
+            }
+        } catch (e) { console.error('Success Stories Load Error:', e); }
     }
 
     // Call it immediately
     loadSiteDynamicContent();
+
+    // --- Success Story Carousel Logic ---
+    window.initSuccessCarousel = function() {
+        const track = document.querySelector('.success-track');
+        const cards = document.querySelectorAll('.success-card-premium');
+        if (!track || cards.length === 0) return;
+
+        let currentIndex = 0;
+        const totalCards = cards.length;
+        
+        function updateCarousel() {
+            // Check if we need to reset to the beginning for infinite loop effect
+            if (currentIndex >= totalCards) {
+                currentIndex = 0;
+            } else if (currentIndex < 0) {
+                currentIndex = totalCards - 1;
+            }
+            
+            // Calculate the width of one card + gap (assuming gap is standard or we measure the first card's offsetWidth)
+            const cardWidth = cards[0].offsetWidth + parseInt(window.getComputedStyle(track).gap || 30);
+            const offset = -(currentIndex * cardWidth);
+            
+            track.style.transition = 'transform 0.5s ease-in-out';
+            track.style.transform = `translateX(${offset}px)`;
+        }
+
+        // Auto slide
+        let autoSlideInterval = setInterval(() => {
+            currentIndex++;
+            updateCarousel();
+        }, 3000);
+
+        // Pause on hover
+        track.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+        track.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(() => {
+                currentIndex++;
+                updateCarousel();
+            }, 3000);
+        });
+    };
 
     // --- Hero Slider Logic (with diverse animations) ---
     let currentSlide = 0;

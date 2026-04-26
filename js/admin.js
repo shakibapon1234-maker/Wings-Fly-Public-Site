@@ -203,12 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><img src="${c.image_url}" width="60" height="45" style="border-radius:8px; object-fit:cover;"></td>
-                    <td><strong>${c.title}</strong></td>
+                    <td><strong>${c.title}</strong><br><small style="color:#aaa;">${c.level || ''}</small></td>
                     <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${c.description || '-'}</td>
                     <td>${c.price || '-'}</td>
                     <td>
                         <div class="action-btns">
-                            <button class="edit-btn-small" onclick="editCourse(${c.id}, '${encodeURIComponent(c.title)}', '${encodeURIComponent(c.description || '')}', '${encodeURIComponent(c.price || '')}')"><i class="fa-solid fa-pen"></i> এডিট</button>
+                            <button class="edit-btn-small" onclick="editCourse(${c.id}, '${encodeURIComponent(c.title)}', '${encodeURIComponent(c.description || '')}', '${encodeURIComponent(c.price || '')}', '${encodeURIComponent(c.level || '')}', '${encodeURIComponent(c.certificate_type || '')}', '${encodeURIComponent(c.syllabus || '')}')"><i class="fa-solid fa-pen"></i> এডিট</button>
                             <button class="delete-btn-small" onclick="deleteCourse(${c.id})"><i class="fa-solid fa-trash"></i> ডিলিট</button>
                         </div>
                     </td>
@@ -234,11 +234,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = document.getElementById('course-title').value;
                 const price = document.getElementById('course-price').value;
                 const description = document.getElementById('course-desc').value;
+                const level = document.getElementById('course-level').value;
+                const certificate_type = document.getElementById('course-cert').value;
+                const syllabus = document.getElementById('course-syllabus').value;
                 const imageFile = document.getElementById('course-image').files[0];
 
                 const image_url = await uploadImage(imageFile, 'courses');
 
-                const { error } = await window.supabase.from('courses').insert([{ title, price, description, image_url }]);
+                const { error } = await window.supabase.from('courses').insert([{ title, price, description, level, certificate_type, syllabus, image_url }]);
                 if (error) throw error;
 
                 status.innerHTML = '<p class="status-success"><i class="fa-solid fa-circle-check"></i> কোর্স সফলভাবে যুক্ত হয়েছে!</p>';
@@ -255,14 +258,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Edit Course
-    window.editCourse = (id, title, desc, price) => {
+    window.editCourse = (id, title, desc, price, level, cert, syllabus) => {
         showEditModal('কোর্স এডিট করুন', [
             { name: 'title', label: 'কোর্সের নাম', value: decodeURIComponent(title) },
             { name: 'price', label: 'কোর্স ফি', value: decodeURIComponent(price) },
+            { name: 'level', label: 'কোর্স লেভেল', value: decodeURIComponent(level) },
+            { name: 'cert', label: 'সার্টিফিকেট টাইপ', value: decodeURIComponent(cert) },
             { name: 'description', label: 'বর্ণনা', type: 'textarea', value: decodeURIComponent(desc) },
+            { name: 'syllabus', label: 'সিলেবাস ও মডিউল', type: 'textarea', value: decodeURIComponent(syllabus) },
             { name: 'image', label: 'নতুন ছবি (ঐচ্ছিক)', type: 'file' }
         ], async (values) => {
-            const updateData = { title: values.title, price: values.price, description: values.description };
+            const updateData = { 
+                title: values.title, 
+                price: values.price, 
+                level: values.level,
+                certificate_type: values.cert,
+                description: values.description,
+                syllabus: values.syllabus
+            };
             if (values.image) {
                 updateData.image_url = await uploadImage(values.image, 'courses');
             }
@@ -279,6 +292,104 @@ document.addEventListener('DOMContentLoaded', () => {
             loadCourses();
         }
     };
+
+    // =============================================
+    // Success Stories Manager
+    // =============================================
+    async function loadSuccessStories() {
+        const list = document.getElementById('success-list');
+        if (!list) return;
+        list.innerHTML = '<tr><td colspan="5" style="text-align:center;">লোড হচ্ছে...</td></tr>';
+        const { data, error } = await window.supabase.from('success_stories').select('*').order('created_at', { ascending: false });
+        
+        if (error || !data || data.length === 0) {
+            list.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#FFD700;">কোনো সাকসেস স্টোরি নেই। (টেবিল তৈরি করা হয়েছে কিনা চেক করুন)</td></tr>';
+            return;
+        }
+        
+        list.innerHTML = '';
+        data.forEach(s => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><img src="${s.image_url}" width="50" height="50" style="border-radius:50%; object-fit:cover;"></td>
+                <td><strong>${s.name}</strong></td>
+                <td>${s.batch}</td>
+                <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${s.achievement}</td>
+                <td>
+                    <div class="action-btns">
+                        <button class="edit-btn-small" onclick="editSuccessStory('${s.id}', '${encodeURIComponent(s.name)}', '${encodeURIComponent(s.batch)}', '${encodeURIComponent(s.achievement)}')"><i class="fa-solid fa-pen"></i> এডিট</button>
+                        <button class="delete-btn-small" onclick="deleteSuccessStory('${s.id}')"><i class="fa-solid fa-trash"></i> ডিলিট</button>
+                    </div>
+                </td>
+            `;
+            list.appendChild(row);
+        });
+    }
+
+    const successForm = document.getElementById('success-upload-form');
+    if (successForm) {
+        successForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('add-success-btn-submit');
+            const status = document.getElementById('success-upload-status');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'আপলোড হচ্ছে... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+            try {
+                const name = document.getElementById('success-name').value;
+                const batch = document.getElementById('success-batch').value;
+                const achievement = document.getElementById('success-achievement').value;
+                const imageFile = document.getElementById('success-image').files[0];
+
+                const image_url = await uploadImage(imageFile, 'gallery'); // Reusing gallery bucket
+
+                const { error } = await window.supabase.from('success_stories').insert([{ name, batch, achievement, image_url }]);
+                if (error) throw error;
+
+                status.innerHTML = '<p class="status-success"><i class="fa-solid fa-circle-check"></i> স্টোরি যুক্ত হয়েছে!</p>';
+                successForm.reset();
+                loadSuccessStories();
+                setTimeout(() => status.innerHTML = '', 4000);
+            } catch (err) {
+                status.innerHTML = `<p class="status-error"><i class="fa-solid fa-circle-xmark"></i> ভুল: ${err.message}</p>`;
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'স্টোরি যুক্ত করুন <i class="fa-solid fa-upload"></i>';
+            }
+        });
+    }
+
+    window.editSuccessStory = (id, name, batch, achievement) => {
+        showEditModal('সাকসেস স্টোরি এডিট', [
+            { name: 'name', label: 'স্টুডেন্টের নাম', value: decodeURIComponent(name) },
+            { name: 'batch', label: 'ব্যাচ নম্বর', value: decodeURIComponent(batch) },
+            { name: 'achievement', label: 'সাফল্যের বিবরণ', type: 'textarea', value: decodeURIComponent(achievement) },
+            { name: 'image', label: 'নতুন ছবি (ঐচ্ছিক)', type: 'file' }
+        ], async (values) => {
+            const updateData = { name: values.name, batch: values.batch, achievement: values.achievement };
+            if (values.image) {
+                updateData.image_url = await uploadImage(values.image, 'gallery');
+            }
+            const { error } = await window.supabase.from('success_stories').update(updateData).eq('id', id);
+            if (error) throw error;
+            loadSuccessStories();
+        });
+    };
+
+    window.deleteSuccessStory = async (id) => {
+        if (confirm('স্টোরিটি ডিলিট করতে চান?')) {
+            await window.supabase.from('success_stories').delete().eq('id', id);
+            loadSuccessStories();
+        }
+    };
+    
+    // Call loadSuccessStories in tab click
+    document.querySelectorAll('.sidebar-menu li[data-tab]').forEach(item => {
+        item.addEventListener('click', () => {
+            const targetTab = item.getAttribute('data-tab');
+            if (targetTab === 'success-stories') loadSuccessStories();
+        });
+    });
 
     // =============================================
     // Instructor Manager

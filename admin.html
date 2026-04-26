@@ -29,6 +29,7 @@
             <ul class="sidebar-menu">
                 <li class="active" data-tab="submissions"><i class="fa-solid fa-users"></i> ভর্তি আবেদন</li>
                 <li data-tab="gallery-manager"><i class="fa-solid fa-image"></i> গ্যালারি ম্যানেজমেন্ট</li>
+                <li data-tab="success-stories"><i class="fa-solid fa-trophy"></i> সাকসেস স্টোরি</li>
                 <li data-tab="payment-verification"><i class="fa-solid fa-money-check-dollar"></i> পেমেন্ট ভেরিফিকেশন</li>
                 <li data-tab="course-manager"><i class="fa-solid fa-graduation-cap"></i> কোর্স ম্যানেজার</li>
                 <li data-tab="instructor-manager"><i class="fa-solid fa-user-tie"></i> ইন্সট্রাক্টর ম্যানেজার</li>
@@ -92,6 +93,54 @@
                 </div>
             </div>
 
+            <!-- Success Stories Manager -->
+            <div id="success-stories" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>সাকসেস স্টোরি ম্যানেজমেন্ট</h2>
+                </div>
+                
+                <div class="upload-section">
+                    <h3>নতুন স্টোরি যুক্ত করুন</h3>
+                    <form id="success-upload-form" class="upload-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>স্টুডেন্টের নাম</label>
+                                <input type="text" id="success-name" placeholder="যেমন: Kawsar Mia" required>
+                            </div>
+                            <div class="form-group">
+                                <label>ব্যাচ নম্বর</label>
+                                <input type="text" id="success-batch" placeholder="যেমন: BATCH : 2" required>
+                            </div>
+                            <div class="form-group">
+                                <label>স্টুডেন্টের ছবি (আপলোড)</label>
+                                <input type="file" id="success-image" accept="image/*" required>
+                            </div>
+                            <div class="form-group" style="grid-column: span 3;">
+                                <label>সাফল্যের বিবরণ</label>
+                                <textarea id="success-achievement" rows="2" placeholder="To become a Business Owner..." style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;" required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" id="add-success-btn-submit" class="btn-primary">স্টোরি যুক্ত করুন <i class="fa-solid fa-upload"></i></button>
+                    </form>
+                    <div id="success-upload-status" style="margin-top: 10px;"></div>
+                </div>
+
+                <div class="table-container" style="margin-top: 30px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ছবি</th>
+                                <th>নাম</th>
+                                <th>ব্যাচ</th>
+                                <th>বিবরণ</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="success-list"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Course Manager -->
             <div id="course-manager" class="admin-tab-content">
                 <div class="content-header">
@@ -114,9 +163,21 @@
                                 <label>কোর্সের ছবি (আপলোড)</label>
                                 <input type="file" id="course-image" accept="image/*" required>
                             </div>
+                            <div class="form-group">
+                                <label>কোর্স লেভেল</label>
+                                <input type="text" id="course-level" placeholder="যেমন: প্রফেশনাল" required>
+                            </div>
+                            <div class="form-group">
+                                <label>সার্টিফিকেট টাইপ</label>
+                                <input type="text" id="course-cert" placeholder="যেমন: আন্তর্জাতিক মানের" required>
+                            </div>
                             <div class="form-group" style="grid-column: span 3;">
                                 <label>বর্ণনা (Description)</label>
-                                <textarea id="course-desc" rows="3" placeholder="কোর্সের বিস্তারিত..." style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;" required></textarea>
+                                <textarea id="course-desc" rows="2" placeholder="কোর্সের বিস্তারিত..." style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;" required></textarea>
+                            </div>
+                            <div class="form-group" style="grid-column: span 3;">
+                                <label>সিলেবাস ও মডিউল</label>
+                                <textarea id="course-syllabus" rows="3" placeholder="কোর্সের সিলেবাস..." style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;" required></textarea>
                             </div>
                         </div>
                         <button type="submit" id="add-course-btn-submit" class="btn-primary">কোর্স যুক্ত করুন <i class="fa-solid fa-upload"></i></button>
