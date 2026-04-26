@@ -114,8 +114,8 @@
     .theme-toggle-tab:hover { width: 38px; }
     
     #theme-switcher.open { right: 0 !important; }
-    #theme-switcher { right: -140px; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    #theme-switcher.open ~ .theme-toggle-tab { right: 140px; }
+    #theme-switcher { right: -148px; transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    #theme-switcher.open ~ .theme-toggle-tab { right: 148px; }
     .theme-toggle-tab { transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     
     .theme-btn {
@@ -170,6 +170,14 @@
     .theme-btn-american::before { background: #E31B23; }
     .theme-btn-american .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.8); }
     .theme-btn-american:hover, .theme-btn-american.active { background: #1B3A8C; box-shadow: inset 0 0 20px rgba(255,215,0,0.15); }
+    
+    .theme-btn-classic {
+        background: linear-gradient(135deg, #001F3F, #003d80);
+        color: #FFD700;
+    }
+    .theme-btn-classic::before { background: #0074D9; }
+    .theme-btn-classic .t-icon { color: #FFD700; text-shadow: 0 0 8px rgba(255,215,0,0.6); }
+    .theme-btn-classic:hover, .theme-btn-classic.active { background: #002a5c; box-shadow: inset 0 0 20px rgba(0,116,217,0.2); }
 
     .t-icon { font-size: 16px; min-width: 20px; }
     .t-label { font-size: 10px; line-height: 1.2; }
@@ -243,7 +251,11 @@
 <body>
     <!-- ===== THEME SWITCHER ===== -->
     <div id="theme-switcher">
-        <button class="theme-btn theme-btn-neon active" data-theme="neon" title="Neon Cyberpunk">
+        <button class="theme-btn theme-btn-classic active" data-theme="classic" title="Original Classic">
+            <span class="t-icon">✈️</span>
+            <span class="t-label">CLASSIC<br>ORIGINAL</span>
+        </button>
+        <button class="theme-btn theme-btn-neon" data-theme="neon" title="Neon Cyberpunk">
             <span class="t-icon">⚡</span>
             <span class="t-label">NEON<br>CYBER</span>
         </button>
@@ -1060,12 +1072,14 @@
     <script>
         // ===== ADVANCED THEME SWITCHER =====
         const themeMap = {
+            classic: 'css/theme-classic.css',
             neon: 'css/theme-neon.css',
             gradient: 'css/theme-gradient.css',
             american: 'css/theme-american.css',
         };
 
         const themeColors = {
+            classic: { cursor: '#0074D9', tab: 'linear-gradient(135deg,#0074D9,#FFD700)' },
             neon: { cursor: '#00FF9F', tab: 'linear-gradient(135deg,#00FF9F,#FF006E)' },
             gradient: { cursor: '#7F39FB', tab: 'linear-gradient(135deg,#00D9FF,#7F39FB)' },
             american: { cursor: '#FFD700', tab: 'linear-gradient(135deg,#E31B23,#1B3A8C)' },
@@ -1092,7 +1106,7 @@
         }
 
         // Load saved theme
-        const savedTheme = localStorage.getItem('wf-theme') || 'neon';
+        const savedTheme = localStorage.getItem('wf-theme') || 'classic';
         applyTheme(savedTheme);
 
         // Theme button clicks
@@ -1112,7 +1126,7 @@
             const panel = document.getElementById('theme-switcher');
             const tab = document.getElementById('themeTab');
             panel.classList.toggle('open');
-            tab.style.right = panel.classList.contains('open') ? '140px' : '0';
+            tab.style.right = panel.classList.contains('open') ? '148px' : '0';
         });
 
         // ===== CURSOR PARTICLE TRAIL =====

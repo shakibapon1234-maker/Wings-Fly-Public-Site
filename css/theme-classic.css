@@ -1,0 +1,419 @@
+/* 
+    Wings Fly - CLASSIC ORIGINAL THEME
+    The Original Running Design — Blue, Gold & White Luxury
+    Restored exactly as it was running before
+*/
+
+:root {
+    --primary: #0074D9;
+    --primary-dark: #001F3F;
+    --accent: #FFD700;
+    --bg-light: #F8F9FA;
+    --text-dark: #1A1A1A;
+    --text-muted: #666;
+    --white: #FFFFFF;
+    --glass: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== GLOBAL ANIMATED STARRY BACKGROUND ===== */
+/* Restore the original global-bg-anim to be visible */
+.global-bg-anim {
+    display: block !important;
+    background-color: #000 !important;
+}
+
+.global-bg-anim .color-layer {
+    background: linear-gradient(-45deg, #f00b51, #7303c0, #050a12, #000000, #031b33, #f64f59) !important;
+    background-size: 400% 400% !important;
+    animation: gradientShiftNight 30s ease infinite !important;
+}
+
+@keyframes gradientShiftNight {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.global-bg-anim .planet-1 {
+    display: block !important;
+    opacity: 0.85 !important;
+}
+
+.global-bg-anim .planet-2 {
+    display: block !important;
+    opacity: 0.7 !important;
+}
+
+/* ===== BODY ===== */
+body {
+    background-color: transparent !important;
+    color: var(--text-dark);
+}
+
+/* Remove any ::before ::after added by other themes on body */
+body::before, body::after {
+    display: none !important;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(15px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: none !important;
+}
+
+.logo-spin-ring {
+    border: 3px solid transparent !important;
+    border-top: 3px solid #00d4ff !important;
+    border-right: 3px solid #FFD700 !important;
+    box-shadow: none !important;
+}
+
+.nav-links a {
+    color: var(--text-dark) !important;
+    font-weight: 500 !important;
+}
+
+.nav-links a::after { display: none !important; }
+
+.nav-links a:hover {
+    color: var(--primary) !important;
+    text-shadow: none !important;
+}
+
+.btn-login {
+    background: transparent !important;
+    color: var(--primary) !important;
+    border: 2px solid var(--primary) !important;
+    border-radius: 50px !important;
+    padding: 8px 20px !important;
+}
+
+.btn-login:hover {
+    background: var(--primary) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(0,116,217,0.3) !important;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), #0056b3) !important;
+    color: var(--white) !important;
+    border: none !important;
+    border-radius: 50px !important;
+    padding: 12px 28px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 15px rgba(0, 116, 217, 0.3) !important;
+    animation: none !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 25px rgba(0, 116, 217, 0.4) !important;
+    background: linear-gradient(135deg, #0056b3, var(--primary)) !important;
+    color: white !important;
+}
+
+.btn-outline {
+    background: transparent !important;
+    border: 2px solid rgba(255, 255, 255, 0.6) !important;
+    color: white !important;
+    border-radius: 50px !important;
+    padding: 12px 28px !important;
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: white !important;
+}
+
+/* ===== HERO ===== */
+.hero {
+    background: transparent !important;
+    color: var(--white) !important;
+}
+
+.hero-overlay::before {
+    background: radial-gradient(circle, rgba(0, 116, 217, 0.3) 0%, transparent 70%) !important;
+    box-shadow: none !important;
+}
+
+.hero-overlay::after {
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%) !important;
+}
+
+.hero-bg-pattern {
+    background-image: url('https://www.transparenttextures.com/patterns/world-map.png') !important;
+    opacity: 0.1 !important;
+    animation: none !important;
+}
+
+.hero-content .badge {
+    background: rgba(0, 116, 217, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    box-shadow: none !important;
+    animation: none !important;
+}
+
+.hero-content h1 {
+    color: white !important;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3) !important;
+}
+
+.highlight {
+    background: linear-gradient(135deg, #00d4ff, #FFD700) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: none !important;
+    background-size: auto !important;
+    filter: none !important;
+}
+
+.stat-num {
+    color: #FFD700 !important;
+    text-shadow: none !important;
+    animation: none !important;
+}
+
+.stat-label { color: rgba(255,255,255,0.8) !important; }
+
+.hero-waves path {
+    fill: rgba(248, 249, 250, 0.9) !important;
+}
+
+/* ===== FLOATING CARDS ===== */
+.floating-card {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+    color: white !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.floating-card i { color: #FFD700 !important; }
+
+/* ===== PARTNERS ===== */
+.partners {
+    background: var(--white) !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.05) !important;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-header h2 {
+    color: var(--text-dark) !important;
+}
+
+.section-header .highlight,
+h2 .highlight, h3 .highlight {
+    background: linear-gradient(135deg, var(--primary), #00d4ff) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: none !important;
+}
+
+/* ===== COURSE CARDS ===== */
+.course-card {
+    background: var(--white) !important;
+    border: none !important;
+    border-top: none !important;
+    border-radius: 20px !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08) !important;
+    backdrop-filter: none !important;
+}
+
+.course-card:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 20px 50px rgba(0,116,217,0.15) !important;
+    border-color: transparent !important;
+}
+
+/* ===== CHAIRMAN SECTION ===== */
+.chairman-section {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e8f4fd 100%) !important;
+    border-top: none !important;
+}
+
+.chairman-img-wrapper {
+    border: 4px solid rgba(0,116,217,0.2) !important;
+    box-shadow: 0 20px 60px rgba(0,116,217,0.2) !important;
+}
+
+/* ===== HOLOGRAM CARDS ===== */
+.hologram-card {
+    background: rgba(255,255,255,0.8) !important;
+    border: 1px solid rgba(0,116,217,0.1) !important;
+    border-left: 3px solid var(--primary) !important;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.06) !important;
+}
+
+.hologram-card:hover {
+    border-left-color: #00d4ff !important;
+    box-shadow: 0 10px 40px rgba(0,116,217,0.12) !important;
+    background: white !important;
+}
+
+.hologram-icon {
+    background: linear-gradient(135deg, var(--primary), #00d4ff) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(0,116,217,0.3) !important;
+}
+
+.hologram-number {
+    color: rgba(0,116,217,0.1) !important;
+    font-weight: 900 !important;
+}
+
+/* ===== EXECUTIVE GALLERY ===== */
+.executive-gallery {
+    background: linear-gradient(135deg, #0a1628 0%, #001540 50%, #0a0f2e 100%) !important;
+}
+
+.gallery-bg-anim .glow-orb:first-child {
+    background: radial-gradient(circle, rgba(0,116,217,0.2), transparent 70%) !important;
+}
+
+.gallery-bg-anim .glow-orb:last-of-type {
+    background: radial-gradient(circle, rgba(255,215,0,0.1), transparent 70%) !important;
+}
+
+.luxury-frame {
+    border: 3px solid rgba(255,215,0,0.5) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.1) !important;
+}
+
+.luxury-frame.gold-heavy {
+    border-color: #FFD700 !important;
+    box-shadow: 0 0 30px rgba(255,215,0,0.3) !important;
+}
+
+.gallery-nav-btn {
+    background: linear-gradient(135deg, var(--primary), #0056b3) !important;
+    border: none !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(0,116,217,0.4) !important;
+}
+
+/* ===== SUCCESS SECTION ===== */
+.success-section {
+    background: linear-gradient(160deg, #020a1a 0%, #001540 50%, #020a1a 100%) !important;
+}
+
+.aurora-wave {
+    background: linear-gradient(90deg, transparent, rgba(0,116,217,0.1), rgba(255,215,0,0.05), transparent) !important;
+}
+
+.success-card-premium {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
+}
+
+.glow-ring {
+    border: 2px solid rgba(0,116,217,0.6) !important;
+    box-shadow: 0 0 20px rgba(0,116,217,0.3) !important;
+}
+
+.congrats-text {
+    color: #FFD700 !important;
+    text-shadow: none !important;
+}
+
+.batch-tag {
+    background: rgba(0,116,217,0.2) !important;
+    border: 1px solid rgba(0,116,217,0.3) !important;
+    color: white !important;
+}
+
+/* ===== GALLERY SECTION ===== */
+.gallery-section {
+    background: var(--bg-light) !important;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: var(--primary) !important;
+    color: white !important;
+    border-color: var(--primary) !important;
+}
+
+/* ===== ADMISSION ===== */
+.admission-section {
+    background: linear-gradient(135deg, #f8f9fa, #e8f4fd) !important;
+}
+
+.admission-card {
+    background: white !important;
+    border: none !important;
+    border-top: none !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 60px rgba(0,116,217,0.1) !important;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    border: 2px solid rgba(0,0,0,0.1) !important;
+    border-radius: 10px !important;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(0,116,217,0.1) !important;
+}
+
+.benefit-list li i { color: var(--primary) !important; }
+
+/* ===== FOOTER ===== */
+.footer {
+    background: linear-gradient(135deg, #001F3F, #001540) !important;
+    border-top: none !important;
+}
+
+.footer h4 { color: #FFD700 !important; }
+
+.social-links a {
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    color: rgba(255,255,255,0.8) !important;
+}
+
+.social-links a:hover {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(0,116,217,0.4) !important;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+/* ===== DOTS ===== */
+.dot.active, .dot-gallery.active, .dot-success.active {
+    background: #FFD700 !important;
+    box-shadow: 0 0 8px rgba(255,215,0,0.5) !important;
+}
+
+/* ===== MISC ===== */
+.badge {
+    background: rgba(0,116,217,0.15) !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(0,116,217,0.2) !important;
+}
+
+span.highlight {
+    background: linear-gradient(135deg, var(--primary), #00d4ff) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    animation: none !important;
+}
+
+/* Remove scan-line effect from neon theme */
+body::after { display: none !important; }
