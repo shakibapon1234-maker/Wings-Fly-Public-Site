@@ -339,18 +339,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (error) throw error;
                     
                     // --- Send Email Notification via EmailJS ---
+                    const emailParams = {
+                        name: formData.full_name,
+                        time: new Date().toLocaleString('bn-BD'),
+                        message: `স্টুডেন্ট নাম: ${formData.full_name}\nফোন: ${formData.phone}\nকোর্স: ${formData.course}\nমেসেজ: ${formData.message}`
+                    };
+
                     try {
-                        await emailjs.send("service_1v33wgb", "template_5qo6h0i", {
-                            name: formData.full_name,
-                            time: new Date().toLocaleString('bn-BD'),
-                            message: `নতুন আবেদন এসেছে!\n\nনাম: ${formData.full_name}\nফোন: ${formData.phone}\nইমেইল: ${formData.email}\nকোর্স: ${formData.course}\nমেসেজ: ${formData.message}`
-                        });
-                        console.log('Email sent successfully!');
+                        await emailjs.send("service_1v33wgb", "template_5qo6h0i", emailParams);
+                        console.log('Email Sent Successfully with params:', emailParams);
                     } catch (emailErr) {
-                        console.error('Email failed:', emailErr);
+                        console.error('Email Sending Failed:', emailErr);
                     }
 
-                    formStatus.innerHTML = 'ধন্যবাদ! আপনার আবেদনটি সফলভাবে জমা হয়েছে এবং আমরা আপনাকে ইমেইল করেছি।';
+                    formStatus.innerHTML = 'ধন্যবাদ! আপনার আবেদনটি সফলভাবে জমা হয়েছে এবং ইমেইল পাঠানো হয়েছে।';
                     formStatus.className = 'form-status success';
                     enrollForm.reset();
                 } else {
