@@ -73,11 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${date}</td>
                     <td>
                         <button class="btn-secondary" onclick="alert('বার্তা: ${item.message || 'নেই'}')">বিস্তারিত</button>
+                        <button class="delete-btn-small" onclick="deleteEnrollment(${item.id})"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `;
         });
     }
+
+    window.deleteEnrollment = async (id) => {
+        if (!confirm('আপনি কি এই আবেদনটি মুছে ফেলতে চান?')) return;
+        const { error } = await window.supabase.from('enrollments').delete().eq('id', id);
+        if (error) alert('Error: ' + error.message);
+        else loadSubmissions();
+    };
 
     document.getElementById('refresh-submissions').addEventListener('click', loadSubmissions);
 

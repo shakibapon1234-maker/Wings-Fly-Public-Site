@@ -196,3 +196,19 @@ td {
 .delete-btn:hover { transform: scale(1.1); background: #ff4d4d; }
 
 .error-text { color: #ff4d4d; font-size: 0.9rem; margin-top: 10px; }
+
+.delete-btn-small {
+    background: rgba(255, 77, 77, 0.1);
+    color: #ff4d4d;
+    border: 1px solid rgba(255, 77, 77, 0.2);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-left: 5px;
+}
+
+.delete-btn-small:hover {
+    background: #ff4d4d;
+    color: white;
+}
