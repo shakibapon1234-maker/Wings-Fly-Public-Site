@@ -40,9 +40,68 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (content.id === targetTab) content.classList.add('active');
             });
             if (targetTab === 'submissions') loadSubmissions();
+            if (targetTab === 'payment-verification') loadPayments();
             if (targetTab === 'gallery-manager') loadGallery();
         });
     });
+
+    // --- Payments Verification Logic ---
+    async function loadPayments() {
+        const listContainer = document.getElementById('admin-payments-list');
+        if(!listContainer) return;
+
+        listContainer.innerHTML = '<tr><td colspan="7" style="text-align:center;">লোড হচ্ছে...</td></tr>';
+
+        try {
+            const { data, error } = await window.supabase
+                .from('payments')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            listContainer.innerHTML = '';
+            data.forEach(p => {
+                const row = document.createElement('tr');
+                const statusColor = p.status === 'approved' ? '#00ffa3' : (p.status === 'rejected' ? '#ff4d4d' : '#FFD700');
+                
+                row.innerHTML = `
+                    <td>${p.student_name}</td>
+                    <td>${p.course_name}</td>
+                    <td>${p.amount} TK</td>
+                    <td>${p.payment_method}</td>
+                    <td><b>${p.transaction_id}</b></td>
+                    <td><span style="color:${statusColor}">${p.status.toUpperCase()}</span></td>
+                    <td>
+                        ${p.status === 'pending' ? `
+                            <button class="btn-primary" style="padding:5px 10px; font-size:12px; background:#00ffa3; color:black; border:none;" onclick="verifyPayment(${p.id}, 'approved')">Approve</button>
+                            <button class="delete-btn-small" style="padding:5px 10px; font-size:12px;" onclick="verifyPayment(${p.id}, 'rejected')">Reject</button>
+                        ` : '<span style="opacity:0.5;">সম্পন্ন</span>'}
+                    </td>
+                `;
+                listContainer.appendChild(row);
+            });
+        } catch (err) {
+            listContainer.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#ff4d4d;">এরর: ${err.message}</td></tr>`;
+        }
+    }
+
+    window.verifyPayment = async (id, status) => {
+        if (!confirm(`আপনি কি এই পেমেন্টটি ${status} করতে চান?`)) return;
+        try {
+            const { error } = await window.supabase
+                .from('payments')
+                .update({ status })
+                .eq('id', id);
+            
+            if (error) throw error;
+            loadPayments();
+        } catch (err) {
+            alert('ভুল হয়েছে: ' + err.message);
+        }
+    };
+
+    document.getElementById('refresh-payments').addEventListener('click', loadPayments);
 
     // --- Submissions Logic ---
     async function loadSubmissions() {

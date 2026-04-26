@@ -47,6 +47,7 @@
             <ul class="sidebar-menu">
                 <li class="active" data-tab="overview"><i class="fa-solid fa-gauge"></i> ওভারভিউ</li>
                 <li data-tab="my-courses"><i class="fa-solid fa-graduation-cap"></i> আমার কোর্সসমূহ</li>
+                <li data-tab="payments"><i class="fa-solid fa-money-bill-transfer"></i> পেমেন্ট করুন</li>
                 <li data-tab="profile"><i class="fa-solid fa-user-gear"></i> প্রোফাইল সেটিংস</li>
                 <li id="student-logout"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</li>
             </ul>
@@ -69,23 +70,20 @@
                 </div>
 
                 <div class="content-header">
-                    <h2>সাম্প্রতিক কার্যক্রম</h2>
+                    <h2>সাম্প্রতিক পেমেন্ট স্ট্যাটাস</h2>
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>কার্যক্রম</th>
-                                <th>তারিখ</th>
+                                <th>কোর্স</th>
+                                <th>টাকা</th>
+                                <th>ট্রানজেকশন আইডি</th>
                                 <th>অবস্থা</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>অ্যাকাউন্ট ভেরিফিকেশন</td>
-                                <td>আজ</td>
-                                <td><span class="status-badge">সফল</span></td>
-                            </tr>
+                        <tbody id="student-payment-history">
+                            <tr><td colspan="4" style="text-align:center;">কোনো পেমেন্ট পাওয়া যায়নি।</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -105,6 +103,56 @@
                             <span class="status-badge">নতুন স্টুডেন্ট</span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Payments Tab -->
+            <div id="payments" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>অনলাইন পেমেন্ট</h2>
+                </div>
+                
+                <div class="dashboard-card" style="max-width: 800px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div class="payment-instructions">
+                        <h3 style="color:var(--primary); margin-bottom:15px;">পেমেন্ট করার নিয়ম:</h3>
+                        <p style="font-size:14px; margin-bottom:20px; line-height:1.6;">
+                            ১. নিচের মার্চেন্ট নাম্বারে <b>"Make Payment"</b> করুন।<br>
+                            ২. পেমেন্ট সফল হলে ট্রানজেকশন আইডি (TrxID) সংগ্রহ করুন।<br>
+                            ৩. ফরমটি পূরণ করে সাবমিট করুন।
+                        </p>
+                        <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px;">
+                            <p><b>bKash:</b> 01757208244 (Merchant)</p>
+                            <p><b>Nagad:</b> 01757208244 (Merchant)</p>
+                        </div>
+                    </div>
+
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label>কোর্স সিলেক্ট করুন</label>
+                            <select id="pay-course" required style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px;">
+                                <option value="Air Ticketing & GDS">Air Ticketing & GDS</option>
+                                <option value="Professional Visa Processing">Professional Visa Processing</option>
+                                <option value="GDS Reservation">GDS Reservation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>টাকার পরিমাণ</label>
+                            <input type="number" id="pay-amount" placeholder="৫০০০" required>
+                        </div>
+                        <div class="form-group">
+                            <label>পেমেন্ট মেথড</label>
+                            <select id="pay-method" required style="width:100%; padding:12px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px;">
+                                <option value="bKash">bKash</option>
+                                <option value="Nagad">Nagad</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>ট্রানজেকশন আইডি (TrxID)</label>
+                            <input type="text" id="pay-trxid" placeholder="8N7X2M9K" required>
+                        </div>
+                        <button type="submit" class="btn-primary w-100" id="pay-submit">পেমেন্ট জমা দিন</button>
+                        <p id="payment-status-msg" style="margin-top:10px; font-size:14px;"></p>
+                    </form>
                 </div>
             </div>
 
@@ -144,12 +192,16 @@
 
             // Display User Info
             const fullName = user.user_metadata.full_name || 'Student';
+            const studentName = fullName;
             document.getElementById('user-display-name').textContent = fullName;
             document.querySelectorAll('.student-name-text').forEach(el => el.textContent = fullName);
             document.getElementById('user-initial').textContent = fullName.charAt(0).toUpperCase();
             
             document.getElementById('profile-email').value = user.email;
             document.getElementById('profile-name').value = fullName;
+
+            // Load Payment History
+            loadPaymentHistory(user.id);
 
             // Tab Switching
             const menuItems = document.querySelectorAll('.sidebar-menu li[data-tab]');
@@ -166,6 +218,65 @@
                     });
                 });
             });
+
+            // --- Payment Submission ---
+            const paymentForm = document.getElementById('payment-form');
+            const paymentMsg = document.getElementById('payment-status-msg');
+
+            paymentForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const submitBtn = document.getElementById('pay-submit');
+                
+                const paymentData = {
+                    user_id: user.id,
+                    student_name: fullName,
+                    course_name: document.getElementById('pay-course').value,
+                    amount: document.getElementById('pay-amount').value,
+                    payment_method: document.getElementById('pay-method').value,
+                    transaction_id: document.getElementById('pay-trxid').value,
+                };
+
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'জমা হচ্ছে...';
+
+                    const { error } = await window.supabase.from('payments').insert([paymentData]);
+                    if (error) throw error;
+
+                    paymentMsg.innerHTML = '<span style="color:#00ffa3;">সাফল্যের সাথে জমা হয়েছে! আমরা দ্রুত ভেরিফাই করব।</span>';
+                    paymentForm.reset();
+                    loadPaymentHistory(user.id);
+                } catch (err) {
+                    paymentMsg.innerHTML = `<span style="color:#ff4d4d;">ভুল হয়েছে: ${err.message}</span>`;
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'পেমেন্ট জমা দিন';
+                }
+            });
+
+            async function loadPaymentHistory(userId) {
+                const historyBody = document.getElementById('student-payment-history');
+                const { data, error } = await window.supabase
+                    .from('payments')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .order('created_at', { ascending: false });
+
+                if (data && data.length > 0) {
+                    historyBody.innerHTML = '';
+                    data.forEach(p => {
+                        const row = document.createElement('tr');
+                        const statusColor = p.status === 'approved' ? '#00ffa3' : (p.status === 'rejected' ? '#ff4d4d' : '#FFD700');
+                        row.innerHTML = `
+                            <td>${p.course_name}</td>
+                            <td>${p.amount} TK</td>
+                            <td>${p.transaction_id}</td>
+                            <td><span style="color:${statusColor}">${p.status.toUpperCase()}</span></td>
+                        `;
+                        historyBody.appendChild(row);
+                    });
+                }
+            }
 
             // Logout
             document.getElementById('student-logout').addEventListener('click', async () => {
