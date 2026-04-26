@@ -896,34 +896,22 @@
             </div>
             <div class="other-courses-row">
                 <!-- Course 3 -->
-                <div class="mini-course-card card-blue">
+                <div class="mini-course-card card-blue" onclick="var m=document.getElementById('admissionModal');if(m){m.style.display='flex';m.classList.add('active');}">
                     <div class="mini-card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
                     <h4>স্টুডেন্ট ভিসা প্রসেসিং</h4>
-                    <p>৩ মাস • এক্সপার্ট লেভেল</p>
-                    <div class="mini-card-footer">
-                        <span class="price">৳ ৮,০০০</span>
-                        <button class="btn-detail">বিস্তারিত</button>
-                    </div>
+                    <p>UK, USA, Europe সহ অন্যান্য দেশে উচ্চশিক্ষার ভিসা প্রসেসিং শিখুন</p>
                 </div>
                 <!-- Course 4 -->
-                <div class="mini-course-card card-gold">
+                <div class="mini-course-card card-gold" onclick="var m=document.getElementById('admissionModal');if(m){m.style.display='flex';m.classList.add('active');}">
                     <div class="mini-card-icon"><i class="fa-solid fa-briefcase"></i></div>
                     <h4>ট্রাভেল এজেন্সি ম্যানেজমেন্ট</h4>
-                    <p>৪ মাস • বিজনেস লেভেল</p>
-                    <div class="mini-card-footer">
-                        <span class="price">৳ ১৫,০০০</span>
-                        <button class="btn-detail">বিস্তারিত</button>
-                    </div>
+                    <p>ট্রাভেল বিজনেস পরিচালনা ও ম্যানেজমেন্টের সম্পূর্ণ প্রক্রিয়া শিখুন</p>
                 </div>
                 <!-- Course 5 -->
-                <div class="mini-course-card card-teal">
+                <div class="mini-course-card card-teal" onclick="var m=document.getElementById('admissionModal');if(m){m.style.display='flex';m.classList.add('active');}">
                     <div class="mini-card-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
                     <h4>কেয়ার গিভিং</h4>
-                    <p>৩ মাস • প্রফেশনাল</p>
-                    <div class="mini-card-footer">
-                        <span class="price">৳ ১০,০০০</span>
-                        <button class="btn-detail">বিস্তারিত</button>
-                    </div>
+                    <p>এই কোর্স করে দেশের বাইরে কেয়ার গিভিং সেক্টরে ক্যারিয়ার গড়ুন</p>
                 </div>
             </div>
         </div>
@@ -1136,6 +1124,14 @@
                 margin: 0 auto;
                 text-align: center;
                 box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            }
+            .verification-card h2 {
+                color: #ffffff;
+                margin-bottom: 10px;
+            }
+            .verification-card p {
+                color: rgba(255, 255, 255, 0.7);
+                margin-bottom: 20px;
             }
             .verify-form {
                 display: flex;

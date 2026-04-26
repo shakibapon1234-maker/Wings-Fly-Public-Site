@@ -1038,11 +1038,14 @@ body {
 .badge-content .exp-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
 
 /* Content Side */
+.chairman-info {
+    text-align: center;
+}
+
 .chairman-quote-icon {
     font-size: 5rem;
     color: rgba(255, 215, 0, 0.15);
-    margin-bottom: -45px;
-    margin-left: -25px;
+    margin-bottom: -20px;
 }
 
 .chairman-title {
@@ -1068,6 +1071,7 @@ body {
     color: #FFD700;
     margin-bottom: 25px;
     position: relative;
+    text-align: left;
 }
 
 .desc-p {

@@ -144,11 +144,20 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadSiteConfig() {
         const { data } = await window.supabase.from('site_config').select('*');
         if (data) {
+            // Special ID mappings where auto-conversion doesn't match
+            const idMap = {
+                'chairman_message': 'set-chairman-msg'
+            };
             data.forEach(item => {
-                // Replace underscores with hyphens for ID matching
-                const elId = `set-${item.key.replace(/_/g, '-')}`;
+                const elId = idMap[item.key] || `set-${item.key.replace(/_/g, '-')}`;
                 const el = document.getElementById(elId);
-                if (el) el.value = item.value;
+                if (el) {
+                    if (el.tagName === 'TEXTAREA') {
+                        el.value = item.value;
+                    } else if (el.type !== 'file') {
+                        el.value = item.value;
+                    }
+                }
             });
         }
     }
