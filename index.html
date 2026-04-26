@@ -14,6 +14,9 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/auth.css">
@@ -469,7 +472,96 @@
                 <span class="dot-gallery active"></span>
                 <span class="dot-gallery"></span>
                 <span class="dot-gallery"></span>
+                        <span class="dot-gallery"></span>
                 <span class="dot-gallery"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Moments of Success & Media Gallery -->
+    <section id="gallery" class="gallery-section" data-reveal>
+        <div class="gallery-bg-glow"></div>
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge">গ্যালারি ও ইভেন্টস</span>
+                <h2 class="gallery-title">সফলতার <span class="highlight">মুহূর্ত ও মিডিয়া কাভারেজ</span></h2>
+                <p>আমাদের আয়োজিত বিভিন্ন অনুষ্ঠান, সার্টিফিকেট বিতরণী এবং মিডিয়া কাভারেজের কিছু খণ্ডচিত্র।</p>
+            </div>
+
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">সবগুলো</button>
+                <button class="filter-btn" data-filter="events">ইভেন্টস</button>
+                <button class="filter-btn" data-filter="ceremony">সার্টিফিকেট বিতরণ</button>
+                <button class="filter-btn" data-filter="media">মিডিয়া নিউজ</button>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- Item 1: Event -->
+                <div class="gallery-item events">
+                    <div class="gallery-card">
+                        <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/05/event-1.webp" alt="Anniversary Event">
+                        <div class="gallery-overlay">
+                            <span class="category">ইভেন্টস</span>
+                            <h3>বার্ষিক প্রতিষ্ঠাবার্ষিকী অনুষ্ঠান</h3>
+                            <a href="#" class="view-btn"><i class="fa-solid fa-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 2: Ceremony -->
+                <div class="gallery-item ceremony">
+                    <div class="gallery-card">
+                        <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/05/ceremony-1.webp" alt="Certificate Ceremony">
+                        <div class="gallery-overlay">
+                            <span class="category">সার্টিফিকেট বিতরণ</span>
+                            <h3>সার্টিফিকেট প্রদান অনুষ্ঠান - ২০২৪</h3>
+                            <a href="#" class="view-btn"><i class="fa-solid fa-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 3: Media -->
+                <div class="gallery-item media">
+                    <div class="gallery-card">
+                        <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/05/media-1.webp" alt="Media Coverage">
+                        <div class="gallery-overlay">
+                            <span class="category">মিডিয়া নিউজ</span>
+                            <h3>টিভি চ্যানেলে আমাদের সাফল্য সংবাদ</h3>
+                            <a href="#" class="view-btn"><i class="fa-solid fa-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 4: Event -->
+                <div class="gallery-item events">
+                    <div class="gallery-card">
+                        <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/05/event-2.webp" alt="Special Program">
+                        <div class="gallery-overlay">
+                            <span class="category">ইভেন্টস</span>
+                            <h3>বিশেষ সেমিনার ও ক্যারিয়ার গাইডলাইন</h3>
+                            <a href="#" class="view-btn"><i class="fa-solid fa-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 5: Ceremony -->
+                <div class="gallery-item ceremony">
+                    <div class="gallery-card">
+                        <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/05/ceremony-2.webp" alt="Student Achievement">
+                        <div class="gallery-overlay">
+                            <span class="category">সার্টিফিকেট বিতরণ</span>
+                            <h3>কৃতি শিক্ষার্থীদের সংবর্ধনা</h3>
+                            <a href="#" class="view-btn"><i class="fa-solid fa-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Item 6: Media -->
+                <div class="gallery-item media">
+                    <div class="gallery-card">
+                        <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/05/media-2.webp" alt="Press Release">
+                        <div class="gallery-overlay">
+                            <span class="category">মিডিয়া নিউজ</span>
+                            <h3>শীর্ষস্থানীয় পত্রিকায় বিশেষ প্রতিবেদন</h3>
+                            <a href="#" class="view-btn"><i class="fa-solid fa-expand"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -589,6 +681,58 @@
         </div>
     </div>
 
+    <!-- Admission Form Section (Premium) -->
+    <section id="enroll" class="admission-section" data-reveal>
+        <div class="container">
+            <div class="admission-grid">
+                <div class="admission-info">
+                    <h2 class="admission-title">আজই আপনার <span class="highlight">ভর্তি নিশ্চিত করুন</span></h2>
+                    <p>আপনার অ্যাভিয়েশন ক্যারিয়ার শুরু করতে নিচের ফরমটি পূরণ করুন। আমাদের প্রতিনিধি আপনার সাথে খুব শীঘ্রই যোগাযোগ করবেন।</p>
+                    <ul class="benefit-list">
+                        <li><i class="fa-solid fa-circle-check"></i> এক্সপার্ট ইন্সট্রাক্টর দ্বারা সরাসরি প্রশিক্ষণ</li>
+                        <li><i class="fa-solid fa-circle-check"></i> IATA স্বীকৃত ট্রাভেল এজেন্সিতে প্র্যাকটিক্যাল কাজ</li>
+                        <li><i class="fa-solid fa-circle-check"></i> ১০০% ক্যারিয়ার গাইডলাইন সাপোর্ট</li>
+                    </ul>
+                </div>
+                <div class="admission-card">
+                    <form id="enrollment-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>আপনার নাম</label>
+                                <input type="text" id="student-name" placeholder="পুরো নাম লিখুন" required>
+                            </div>
+                            <div class="form-group">
+                                <label>মোবাইল নাম্বার</label>
+                                <input type="tel" id="student-phone" placeholder="০১৭XXXXXXXX" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>ইমেইল অ্যাড্রেস</label>
+                            <input type="email" id="student-email" placeholder="example@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>পছন্দের কোর্সটি সিলেক্ট করুন</label>
+                            <select id="selected-course" required>
+                                <option value="" disabled selected>কোর্স নির্বাচন করুন</option>
+                                <option value="air-ticketing">এয়ার টিকেটিং ও রিজার্ভেশন</option>
+                                <option value="pro-visa">প্রফেশনাল ভিসা প্রসেসিং</option>
+                                <option value="student-visa">স্টুডেন্ট ভিসা প্রসেসিং</option>
+                                <option value="travel-agency">ট্রাভেল এজেন্সি ম্যানেজমেন্ট</option>
+                                <option value="care-giving">কেয়ার গিভিং</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>অতিরিক্ত কোনো প্রশ্ন (ঐচ্ছিক)</label>
+                            <textarea id="student-message" rows="3" placeholder="এখানে আপনার বার্তা লিখুন..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary w-100" id="submit-enrollment">আবেদন জমা দিন <i class="fa-solid fa-paper-plane"></i></button>
+                    </form>
+                    <div id="form-status" class="form-status"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -626,6 +770,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
     <script src="js/main.js"></script>
     <script src="js/auth.js"></script>
 </body>

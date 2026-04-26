@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Wings Fly Aviation Academy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+    
+    <div id="login-overlay" class="admin-overlay">
+        <div class="admin-login-card">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label>Access Token</label>
+                <input type="password" id="admin-pass" placeholder="গোপন কোডটি দিন">
+            </div>
+            <button id="login-btn" class="btn-primary w-100">প্রবেশ করুন</button>
+            <p id="login-error" class="error-text"></p>
+        </div>
+    </div>
+
+    <div class="admin-container" id="admin-panel" style="display: none;">
+        <nav class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/03/wingsflyacademy-logo.svg" alt="Logo">
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" data-tab="submissions"><i class="fa-solid fa-users"></i> ভর্তি আবেদন</li>
+                <li data-tab="gallery-manager"><i class="fa-solid fa-image"></i> গ্যালারি ম্যানেজমেন্ট</li>
+                <li id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</li>
+            </ul>
+        </nav>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1>ড্যাশবোর্ড</h1>
+                <div class="admin-user">
+                    <span>Welcome, Admin</span>
+                    <div class="user-avatar">A</div>
+                </div>
+            </header>
+
+            <div id="submissions" class="admin-tab-content active">
+                <div class="content-header">
+                    <h2>ভর্তি আবেদনের তালিকা</h2>
+                    <button id="refresh-submissions" class="btn-secondary"><i class="fa-solid fa-rotate"></i> রিফ্রেশ</button>
+                </div>
+                <div class="table-container">
+                    <table id="enrollments-table">
+                        <thead>
+                            <tr>
+                                <th>নাম</th>
+                                <th>ফোন</th>
+                                <th>কোর্স</th>
+                                <th>তারিখ</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="enrollments-list">
+                            <!-- Data will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="gallery-manager" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>গ্যালারি ম্যানেজমেন্ট</h2>
+                </div>
+                
+                <div class="upload-section">
+                    <h3>নতুন ছবি যুক্ত করুন</h3>
+                    <form id="gallery-upload-form" class="upload-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>ছবির শিরোনাম</label>
+                                <input type="text" id="img-title" placeholder="যেমন: প্রতিষ্ঠাবার্ষিকী ২০২৪" required>
+                            </div>
+                            <div class="form-group">
+                                <label>ক্যাটাগরি</label>
+                                <select id="img-category" required>
+                                    <option value="events">ইভেন্টস</option>
+                                    <option value="ceremony">সার্টিফিকেট বিতরণ</option>
+                                    <option value="media">মিডিয়া নিউজ</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ছবি সিলেক্ট করুন</label>
+                                <input type="file" id="img-file" accept="image/*" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="upload-btn" class="btn-primary">আপলোড করুন <i class="fa-solid fa-upload"></i></button>
+                    </form>
+                    <div id="upload-status"></div>
+                </div>
+
+                <div class="gallery-list-section">
+                    <h3>বর্তমান গ্যালারি</h3>
+                    <div class="admin-gallery-grid" id="admin-gallery-list">
+                        <!-- Gallery items will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
