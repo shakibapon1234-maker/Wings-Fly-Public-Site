@@ -338,7 +338,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     const { error } = await window.supabase.from('enrollments').insert([formData]);
                     if (error) throw error;
                     
-                    formStatus.innerHTML = 'ধন্যবাদ! আপনার আবেদনটি সফলভাবে জমা হয়েছে।';
+                    // --- Send Email Notification via EmailJS ---
+                    try {
+                        await emailjs.send("service_1v33wgb", "template_5qo6h0i", {
+                            full_name: formData.full_name,
+                            phone: formData.phone,
+                            email: formData.email,
+                            course: formData.course,
+                            message: formData.message,
+                            created_at: new Date().toLocaleString('bn-BD')
+                        });
+                        console.log('Email sent successfully!');
+                    } catch (emailErr) {
+                        console.error('Email failed:', emailErr);
+                    }
+
+                    formStatus.innerHTML = 'ধন্যবাদ! আপনার আবেদনটি সফলভাবে জমা হয়েছে এবং আমরা আপনাকে ইমেইল করেছি।';
                     formStatus.className = 'form-status success';
                     enrollForm.reset();
                 } else {
