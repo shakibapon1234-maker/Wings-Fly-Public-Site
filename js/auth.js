@@ -1,6 +1,7 @@
 // Wings Fly Premium Auth System (Supabase Integration)
-// Use the globally initialized supabase client from supabase-config.js
-const supabase = window.supabase;
+// Use the globally initialized supabase client
+const wingsAuthClient = window.supabase;
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.disabled = true;
             submitBtn.innerText = 'Logging in...';
 
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await wingsAuthClient.auth.signInWithPassword({
                 email: email,
                 password: password,
             });

@@ -362,11 +362,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Smooth Scroll for Enrollment Button ---
-    const enrollBtns = document.querySelectorAll('button:contains("ভর্তি ফরম"), .btn-primary');
-    enrollBtns.forEach(btn => {
+    const allBtns = document.querySelectorAll('button, .btn-primary');
+    allBtns.forEach(btn => {
         if (btn.textContent.includes('ভর্তি ফরম')) {
             btn.addEventListener('click', () => {
-                document.getElementById('enroll').scrollIntoView({ behavior: 'smooth' });
+                const target = document.getElementById('enroll');
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
             });
         }
     });
