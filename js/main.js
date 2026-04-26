@@ -334,25 +334,19 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                // If Supabase is initialized with real keys, this will work
-                if (typeof supabase !== 'undefined' && SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
-                    const { error } = await supabase.from('enrollments').insert([formData]);
+                if (window.supabase) {
+                    const { error } = await window.supabase.from('enrollments').insert([formData]);
                     if (error) throw error;
                     
                     formStatus.innerHTML = 'ধন্যবাদ! আপনার আবেদনটি সফলভাবে জমা হয়েছে।';
                     formStatus.className = 'form-status success';
                     enrollForm.reset();
                 } else {
-                    // Fallback for demo/missing keys
-                    console.log('Form Data:', formData);
-                    setTimeout(() => {
-                        formStatus.innerHTML = 'সিস্টেম কানেক্ট করা হচ্ছে। আপনার তথ্যটি কনসোলে সেভ করা হয়েছে।';
-                        formStatus.className = 'form-status error';
-                    }, 1000);
+                    throw new Error('Supabase not connected');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                formStatus.innerHTML = 'দুঃখিত, কোনো সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+                console.error('Submission Error:', error);
+                formStatus.innerHTML = 'দুঃখিত, তথ্য সেভ করা যায়নি। আপনার ইন্টারনেট চেক করুন।';
                 formStatus.className = 'form-status error';
             } finally {
                 submitBtn.disabled = false;
