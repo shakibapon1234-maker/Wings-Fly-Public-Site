@@ -13,370 +13,265 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Hero Slider & Parallax Logic ---
-    const hero = document.querySelector('.hero');
-    const slides = document.querySelectorAll('.hero-slide');
-    const dots = document.querySelectorAll('.dot');
+    // --- Dynamic Content Loading from Supabase ---
+    async function loadSiteDynamicContent() {
+        if (!window.supabase) return;
+
+        // 1. Load Site Config (Phone, Address, etc.)
+        try {
+            const { data: config } = await window.supabase.from('site_config').select('*');
+            if (config) {
+                config.forEach(item => {
+                    if (item.key === 'phone') {
+                        document.querySelectorAll('.footer-contact p:nth-child(3), .hero-btns a[href^="tel:"]').forEach(el => {
+                            if(el.tagName === 'A') el.href = `tel:${item.value}`;
+                            el.innerHTML = `<i class="fa-solid fa-phone"></i> ${item.value}`;
+                        });
+                    }
+                    if (item.key === 'email') {
+                        document.querySelectorAll('.footer-contact p:nth-child(4)').forEach(el => {
+                            el.innerHTML = `<i class="fa-solid fa-envelope"></i> ${item.value}`;
+                        });
+                    }
+                    if (item.key === 'address') {
+                        document.querySelectorAll('.footer-contact p:nth-child(2)').forEach(el => {
+                            el.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${item.value}`;
+                        });
+                    }
+                    if (item.key === 'chairman_message') {
+                        const messageEl = document.querySelector('.chairman-info p');
+                        if (messageEl) messageEl.textContent = item.value;
+                    }
+                });
+            }
+        } catch (e) { console.error('Config Load Error:', e); }
+
+        // 2. Load Hero Slides
+        try {
+            const { data: dbSlides } = await window.supabase.from('hero_slides').select('*').order('created_at', { ascending: true });
+            if (dbSlides && dbSlides.length > 0) {
+                const sliderContainer = document.querySelector('.hero-slider');
+                const dotsContainer = document.querySelector('.slider-dots');
+                if (sliderContainer) {
+                    sliderContainer.innerHTML = '';
+                    dotsContainer.innerHTML = '';
+                    dbSlides.forEach((s, idx) => {
+                        const slide = document.createElement('div');
+                        slide.className = `hero-slide ${idx === 0 ? 'active' : ''}`;
+                        slide.innerHTML = `
+                            <div class="parallax-img-wrapper">
+                                <img src="${s.image_url}" alt="${s.title}" class="parallax-img">
+                                <div class="floating-card card-1">
+                                    <i class="fa-solid fa-star"></i>
+                                    <span>${s.badge_text || 'Premium'}</span>
+                                </div>
+                            </div>
+                        `;
+                        sliderContainer.appendChild(slide);
+                        
+                        const dot = document.createElement('span');
+                        dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+                        dotsContainer.appendChild(dot);
+                    });
+                    initHeroSlider(); // Re-init after loading
+                }
+            }
+        } catch (e) { console.error('Hero Slides Load Error:', e); }
+
+        // 3. Load Courses
+        try {
+            const { data: dbCourses } = await window.supabase.from('courses').select('*').order('created_at', { ascending: true });
+            if (dbCourses && dbCourses.length > 0) {
+                const courseGrid = document.querySelector('.courses-grid');
+                if (courseGrid) {
+                    courseGrid.innerHTML = '';
+                    dbCourses.forEach(c => {
+                        const card = document.createElement('div');
+                        card.className = 'course-card';
+                        card.setAttribute('data-reveal', '');
+                        card.innerHTML = `
+                            <div class="course-img">
+                                <img src="${c.image_url}" alt="${c.title}">
+                                <div class="course-overlay">
+                                    <button class="btn-primary" onclick="document.getElementById('enroll').scrollIntoView({behavior:'smooth'})">ভর্তি হোন</button>
+                                </div>
+                            </div>
+                            <div class="course-content">
+                                <h3>${c.title}</h3>
+                                <p>${c.description}</p>
+                                <div class="course-meta">
+                                    <span><i class="fa-solid fa-clock"></i> ৩ মাস</span>
+                                    <span class="price">${c.price || 'যোগাযোগ করুন'}</span>
+                                </div>
+                            </div>
+                        `;
+                        courseGrid.appendChild(card);
+                    });
+                }
+            }
+        } catch (e) { console.error('Courses Load Error:', e); }
+
+        // 4. Load Instructors
+        try {
+            const { data: dbInstructors } = await window.supabase.from('instructors').select('*').order('created_at', { ascending: true });
+            if (dbInstructors && dbInstructors.length > 0) {
+                const trainerTrack = document.querySelector('.gallery-track');
+                if (trainerTrack) {
+                    trainerTrack.innerHTML = '';
+                    dbInstructors.forEach((t, idx) => {
+                        const trainer = document.createElement('div');
+                        trainer.className = `trainer-card ${idx === 1 ? 'active' : ''}`;
+                        trainer.innerHTML = `
+                            <div class="trainer-img-wrapper">
+                                <img src="${t.image_url}" alt="${t.name}">
+                                <div class="trainer-social">
+                                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                                </div>
+                            </div>
+                            <div class="trainer-info">
+                                <h3>${t.name}</h3>
+                                <p>${t.designation}</p>
+                            </div>
+                        `;
+                        trainerTrack.appendChild(trainer);
+                    });
+                    initTrainerSlider(); // Re-init
+                }
+            }
+        } catch (e) { console.error('Instructors Load Error:', e); }
+    }
+
+    // --- Hero Slider Logic ---
     let currentSlide = 0;
+    function initHeroSlider() {
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.dot');
+        if (slides.length === 0) return;
 
-    function showSlide(index) {
-        const oldActive = document.querySelector('.hero-slide.active');
-        if (oldActive) {
-            oldActive.classList.remove('active');
-            oldActive.classList.add('leaving');
-            setTimeout(() => {
-                oldActive.classList.remove('leaving');
-            }, 1000);
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            dots.forEach(d => d.classList.remove('active'));
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
         }
-        
-        slides[index].classList.add('active');
-        dots.forEach(d => d.classList.remove('active'));
-        dots[index].classList.add('active');
-        currentSlide = index;
+
+        dots.forEach((dot, idx) => {
+            dot.onclick = () => showSlide(idx);
+        });
+
+        setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        }, 5000);
     }
 
-    // Auto Slide every 4s for better viewing of unique animations
-    const slideInterval = setInterval(() => {
-        let next = (currentSlide + 1) % slides.length;
-        showSlide(next);
-    }, 4000);
+    // --- Trainer Slider Logic ---
+    function initTrainerSlider() {
+        const track = document.querySelector('.gallery-track');
+        const trainers = document.querySelectorAll('.trainer-card');
+        if (!track || trainers.length === 0) return;
 
-    // Dot Clicks
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            showSlide(index);
-            clearInterval(slideInterval); // Stop auto-slide on manual click
+        let trainerIndex = 1;
+        function updateTrainer() {
+            trainers.forEach((t, idx) => t.classList.toggle('active', idx === trainerIndex));
+            const cardWidth = trainers[0].offsetWidth;
+            const containerWidth = track.parentElement.offsetWidth;
+            const offset = (containerWidth / 2) - (cardWidth / 2) - (trainerIndex * cardWidth);
+            track.style.transform = `translateX(${offset}px)`;
+        }
+
+        document.querySelector('.next-btn')?.addEventListener('click', () => {
+            trainerIndex = (trainerIndex + 1) % trainers.length;
+            updateTrainer();
         });
-    });
-
-    if (hero) {
-        hero.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
-            
-            const activeImg = document.querySelector('.hero-slide.active .parallax-img');
-            const activeCard = document.querySelector('.hero-slide.active .floating-card');
-
-            if (activeImg) {
-                const moveX = (clientX - innerWidth / 2) / 40;
-                const moveY = (clientY - innerHeight / 2) / 40;
-                activeImg.style.transform = `translate(${moveX}px, ${moveY}px) rotateY(${moveX / 5}deg) rotateX(${-moveY / 5}deg)`;
-            }
-            
-            if (activeCard) {
-                const cardX = (innerWidth / 2 - clientX) / 20;
-                const cardY = (innerHeight / 2 - clientY) / 20;
-                activeCard.style.transform = `translate(${cardX}px, ${cardY}px)`;
-            }
+        document.querySelector('.prev-btn')?.addEventListener('click', () => {
+            trainerIndex = (trainerIndex - 1 + trainers.length) % trainers.length;
+            updateTrainer();
         });
 
-        hero.addEventListener('mouseleave', () => {
-            const allImgs = document.querySelectorAll('.parallax-img');
-            const allCards = document.querySelectorAll('.floating-card');
-            
-            allImgs.forEach(img => img.style.transform = 'translate(0, 0) rotateY(0) rotateX(0)');
-            allCards.forEach(card => card.style.transform = 'translate(0, 0)');
-        });
+        window.addEventListener('resize', updateTrainer);
+        updateTrainer();
     }
 
-    // --- Reveal Animations on Scroll ---
-    const revealElements = document.querySelectorAll('[data-reveal]');
+    // --- Reveal Animations ---
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('active');
         });
     }, { threshold: 0.1 });
 
-    revealElements.forEach(el => revealObserver.observe(el));
-
-    // Auth Modal Logic
-    const authModal = document.getElementById('authModal');
-    const openAuthBtn = document.getElementById('openAuthBtn');
-    const closeModal = document.querySelector('.close-modal');
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const authForms = document.querySelectorAll('.auth-form');
-
-    if (openAuthBtn) {
-        openAuthBtn.onclick = () => authModal.style.display = 'block';
+    function initReveal() {
+        document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
     }
 
-    if (closeModal) {
-        closeModal.onclick = () => authModal.style.display = 'none';
-    }
-
-    window.onclick = (event) => {
-        if (event.target == authModal) {
-            authModal.style.display = 'none';
-        }
-    };
-
-    // Tab Switching
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tab = btn.getAttribute('data-tab');
-            
-            tabBtns.forEach(b => b.classList.remove('active'));
-            authForms.forEach(f => f.classList.remove('active'));
-            
-            btn.classList.add('active');
-            document.getElementById(`${tab}Form`).classList.add('active');
-        });
-    });
-
-    // Smooth Scroll for Navigation
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-
-    // --- Success Stories Carousel Logic ---
-    const successTrack = document.querySelector('.success-track');
-    const successCards = document.querySelectorAll('.success-card-premium');
-    const successPrev = document.querySelector('.nav-btn.prev');
-    const successNext = document.querySelector('.nav-btn.next');
-    const successDots = document.querySelectorAll('.dot-success');
-
-    let successIndex = 0;
-
-    function updateSuccessCarousel() {
-        if (!successTrack || successCards.length === 0) return;
-        
-        const cardWidth = successCards[0].offsetWidth + 40; // Card width + gap
-        successTrack.style.transform = `translateX(-${successIndex * cardWidth}px)`;
-        
-        // Update dots
-        successDots.forEach((dot, idx) => {
-            dot.classList.toggle('active', idx === successIndex);
-        });
-    }
-
-    if (successNext) {
-        successNext.addEventListener('click', () => {
-            successIndex = (successIndex + 1) % successCards.length;
-            updateSuccessCarousel();
-        });
-    }
-
-    if (successPrev) {
-        successPrev.addEventListener('click', () => {
-            successIndex = (successIndex - 1 + successCards.length) % successCards.length;
-            updateSuccessCarousel();
-        });
-    }
-
-    successDots.forEach((dot, idx) => {
-        dot.addEventListener('click', () => {
-            successIndex = idx;
-            updateSuccessCarousel();
-        });
-    });
-
-    // --- Teachers Carousel (3D Center Mode) ---
-    const galleryTrack = document.querySelector('.gallery-track');
-    const trainerCards = document.querySelectorAll('.trainer-card');
-    const galleryPrev = document.querySelector('.prev-btn');
-    const galleryNext = document.querySelector('.next-btn');
-    const galleryDots = document.querySelectorAll('.dot-gallery');
-
-    let galleryIndex = 1; 
-
-    function updateGallery() {
-        if (!galleryTrack || trainerCards.length === 0) return;
-
-        trainerCards.forEach((card, idx) => {
-            card.classList.toggle('active', idx === galleryIndex);
-        });
-
-        const containerWidth = galleryTrack.parentElement.offsetWidth;
-        const cardWidth = trainerCards[0].offsetWidth;
-        // Calculate offset to center the active card
-        const trackOffset = (containerWidth / 2) - (cardWidth / 2) - (galleryIndex * cardWidth);
-        galleryTrack.style.transform = `translateX(${trackOffset}px)`;
-
-        galleryDots.forEach((dot, idx) => {
-            dot.classList.toggle('active', idx === galleryIndex);
-        });
-    }
-
-    if (galleryNext) {
-        galleryNext.addEventListener('click', () => {
-            galleryIndex = (galleryIndex + 1) % trainerCards.length;
-            updateGallery();
-        });
-    }
-
-    if (galleryPrev) {
-        galleryPrev.addEventListener('click', () => {
-            galleryIndex = (galleryIndex - 1 + trainerCards.length) % trainerCards.length;
-            updateGallery();
-        });
-    }
-
-    galleryDots.forEach((dot, idx) => {
-        dot.addEventListener('click', () => {
-            galleryIndex = idx;
-            updateGallery();
-        });
-    });
-
-    // Auto rotate every 6s
-    setInterval(() => {
-        galleryIndex = (galleryIndex + 1) % trainerCards.length;
-        updateGallery();
-    }, 6000);
-
-    window.addEventListener('resize', updateGallery);
-    setTimeout(updateGallery, 100); // Small delay for layout calc
-    // --- Load Live Gallery from Supabase ---
+    // --- Gallery Logic ---
     async function loadLiveGallery() {
-        const galleryGrid = document.querySelector('.gallery-grid');
-        if (!galleryGrid || typeof window.supabase === 'undefined') {
-            console.log('Supabase or gallery grid not found, keeping default items.');
-            return;
-        }
+        const grid = document.querySelector('.gallery-grid');
+        if (!grid || !window.supabase) return;
 
         try {
-            const { data, error } = await window.supabase
-                .from('gallery_items')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            if (error) {
-                console.error('Gallery Fetch Error:', error);
-                return;
-            }
-
+            const { data } = await window.supabase.from('gallery_items').select('*').order('created_at', { ascending: false });
             if (data && data.length > 0) {
-                galleryGrid.innerHTML = ''; // Clear hardcoded items only when we have real data
+                grid.innerHTML = '';
                 data.forEach(item => {
-                    const galleryItem = document.createElement('div');
-                    galleryItem.className = `gallery-item ${item.category}`;
-                    galleryItem.style.display = 'block';
-                    galleryItem.innerHTML = `
+                    const el = document.createElement('div');
+                    el.className = `gallery-item ${item.category}`;
+                    el.innerHTML = `
                         <div class="gallery-card">
-                            <img src="${item.image_url}" alt="${item.title}" loading="lazy">
+                            <img src="${item.image_url}" alt="${item.title}" style="object-fit: contain;">
                             <div class="gallery-overlay">
-                                <span class="category">${item.category === 'events' ? 'ইভেন্টস' : item.category === 'ceremony' ? 'সার্টিফিকেট বিতরণ' : 'মিডিয়া নিউজ'}</span>
                                 <h3>${item.title}</h3>
-                                <a href="${item.image_url}" target="_blank" class="view-btn"><i class="fa-solid fa-expand"></i></a>
                             </div>
                         </div>
                     `;
-                    galleryGrid.appendChild(galleryItem);
+                    grid.appendChild(el);
                 });
-                
-                // Re-run filter logic for new items
-                updateGallery();
             }
-        } catch (err) {
-            console.warn('Gallery System Notice:', err.message);
-        }
+        } catch (e) { console.error(e); }
     }
 
-    // Call gallery loader safely
-    setTimeout(loadLiveGallery, 500);
-
-    // --- Gallery Filtering Logic ---
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Update Active Button
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const filterValue = btn.getAttribute('data-filter');
-
-            galleryItems.forEach(item => {
-                item.style.transition = '0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                if (filterValue === 'all' || item.classList.contains(filterValue)) {
-                    item.style.display = 'block';
-                    setTimeout(() => {
-                        item.style.opacity = '1';
-                        item.style.transform = 'scale(1)';
-                    }, 10);
-                } else {
-                    item.style.opacity = '0';
-                    item.style.transform = 'scale(0.8)';
-                    setTimeout(() => {
-                        item.style.display = 'none';
-                    }, 500);
-                }
-            });
-        });
-    });
-    // --- Enrollment Form Submission ---
+    // --- Enrollment Form ---
     const enrollForm = document.getElementById('enrollment-form');
-    const formStatus = document.getElementById('form-status');
-
     if (enrollForm) {
         enrollForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
-            const submitBtn = document.getElementById('submit-enrollment');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = 'প্রসেসিং হচ্ছে... <i class="fa-solid fa-spinner fa-spin"></i>';
+            const btn = document.getElementById('submit-enrollment');
+            btn.disabled = true;
+            btn.innerHTML = 'পাঠানো হচ্ছে...';
 
             const formData = {
                 full_name: document.getElementById('student-name').value,
                 phone: document.getElementById('student-phone').value,
                 email: document.getElementById('student-email').value,
                 course: document.getElementById('selected-course').value,
-                message: document.getElementById('student-message').value,
-                created_at: new Date().toISOString()
+                message: document.getElementById('student-message').value
             };
 
             try {
-                if (window.supabase) {
-                    const { error } = await window.supabase.from('enrollments').insert([formData]);
-                    if (error) throw error;
-                    
-                    // --- Send Email Notification via EmailJS ---
-                    const emailParams = {
-                        name: formData.full_name,
-                        time: new Date().toLocaleString('bn-BD'),
-                        message: `স্টুডেন্ট নাম: ${formData.full_name}\nফোন: ${formData.phone}\nকোর্স: ${formData.course}\nমেসেজ: ${formData.message}`
-                    };
+                const { error } = await window.supabase.from('enrollments').insert([formData]);
+                if (error) throw error;
 
-                    try {
-                        await emailjs.send("service_1v33wgb", "template_5qo6h0i", emailParams);
-                        console.log('Email Sent Successfully with params:', emailParams);
-                    } catch (emailErr) {
-                        console.error('Email Sending Failed:', emailErr);
-                    }
+                // EmailJS
+                await emailjs.send("service_1v33wgb", "template_5qo6h0i", {
+                    name: formData.full_name,
+                    time: new Date().toLocaleString(),
+                    message: `নাম: ${formData.full_name}\nফোন: ${formData.phone}\nকোর্স: ${formData.course}`
+                });
 
-                    formStatus.innerHTML = 'ধন্যবাদ! আপনার আবেদনটি সফলভাবে জমা হয়েছে এবং ইমেইল পাঠানো হয়েছে।';
-                    formStatus.className = 'form-status success';
-                    enrollForm.reset();
-                } else {
-                    throw new Error('Supabase not connected');
-                }
-            } catch (error) {
-                console.error('Submission Error:', error);
-                formStatus.innerHTML = 'দুঃখিত, তথ্য সেভ করা যায়নি। আপনার ইন্টারনেট চেক করুন।';
-                formStatus.className = 'form-status error';
+                document.getElementById('form-status').innerHTML = 'সফলভাবে পাঠানো হয়েছে!';
+                enrollForm.reset();
+            } catch (err) {
+                document.getElementById('form-status').innerHTML = 'এরর হয়েছে, আবার চেষ্টা করুন।';
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'আবেদন জমা দিন <i class="fa-solid fa-paper-plane"></i>';
+                btn.disabled = false;
+                btn.innerHTML = 'আবেদন জমা দিন';
             }
         });
     }
 
-    // --- Smooth Scroll for Enrollment Button ---
-    const allBtns = document.querySelectorAll('button, .btn-primary');
-    allBtns.forEach(btn => {
-        if (btn.textContent.includes('ভর্তি ফরম')) {
-            btn.addEventListener('click', () => {
-                const target = document.getElementById('enroll');
-                if (target) target.scrollIntoView({ behavior: 'smooth' });
-            });
-        }
-    });
+    // Init All
+    loadSiteDynamicContent();
+    loadLiveGallery();
+    initReveal();
 });

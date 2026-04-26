@@ -31,19 +31,23 @@
                 <li class="active" data-tab="submissions"><i class="fa-solid fa-users"></i> ভর্তি আবেদন</li>
                 <li data-tab="gallery-manager"><i class="fa-solid fa-image"></i> গ্যালারি ম্যানেজমেন্ট</li>
                 <li data-tab="payment-verification"><i class="fa-solid fa-money-check-dollar"></i> পেমেন্ট ভেরিফিকেশন</li>
+                <li data-tab="course-manager"><i class="fa-solid fa-graduation-cap"></i> কোর্স ম্যানেজার</li>
+                <li data-tab="instructor-manager"><i class="fa-solid fa-user-tie"></i> ইন্সট্রাক্টর ম্যানেজার</li>
+                <li data-tab="site-config"><i class="fa-solid fa-gears"></i> সাইট সেটিংস</li>
                 <li id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> লগআউট</li>
             </ul>
         </nav>
 
         <main class="admin-main">
             <header class="admin-header">
-                <h1>ড্যাশবোর্ড</h1>
+                <h1>Wings Fly CMS Dashboard</h1>
                 <div class="admin-user">
                     <span>Welcome, Admin</span>
                     <div class="user-avatar">A</div>
                 </div>
             </header>
 
+            <!-- Enrollment Submissions -->
             <div id="submissions" class="admin-tab-content active">
                 <div class="content-header">
                     <h2>ভর্তি আবেদনের তালিকা</h2>
@@ -60,13 +64,12 @@
                                 <th>অ্যাকশন</th>
                             </tr>
                         </thead>
-                        <tbody id="enrollments-list">
-                            <!-- Data will be loaded here -->
-                        </tbody>
+                        <tbody id="enrollments-list"></tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- Payment Verification -->
             <div id="payment-verification" class="admin-tab-content">
                 <div class="content-header">
                     <h2>পেমেন্ট ভেরিফিকেশন</h2>
@@ -85,13 +88,79 @@
                                 <th>অ্যাকশন</th>
                             </tr>
                         </thead>
-                        <tbody id="admin-payments-list">
-                            <!-- Payment rows will be loaded here -->
-                        </tbody>
+                        <tbody id="admin-payments-list"></tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- Course Manager -->
+            <div id="course-manager" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>কোর্স ম্যানেজমেন্ট</h2>
+                    <button class="btn-primary" id="add-course-btn"><i class="fa-solid fa-plus"></i> নতুন কোর্স</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ছবি</th>
+                                <th>টাইটেল</th>
+                                <th>বর্ণনা</th>
+                                <th>ফি</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courses-list"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Instructor Manager -->
+            <div id="instructor-manager" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>ইন্সট্রাক্টর ম্যানেজমেন্ট</h2>
+                    <button class="btn-primary" id="add-instructor-btn"><i class="fa-solid fa-plus"></i> নতুন শিক্ষক</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ছবি</th>
+                                <th>নাম</th>
+                                <th>পদবী</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instructors-list"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Site Config -->
+            <div id="site-config" class="admin-tab-content">
+                <div class="content-header">
+                    <h2>সাইট ইনফরমেশন সেটিংস</h2>
+                </div>
+                <div class="dashboard-card" style="max-width: 700px;">
+                    <form id="site-settings-form">
+                        <div class="form-group">
+                            <label>একাডেমি ফোন নম্বর</label>
+                            <input type="text" id="set-phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label>অফিস ঠিকানা</label>
+                            <input type="text" id="set-address" name="address">
+                        </div>
+                        <div class="form-group">
+                            <label>চেয়ারম্যানের মেসেজ</label>
+                            <textarea id="set-chairman-msg" name="chairman_message" rows="5" style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">সব তথ্য আপডেট করুন</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Gallery Manager -->
             <div id="gallery-manager" class="admin-tab-content">
                 <div class="content-header">
                     <h2>গ্যালারি ম্যানেজমেন্ট</h2>

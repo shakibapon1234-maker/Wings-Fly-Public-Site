@@ -42,8 +42,114 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetTab === 'submissions') loadSubmissions();
             if (targetTab === 'payment-verification') loadPayments();
             if (targetTab === 'gallery-manager') loadGallery();
+            if (targetTab === 'course-manager') loadCourses();
+            if (targetTab === 'instructor-manager') loadInstructors();
+            if (targetTab === 'site-config') loadSiteConfig();
         });
     });
+
+    // --- Site Config Logic ---
+    async function loadSiteConfig() {
+        const { data } = await window.supabase.from('site_config').select('*');
+        if (data) {
+            data.forEach(item => {
+                const el = document.getElementById(`set-${item.key.replace('_','-')}`);
+                if(el) el.value = item.value;
+            });
+        }
+    }
+
+    document.getElementById('site-settings-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const updates = [
+            { key: 'phone', value: document.getElementById('set-phone').value },
+            { key: 'address', value: document.getElementById('set-address').value },
+            { key: 'chairman_message', value: document.getElementById('set-chairman-msg').value }
+        ];
+
+        for (const up of updates) {
+            await window.supabase.from('site_config').update({ value: up.value }).eq('key', up.key);
+        }
+        alert('সাইট সেটিংস আপডেট হয়েছে!');
+    });
+
+    // --- Course Manager Logic ---
+    async function loadCourses() {
+        const list = document.getElementById('courses-list');
+        list.innerHTML = '<tr><td colspan="5">লোড হচ্ছে...</td></tr>';
+        const { data } = await window.supabase.from('courses').select('*').order('created_at', { ascending: false });
+        if (data) {
+            list.innerHTML = '';
+            data.forEach(c => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${c.image_url}" width="50" style="border-radius:5px;"></td>
+                    <td>${c.title}</td>
+                    <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${c.description}</td>
+                    <td>${c.price}</td>
+                    <td><button class="delete-btn-small" onclick="deleteCourse(${c.id})">Delete</button></td>
+                `;
+                list.appendChild(row);
+            });
+        }
+    }
+
+    document.getElementById('add-course-btn').onclick = async () => {
+        const title = prompt('কোর্সের নাম:');
+        const price = prompt('কোর্স ফি:');
+        const image_url = prompt('ছবির ইউআরএল (URL):');
+        const description = prompt('সংক্ষিপ্ত বর্ণনা:');
+        
+        if (title && image_url) {
+            await window.supabase.from('courses').insert([{ title, price, image_url, description }]);
+            loadCourses();
+        }
+    };
+
+    window.deleteCourse = async (id) => {
+        if (confirm('আপনি কি এই কোর্সটি ডিলিট করতে চান?')) {
+            await window.supabase.from('courses').delete().eq('id', id);
+            loadCourses();
+        }
+    };
+
+    // --- Instructor Manager Logic ---
+    async function loadInstructors() {
+        const list = document.getElementById('instructors-list');
+        list.innerHTML = '<tr><td colspan="4">লোড হচ্ছে...</td></tr>';
+        const { data } = await window.supabase.from('instructors').select('*').order('created_at', { ascending: false });
+        if (data) {
+            list.innerHTML = '';
+            data.forEach(t => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${t.image_url}" width="50" height="50" style="border-radius:50%; object-fit:cover;"></td>
+                    <td>${t.name}</td>
+                    <td>${t.designation}</td>
+                    <td><button class="delete-btn-small" onclick="deleteInstructor(${t.id})">Delete</button></td>
+                `;
+                list.appendChild(row);
+            });
+        }
+    }
+
+    document.getElementById('add-instructor-btn').onclick = async () => {
+        const name = prompt('শিক্ষকের নাম:');
+        const designation = prompt('পদবী:');
+        const image_url = prompt('ছবির ইউআরএল (URL):');
+        
+        if (name && image_url) {
+            await window.supabase.from('instructors').insert([{ name, designation, image_url }]);
+            loadInstructors();
+        }
+    };
+
+    window.deleteInstructor = async (id) => {
+        if (confirm('আপনি কি এই শিক্ষককে ডিলিট করতে চান?')) {
+            await window.supabase.from('instructors').delete().eq('id', id);
+            loadInstructors();
+        }
+    };
 
     // --- Payments Verification Logic ---
     async function loadPayments() {
