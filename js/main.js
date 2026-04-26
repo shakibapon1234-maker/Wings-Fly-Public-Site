@@ -141,28 +141,60 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { console.error('Instructors Load Error:', e); }
     }
 
-    // --- Hero Slider Logic ---
+    // --- Hero Slider Logic (with diverse animations) ---
     let currentSlide = 0;
+    let isAnimating = false;
+    
     function initHeroSlider() {
         const slides = document.querySelectorAll('.hero-slide');
         const dots = document.querySelectorAll('.dot');
         if (slides.length === 0) return;
 
-        function showSlide(index) {
-            slides.forEach(s => s.classList.remove('active'));
-            dots.forEach(d => d.classList.remove('active'));
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
-            currentSlide = index;
+        // Clean all animation classes
+        function cleanSlide(slide) {
+            slide.classList.remove('active', 'leaving', 'slide-enter', 'slide-leave');
         }
 
+        function showSlide(nextIndex) {
+            if (isAnimating || nextIndex === currentSlide) return;
+            isAnimating = true;
+
+            const currentSlideEl = slides[currentSlide];
+            const nextSlideEl = slides[nextIndex];
+
+            // 1. Start leaving animation on current slide
+            currentSlideEl.classList.remove('active', 'slide-enter');
+            currentSlideEl.classList.add('leaving', 'slide-leave');
+
+            // 2. Start entering animation on next slide
+            nextSlideEl.classList.add('active', 'slide-enter');
+
+            // 3. Update dots
+            dots.forEach(d => d.classList.remove('active'));
+            if (dots[nextIndex]) dots[nextIndex].classList.add('active');
+
+            // 4. After animation ends, clean up
+            const animDuration = 1200; // ms - matches longest animation
+            setTimeout(() => {
+                cleanSlide(currentSlideEl);
+                // Remove slide-enter after animation completes (keep active)
+                nextSlideEl.classList.remove('slide-enter');
+                currentSlide = nextIndex;
+                isAnimating = false;
+            }, animDuration);
+        }
+
+        // Dot click handlers
         dots.forEach((dot, idx) => {
             dot.onclick = () => showSlide(idx);
         });
 
+        // Auto-advance every 5 seconds
         setInterval(() => {
-            let next = (currentSlide + 1) % slides.length;
-            showSlide(next);
+            if (!isAnimating) {
+                let next = (currentSlide + 1) % slides.length;
+                showSlide(next);
+            }
         }, 5000);
     }
 
@@ -271,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Init All
+    initHeroSlider();
     loadSiteDynamicContent();
     loadLiveGallery();
     initReveal();
