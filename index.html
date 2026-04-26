@@ -107,10 +107,21 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Slide 4 -->
+                    <div class="hero-slide">
+                        <div class="parallax-img-wrapper">
+                            <img src="assets/hero-slide-4.png" alt="Futuristic Cockpit" class="parallax-img">
+                            <div class="floating-card card-1">
+                                <i class="fa-solid fa-compass"></i>
+                                <span>Advanced Navigation</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Slider Dots -->
                 <div class="slider-dots">
                     <span class="dot active"></span>
+                    <span class="dot"></span>
                     <span class="dot"></span>
                     <span class="dot"></span>
                 </div>
@@ -169,6 +180,11 @@
 
     <!-- Courses Section -->
     <section id="courses" class="courses" data-reveal>
+        <div class="courses-bg-stars">
+            <div class="stars-layer-1"></div>
+            <div class="stars-layer-2"></div>
+            <div class="shooting-star"></div>
+        </div>
         <div class="container">
             <div class="section-header">
                 <h2 style="color: #ffffff;">আমাদের প্রিমিয়াম <span class="highlight">কোর্সসমূহ</span></h2>
@@ -300,64 +316,101 @@
 
     <!-- Luxury Executive Gallery (Teachers Panel) -->
     <section id="trainers" class="executive-gallery" data-reveal>
+        <div class="gallery-bg-anim">
+            <div class="glow-orb orb-1"></div>
+            <div class="glow-orb orb-2"></div>
+            <div class="grid-overlay"></div>
+        </div>
         <div class="container">
             <div class="section-header">
                 <h2 style="color: #ffffff;">আমাদের <span class="highlight">শিক্ষক প্যানেল</span></h2>
                 <p style="color: rgba(255,255,255,0.7);">PROFESSIONAL EXECUTIVE PORTRAIT COLLECTION</p>
             </div>
             
-            <div class="gallery-container">
-                <!-- Trainer 1 -->
-                <div class="gallery-frame-wrapper trainer-1">
-                    <div class="luxury-frame">
-                        <div class="inner-border"></div>
-                        <div class="trainer-img-box">
-                            <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/11/trainer-1.webp" alt="Hafizur Rahman">
+            <div class="gallery-carousel-wrapper">
+                <button class="gallery-nav-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="gallery-track-container">
+                    <div class="gallery-track">
+                        <!-- Trainer 1 -->
+                        <div class="gallery-frame-wrapper trainer-card">
+                            <div class="luxury-frame">
+                                <div class="inner-border"></div>
+                                <div class="trainer-img-box">
+                                    <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/11/trainer-1.webp" alt="Hafizur Rahman">
+                                </div>
+                            </div>
+                            <div class="frame-label">
+                                <h4>হাফিজুর রহমান</h4>
+                                <span>জিডিএস ট্রেইনার</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="frame-label">
-                        <h4>হাফিজুর রহমান</h4>
-                        <span>জিডিএস ট্রেইনার</span>
-                    </div>
-                </div>
 
-                <!-- Trainer 2 (Tall/Center) -->
-                <div class="gallery-frame-wrapper trainer-2">
-                    <div class="luxury-frame gold-heavy">
-                        <div class="inner-border"></div>
-                        <div class="trainer-img-box">
-                            <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/11/trainer-2.webp" alt="Shakib Ibn Mustafa">
+                        <!-- Trainer 2 -->
+                        <div class="gallery-frame-wrapper trainer-card">
+                            <div class="luxury-frame gold-heavy">
+                                <div class="inner-border"></div>
+                                <div class="trainer-img-box">
+                                    <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/11/trainer-2.webp" alt="Shakib Ibn Mustafa">
+                                </div>
+                            </div>
+                            <div class="frame-label">
+                                <h4>সাকিব ইবনে মুস্তাফা</h4>
+                                <span>ট্রেইনার ও কো-অর্ডিনেটর</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="frame-label">
-                        <h4>সাকিব ইবনে মুস্তাফা</h4>
-                        <span>ট্রেইনার ও কো-অর্ডিনেটর</span>
-                    </div>
-                </div>
 
-                <!-- Trainer 3 -->
-                <div class="gallery-frame-wrapper trainer-3">
-                    <div class="luxury-frame">
-                        <div class="inner-border"></div>
-                        <div class="trainer-img-box">
-                            <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/11/trainer-3.webp" alt="MD. Biplob Biswas">
+                        <!-- Trainer 3 -->
+                        <div class="gallery-frame-wrapper trainer-card">
+                            <div class="luxury-frame">
+                                <div class="inner-border"></div>
+                                <div class="trainer-img-box">
+                                    <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/11/trainer-3.webp" alt="MD. Biplob Biswas">
+                                </div>
+                            </div>
+                            <div class="frame-label">
+                                <h4>মোঃ বিপ্লব বিশ্বাস</h4>
+                                <span>কোর্স সুপারভাইজার</span>
+                            </div>
+                        </div>
+
+                        <!-- Trainer 4 (Added for better carousel feel) -->
+                        <div class="gallery-frame-wrapper trainer-card">
+                            <div class="luxury-frame">
+                                <div class="inner-border"></div>
+                                <div class="trainer-img-box">
+                                    <img src="https://wingsflyaviationacademy.com/wp-content/uploads/2024/11/student-2.webp" alt="Instructor 4">
+                                </div>
+                            </div>
+                            <div class="frame-label">
+                                <h4>আহসান হাবিব</h4>
+                                <span>সিনিয়র ইন্সট্রাক্টর</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="frame-label">
-                        <h4>মোঃ বিপ্লব বিশ্বাস</h4>
-                        <span>কোর্স সুপারভাইজার</span>
-                    </div>
                 </div>
+                <button class="gallery-nav-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="gallery-dots">
+                <span class="dot-gallery active"></span>
+                <span class="dot-gallery"></span>
+                <span class="dot-gallery"></span>
+                <span class="dot-gallery"></span>
             </div>
         </div>
     </section>
 
     <!-- Premium Success Stories Section -->
     <section id="success" class="success-section" data-reveal>
+        <div class="success-bg-aurora">
+            <div class="aurora-wave wave-1"></div>
+            <div class="aurora-wave wave-2"></div>
+            <div class="aurora-wave wave-3"></div>
+        </div>
         <div class="container">
             <div class="section-header">
-                <h2 style="color: var(--text-dark);">Success Story of <span class="highlight">Our Students</span></h2>
-                <p style="color: var(--text-muted);">আমাদের শিক্ষার্থীদের সাফল্যের গল্পগুলো আমাদের এগিয়ে চলার প্রেরণা।</p>
+                <h2 style="color: #ffffff;">Success Story of <span class="highlight">Our Students</span></h2>
+                <p style="color: rgba(255,255,255,0.7);">আমাদের শিক্ষার্থীদের সাফল্যের গল্পগুলো আমাদের এগিয়ে চলার প্রেরণা।</p>
             </div>
 
             <div class="success-carousel-container">

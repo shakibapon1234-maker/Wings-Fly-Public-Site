@@ -354,8 +354,8 @@ body {
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 1s ease-in-out, visibility 1s;
     z-index: 1;
+    transition: all 0.8s ease-in-out;
 }
 
 .hero-slide.active {
@@ -364,11 +364,53 @@ body {
     z-index: 2;
 }
 
+/* --- Slide 1: Roll Out when leaving --- */
+.hero-slide:nth-child(1).leaving {
+    animation: rollOut 1s forwards;
+}
+@keyframes rollOut {
+    0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(-150%) rotate(-120deg); opacity: 0; }
+}
+
+/* --- Slide 2: Scale Up + Float Up when active --- */
+.hero-slide:nth-child(2).active {
+    animation: scaleFloat 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes scaleFloat {
+    0% { transform: scale(0) translateY(100px); opacity: 0; }
+    60% { transform: scale(1.1) translateY(0); opacity: 1; }
+    100% { transform: scale(1) translateY(-20px); opacity: 1; }
+}
+
+/* --- Slide 3: Drop from Top + Shake when active --- */
+.hero-slide:nth-child(3).active {
+    animation: dropShake 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes dropShake {
+    0% { transform: translateY(-150%) scale(0.8); opacity: 0; }
+    60% { transform: translateY(20px) scale(1); opacity: 1; }
+    75% { transform: translateY(-10px); }
+    90% { transform: translateY(5px); }
+    100% { transform: translateY(0); }
+}
+
+/* --- Slide 4: Futuristic Flip In when active --- */
+.hero-slide:nth-child(4).active {
+    animation: flipIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes flipIn {
+    0% { transform: rotateY(-90deg) scale(0.5); opacity: 0; }
+    100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
 .slider-dots {
     display: flex;
     justify-content: center;
     gap: 12px;
     margin-top: 30px;
+    position: relative;
+    z-index: 10;
 }
 
 .dot {
@@ -500,11 +542,52 @@ body {
 /* --- 3D Neon Courses Section --- */
 .courses {
     padding: 120px 0;
-    background: rgba(2, 5, 10, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: radial-gradient(circle at center, #0a1325 0%, #02050a 100%);
     position: relative;
     overflow: hidden;
+}
+
+.courses-bg-stars {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.courses-bg-stars .stars-layer-1, 
+.courses-bg-stars .stars-layer-2 {
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url('data:image/svg+xml;utf8,<svg width="300" height="300" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="50" r="1" fill="%23fff" opacity="0.4"/><circle cx="100" cy="120" r="1.5" fill="%23fff" opacity="0.6"/><circle cx="220" cy="80" r="1" fill="%23fff" opacity="0.8"/><circle cx="180" cy="210" r="1" fill="%23fff" opacity="0.3"/><circle cx="50" cy="250" r="1.2" fill="%23fff" opacity="0.5"/><circle cx="280" cy="270" r="1" fill="%23fff" opacity="0.4"/></svg>');
+    animation: moveStars 80s linear infinite;
+    opacity: 0.5;
+}
+
+.courses-bg-stars .stars-layer-2 {
+    background-image: url('data:image/svg+xml;utf8,<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"><circle cx="80" cy="100" r="1.2" fill="%23fff" opacity="0.7"/><circle cx="300" cy="50" r="1" fill="%23fff" opacity="0.5"/><circle cx="200" cy="300" r="1.5" fill="%23fff" opacity="0.8"/><circle cx="350" cy="250" r="1" fill="%23fff" opacity="0.4"/><circle cx="120" cy="350" r="1.2" fill="%23fff" opacity="0.6"/></svg>');
+    animation-duration: 120s;
+    opacity: 0.7;
+}
+
+.shooting-star {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 2px;
+    background: #fff;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff;
+    animation: shootingStarAnim 10s linear infinite;
+    opacity: 0;
+}
+
+@keyframes shootingStarAnim {
+    0% { transform: translateX(0) translateY(0) rotate(-45deg) scale(0); opacity: 0; }
+    10% { transform: translateX(-500px) translateY(500px) rotate(-45deg) scale(1); opacity: 1; }
+    20% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg) scale(0); opacity: 0; }
+    100% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg) scale(0); opacity: 0; }
 }
 
 .courses-grid {
@@ -872,51 +955,80 @@ body {
 
 /* --- Premium Success Stories Carousel --- */
 .success-section {
-    padding: 120px 0;
-    background: rgba(0, 31, 63, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    padding: 140px 0;
+    background: #02050a;
     position: relative;
     overflow: hidden;
 }
 
+.success-bg-aurora {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(80px);
+    opacity: 0.35;
+}
+
+.aurora-wave {
+    position: absolute;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #7303c0, #00d4ff, transparent);
+    animation: auroraMove 20s infinite linear;
+}
+
+.wave-1 { top: -20%; left: -50%; opacity: 0.3; }
+.wave-2 { top: 20%; left: -80%; opacity: 0.4; animation-duration: 25s; animation-direction: reverse; }
+.wave-3 { top: 60%; left: -30%; opacity: 0.2; animation-duration: 30s; }
+
+@keyframes auroraMove {
+    0% { transform: translateX(0) skewX(-20deg); }
+    100% { transform: translateX(50%) skewX(-20deg); }
+}
+
 .success-carousel-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 60px auto 0;
     position: relative;
-    perspective: 2000px;
+    z-index: 2;
 }
 
 .success-track {
     display: flex;
     gap: 40px;
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
     padding: 40px 0;
 }
 
 .success-card-premium {
     min-width: 550px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    padding: 40px;
-    transition: all 0.5s;
-    transform-style: preserve-3d;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 35px;
+    padding: 50px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.success-card-premium:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--primary);
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 30px 60px rgba(0, 116, 217, 0.2);
 }
 
 .success-card-inner {
     display: grid;
-    grid-template-columns: 180px 1fr;
-    gap: 35px;
+    grid-template-columns: 200px 1fr;
+    gap: 45px;
     align-items: center;
 }
 
 .student-photo-wrapper {
     position: relative;
-    width: 180px;
-    height: 180px;
+    width: 200px;
+    height: 200px;
 }
 
 .glow-ring {
@@ -1052,130 +1164,175 @@ body {
 }
 
 /* --- Luxury Executive Gallery (Teachers Panel) --- */
+/* --- Teachers Panel (3D Carousel) --- */
 .executive-gallery {
     padding: 120px 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: radial-gradient(circle at center, #0a1832 0%, #02050a 100%);
     position: relative;
     overflow: hidden;
 }
 
-.gallery-container {
+.gallery-bg-anim {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.glow-orb {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.35; /* Increased opacity for better visibility */
+    animation: orbMove 25s infinite alternate ease-in-out;
+}
+
+.orb-1 { background: #0074D9; top: -20%; left: -10%; }
+.orb-2 { background: #FFD700; bottom: -20%; right: -10%; animation-delay: -12s; }
+
+@keyframes orbMove {
+    from { transform: translate(-50px, -50px) scale(1); }
+    to { transform: translate(150px, 150px) scale(1.3); }
+}
+
+.grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), 
+                      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.4;
+}
+
+.gallery-carousel-wrapper {
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: 50px;
+    justify-content: center;
     margin-top: 60px;
-    flex-wrap: wrap;
+    z-index: 2;
+    gap: 30px;
 }
 
-.gallery-frame-wrapper {
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-    text-align: center;
+.gallery-track-container {
+    width: 100%;
+    overflow: visible;
+    padding: 50px 0;
 }
 
-/* Staggered Heights */
-.trainer-1, .trainer-3 { transform: translateY(30px); }
-.trainer-2 { transform: translateY(-30px); scale: 1.1; z-index: 10; }
+.gallery-track {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    gap: 0; /* Gap handled by card margins/padding for 3D effect */
+}
+
+.trainer-card {
+    flex: 0 0 320px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    transform: scale(0.8);
+    opacity: 0.4;
+    filter: grayscale(1) blur(2px);
+    margin: 0 -40px; /* Overlap effect */
+    z-index: 1;
+}
+
+.trainer-card.active {
+    transform: scale(1.15) translateY(-20px);
+    opacity: 1;
+    filter: grayscale(0) blur(0);
+    z-index: 10;
+}
+
+.gallery-nav-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    backdrop-filter: blur(10px);
+    z-index: 20;
+}
+
+.gallery-nav-btn:hover {
+    background: var(--primary);
+    box-shadow: 0 0 30px var(--primary);
+    transform: scale(1.1);
+}
 
 .luxury-frame {
     position: relative;
-    padding: 15px;
-    background: #1a1a1a;
-    border: 10px solid;
-    /* Golden Metallic Gradient Border */
+    padding: 12px;
+    background: #111;
+    border: 8px solid;
     border-image: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C) 1;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.8);
-    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
     width: 300px;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 420px;
 }
 
 .luxury-frame.gold-heavy {
-    border-width: 15px;
-    width: 340px;
-    height: 460px;
+    border-width: 12px;
 }
 
 .inner-border {
     position: absolute;
     inset: 5px;
-    border: 1px solid rgba(251, 245, 183, 0.3);
+    border: 1px solid rgba(251, 245, 183, 0.2);
     pointer-events: none;
-    z-index: 2;
 }
 
 .trainer-img-box {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    position: relative;
 }
 
 .trainer-img-box img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: sepia(0.2) contrast(1.1);
     transition: transform 0.8s;
 }
 
-.gallery-frame-wrapper:hover .trainer-img-box img {
-    transform: scale(1.1);
-    filter: sepia(0) contrast(1.1);
+.gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 40px;
 }
 
-.gallery-frame-wrapper:hover .luxury-frame {
-    box-shadow: 0 40px 80px rgba(191, 149, 63, 0.2);
+.dot-gallery {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.frame-label {
-    margin-top: 25px;
+.dot-gallery.active {
+    width: 30px;
+    border-radius: 5px;
+    background: #FFD700;
+    box-shadow: 0 0 15px #FFD700;
 }
 
 .frame-label h4 {
     color: #FCF6BA;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.frame-label span {
-    color: rgba(252, 246, 186, 0.6);
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* Shine effect on hover */
-.luxury-frame::after {
-    content: '';
-    position: absolute;
-    top: -100%;
-    left: -100%;
-    width: 50%;
-    height: 300%;
-    background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-    transform: rotate(45deg);
-    transition: 0s;
-}
-
-.gallery-frame-wrapper:hover .luxury-frame::after {
-    left: 100%;
-    top: 100%;
-    transition: 0.7s;
-}
-
-.trainer-img {
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 25px;
-    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-top: 20px;
+}    border-radius: 50%;
     background: #eef2f7;
     display: flex;
     align-items: center;

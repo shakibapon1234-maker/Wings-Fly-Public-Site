@@ -20,19 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSlide = 0;
 
     function showSlide(index) {
-        slides.forEach(s => s.classList.remove('active'));
-        dots.forEach(d => d.classList.remove('active'));
+        const oldActive = document.querySelector('.hero-slide.active');
+        if (oldActive) {
+            oldActive.classList.remove('active');
+            oldActive.classList.add('leaving');
+            setTimeout(() => {
+                oldActive.classList.remove('leaving');
+            }, 1000);
+        }
         
         slides[index].classList.add('active');
+        dots.forEach(d => d.classList.remove('active'));
         dots[index].classList.add('active');
         currentSlide = index;
     }
 
-    // Auto Slide every 5s
+    // Auto Slide every 4s for better viewing of unique animations
     const slideInterval = setInterval(() => {
         let next = (currentSlide + 1) % slides.length;
         showSlide(next);
-    }, 5000);
+    }, 4000);
 
     // Dot Clicks
     dots.forEach((dot, index) => {
@@ -170,11 +177,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Auto slide for success stories
+    // --- Teachers Carousel (3D Center Mode) ---
+    const galleryTrack = document.querySelector('.gallery-track');
+    const trainerCards = document.querySelectorAll('.trainer-card');
+    const galleryPrev = document.querySelector('.prev-btn');
+    const galleryNext = document.querySelector('.next-btn');
+    const galleryDots = document.querySelectorAll('.dot-gallery');
+
+    let galleryIndex = 1; 
+
+    function updateGallery() {
+        if (!galleryTrack || trainerCards.length === 0) return;
+
+        trainerCards.forEach((card, idx) => {
+            card.classList.toggle('active', idx === galleryIndex);
+        });
+
+        const containerWidth = galleryTrack.parentElement.offsetWidth;
+        const cardWidth = trainerCards[0].offsetWidth;
+        // Calculate offset to center the active card
+        const trackOffset = (containerWidth / 2) - (cardWidth / 2) - (galleryIndex * cardWidth);
+        galleryTrack.style.transform = `translateX(${trackOffset}px)`;
+
+        galleryDots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === galleryIndex);
+        });
+    }
+
+    if (galleryNext) {
+        galleryNext.addEventListener('click', () => {
+            galleryIndex = (galleryIndex + 1) % trainerCards.length;
+            updateGallery();
+        });
+    }
+
+    if (galleryPrev) {
+        galleryPrev.addEventListener('click', () => {
+            galleryIndex = (galleryIndex - 1 + trainerCards.length) % trainerCards.length;
+            updateGallery();
+        });
+    }
+
+    galleryDots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => {
+            galleryIndex = idx;
+            updateGallery();
+        });
+    });
+
+    // Auto rotate every 6s
     setInterval(() => {
-        if (successCards.length > 1) {
-            successIndex = (successIndex + 1) % successCards.length;
-            updateSuccessCarousel();
-        }
-    }, 8000);
+        galleryIndex = (galleryIndex + 1) % trainerCards.length;
+        updateGallery();
+    }, 6000);
+
+    window.addEventListener('resize', updateGallery);
+    setTimeout(updateGallery, 100); // Small delay for layout calc
 });
