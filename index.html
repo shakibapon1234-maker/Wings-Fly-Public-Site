@@ -62,6 +62,16 @@
             emailjs.init("lJp4QOYPMwWMzXq5p"); // Your Public Key
         })();
     </script>
+
+    <!-- Google Analytics (GA4) -->
+    <!-- আপনার নিজের GA4 Measurement ID বসান (G-XXXXXXXXXX) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/main.css">
@@ -1077,5 +1087,106 @@
             setTimeout(() => p.remove(), 800);
         });
     </script>
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/8801782202433?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%95%E0%A7%8B%E0%A6%B0%E0%A7%8D%E0%A6%B8%20%E0%A6%B8%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4" target="_blank" id="whatsapp-float" class="whatsapp-float" title="হোয়াটসঅ্যাপে মেসেজ করুন">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="wa-tooltip">কোর্স সম্পর্কে জানতে চান?</span>
+    </a>
+
+    <!-- Click-to-Call Floating Button (Mobile Only) -->
+    <a href="tel:+8801782202433" id="call-float" class="call-float" title="কল করুন">
+        <i class="fa-solid fa-phone"></i>
+    </a>
+
+    <style>
+        /* WhatsApp Floating Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            text-decoration: none;
+            z-index: 9998;
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            animation: wa-pulse 2s infinite;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 35px rgba(37, 211, 102, 0.6);
+        }
+        .whatsapp-float:hover .wa-tooltip {
+            opacity: 1;
+            transform: translateX(-10px);
+            visibility: visible;
+        }
+        .wa-tooltip {
+            position: absolute;
+            right: 70px;
+            background: #25D366;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+        .wa-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 6px solid transparent;
+            border-left-color: #25D366;
+        }
+        @keyframes wa-pulse {
+            0%, 100% { box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 6px 35px rgba(37, 211, 102, 0.7); }
+        }
+
+        /* Click-to-Call Button (Mobile Only) */
+        .call-float {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #0074D9, #001f3f);
+            border-radius: 50%;
+            display: none; /* Hidden on desktop */
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            text-decoration: none;
+            z-index: 9997;
+            box-shadow: 0 6px 25px rgba(0, 116, 217, 0.4);
+            transition: all 0.3s ease;
+            animation: call-ring 3s infinite;
+        }
+        @media (max-width: 768px) {
+            .call-float { display: flex; }
+            .whatsapp-float { bottom: 25px; right: 20px; width: 55px; height: 55px; font-size: 28px; }
+            .call-float { bottom: 90px; right: 20px; width: 50px; height: 50px; font-size: 22px; }
+        }
+        @keyframes call-ring {
+            0%, 100% { transform: rotate(0); }
+            5%, 15% { transform: rotate(-8deg); }
+            10%, 20% { transform: rotate(8deg); }
+            25% { transform: rotate(0); }
+        }
+    </style>
 </body>
 </html>
