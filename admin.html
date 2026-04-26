@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Wings Fly Aviation Academy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
 <body class="admin-body">
@@ -97,9 +96,35 @@
             <div id="course-manager" class="admin-tab-content">
                 <div class="content-header">
                     <h2>কোর্স ম্যানেজমেন্ট</h2>
-                    <button class="btn-primary" id="add-course-btn"><i class="fa-solid fa-plus"></i> নতুন কোর্স</button>
                 </div>
-                <div class="table-container">
+                
+                <div class="upload-section">
+                    <h3>নতুন কোর্স যুক্ত করুন</h3>
+                    <form id="course-upload-form" class="upload-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>কোর্সের নাম</label>
+                                <input type="text" id="course-title" placeholder="যেমন: এয়ার টিকেটিং" required>
+                            </div>
+                            <div class="form-group">
+                                <label>কোর্স ফি</label>
+                                <input type="text" id="course-price" placeholder="যেমন: ৳ ১০,০০০" required>
+                            </div>
+                            <div class="form-group">
+                                <label>কোর্সের ছবি (আপলোড)</label>
+                                <input type="file" id="course-image" accept="image/*" required>
+                            </div>
+                            <div class="form-group" style="grid-column: span 3;">
+                                <label>বর্ণনা (Description)</label>
+                                <textarea id="course-desc" rows="3" placeholder="কোর্সের বিস্তারিত..." style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;" required></textarea>
+                            </div>
+                        </div>
+                        <button type="submit" id="add-course-btn-submit" class="btn-primary">কোর্স যুক্ত করুন <i class="fa-solid fa-upload"></i></button>
+                    </form>
+                    <div id="course-upload-status" style="margin-top: 10px;"></div>
+                </div>
+
+                <div class="table-container" style="margin-top: 30px;">
                     <table>
                         <thead>
                             <tr>
@@ -119,9 +144,31 @@
             <div id="instructor-manager" class="admin-tab-content">
                 <div class="content-header">
                     <h2>ইন্সট্রাক্টর ম্যানেজমেন্ট</h2>
-                    <button class="btn-primary" id="add-instructor-btn"><i class="fa-solid fa-plus"></i> নতুন শিক্ষক</button>
                 </div>
-                <div class="table-container">
+
+                <div class="upload-section">
+                    <h3>নতুন শিক্ষক যুক্ত করুন</h3>
+                    <form id="instructor-upload-form" class="upload-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>শিক্ষকের নাম</label>
+                                <input type="text" id="inst-name" placeholder="যেমন: হাফিজুর রহমান" required>
+                            </div>
+                            <div class="form-group">
+                                <label>পদবী</label>
+                                <input type="text" id="inst-designation" placeholder="যেমন: জিডিএস ট্রেইনার" required>
+                            </div>
+                            <div class="form-group">
+                                <label>শিক্ষকের ছবি</label>
+                                <input type="file" id="inst-image" accept="image/*" required>
+                            </div>
+                        </div>
+                        <button type="submit" id="add-inst-btn-submit" class="btn-primary">শিক্ষক যুক্ত করুন <i class="fa-solid fa-upload"></i></button>
+                    </form>
+                    <div id="inst-upload-status" style="margin-top: 10px;"></div>
+                </div>
+
+                <div class="table-container" style="margin-top: 30px;">
                     <table>
                         <thead>
                             <tr>
@@ -141,21 +188,37 @@
                 <div class="content-header">
                     <h2>সাইট ইনফরমেশন সেটিংস</h2>
                 </div>
-                <div class="dashboard-card" style="max-width: 700px;">
+                <div class="dashboard-card" style="max-width: 800px;">
                     <form id="site-settings-form">
-                        <div class="form-group">
-                            <label>একাডেমি ফোন নম্বর</label>
-                            <input type="text" id="set-phone" name="phone">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>একাডেমি ফোন নম্বর</label>
+                                <input type="text" id="set-phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label>অফিস ঠিকানা</label>
+                                <input type="text" id="set-address" name="address">
+                            </div>
+                            <div class="form-group">
+                                <label>চেয়ারম্যানের নাম</label>
+                                <input type="text" id="set-chairman-name" name="chairman_name">
+                            </div>
+                            <div class="form-group">
+                                <label>চেয়ারম্যানের পদবী</label>
+                                <input type="text" id="set-chairman-designation" name="chairman_designation">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>চেয়ারম্যানের ছবি (নতুন ছবি দিতে চাইলে সিলেক্ট করুন)</label>
+                                <input type="file" id="set-chairman-image" accept="image/*">
+                                <p style="font-size: 12px; color: #aaa; margin-top: 5px;">নতুন ছবি না দিলে আগেরটিই থাকবে।</p>
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>চেয়ারম্যানের মেসেজ</label>
+                                <textarea id="set-chairman-msg" name="chairman_message" rows="5" style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;"></textarea>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>অফিস ঠিকানা</label>
-                            <input type="text" id="set-address" name="address">
-                        </div>
-                        <div class="form-group">
-                            <label>চেয়ারম্যানের মেসেজ</label>
-                            <textarea id="set-chairman-msg" name="chairman_message" rows="5" style="width:100%; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; padding:10px;"></textarea>
-                        </div>
-                        <button type="submit" class="btn-primary">সব তথ্য আপডেট করুন</button>
+                        <div id="site-status" style="margin-bottom: 10px;"></div>
+                        <button type="submit" id="site-save-btn" class="btn-primary">সব তথ্য আপডেট করুন</button>
                     </form>
                 </div>
             </div>

@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadSiteDynamicContent() {
         if (!window.supabase) return;
 
-        // 1. Load Site Config (Phone, Address, etc.)
+        // 1. Load Site Config (Phone, Address, Chairman Info, etc.)
         try {
             const { data: config } = await window.supabase.from('site_config').select('*');
             if (config) {
@@ -28,68 +28,44 @@ document.addEventListener('DOMContentLoaded', () => {
                             el.innerHTML = `<i class="fa-solid fa-phone"></i> ${item.value}`;
                         });
                     }
-                    if (item.key === 'email') {
-                        document.querySelectorAll('.footer-contact p:nth-child(4)').forEach(el => {
-                            el.innerHTML = `<i class="fa-solid fa-envelope"></i> ${item.value}`;
-                        });
-                    }
                     if (item.key === 'address') {
                         document.querySelectorAll('.footer-contact p:nth-child(2)').forEach(el => {
                             el.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${item.value}`;
                         });
                     }
                     if (item.key === 'chairman_message') {
-                        const messageEl = document.querySelector('.chairman-info p');
-                        if (messageEl) messageEl.textContent = item.value;
+                        const messageEl = document.getElementById('dynamic-chairman-msg');
+                        if (messageEl) messageEl.textContent = `"${item.value}"`;
+                    }
+                    if (item.key === 'chairman_name') {
+                        const nameEl = document.getElementById('dynamic-chairman-name');
+                        if (nameEl) nameEl.textContent = item.value;
+                    }
+                    if (item.key === 'chairman_designation') {
+                        const desigEl = document.getElementById('dynamic-chairman-designation');
+                        if (desigEl) desigEl.textContent = item.value;
+                    }
+                    if (item.key === 'chairman_image') {
+                        const imgEl = document.getElementById('dynamic-chairman-img');
+                        if (imgEl && item.value) imgEl.src = item.value;
                     }
                 });
             }
         } catch (e) { console.error('Config Load Error:', e); }
 
-        // 2. Load Hero Slides
-        try {
-            const { data: dbSlides } = await window.supabase.from('hero_slides').select('*').order('created_at', { ascending: true });
-            if (dbSlides && dbSlides.length > 0) {
-                const sliderContainer = document.querySelector('.hero-slider');
-                const dotsContainer = document.querySelector('.slider-dots');
-                if (sliderContainer) {
-                    sliderContainer.innerHTML = '';
-                    dotsContainer.innerHTML = '';
-                    dbSlides.forEach((s, idx) => {
-                        const slide = document.createElement('div');
-                        slide.className = `hero-slide ${idx === 0 ? 'active' : ''}`;
-                        slide.innerHTML = `
-                            <div class="parallax-img-wrapper">
-                                <img src="${s.image_url}" alt="${s.title}" class="parallax-img">
-                                <div class="floating-card card-1">
-                                    <i class="fa-solid fa-star"></i>
-                                    <span>${s.badge_text || 'Premium'}</span>
-                                </div>
-                            </div>
-                        `;
-                        sliderContainer.appendChild(slide);
-                        
-                        const dot = document.createElement('span');
-                        dot.className = `dot ${idx === 0 ? 'active' : ''}`;
-                        dotsContainer.appendChild(dot);
-                    });
-                    initHeroSlider(); // Re-init after loading
-                }
-            }
-        } catch (e) { console.error('Hero Slides Load Error:', e); }
-
-        // 3. Load Courses
+        // 2. Load Courses
         try {
             const { data: dbCourses } = await window.supabase.from('courses').select('*').order('created_at', { ascending: true });
             if (dbCourses && dbCourses.length > 0) {
-                const courseGrid = document.querySelector('.courses-grid');
-                if (courseGrid) {
-                    courseGrid.innerHTML = '';
-                    dbCourses.forEach(c => {
+                const courseContainer = document.getElementById('dynamic-courses');
+                if (courseContainer) {
+                    courseContainer.innerHTML = '';
+                    dbCourses.forEach((c, idx) => {
+                        const isFeatured = idx === 0;
                         const card = document.createElement('div');
-                        card.className = 'course-card';
-                        card.setAttribute('data-reveal', '');
+                        card.className = `course-card ${isFeatured ? 'featured' : 'standard'}`;
                         card.innerHTML = `
+                            ${isFeatured ? '<div class="course-tag">বেস্ট সেলার</div>' : ''}
                             <div class="course-img">
                                 <img src="${c.image_url}" alt="${c.title}">
                                 <div class="course-overlay">
@@ -98,48 +74,81 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <div class="course-content">
                                 <h3>${c.title}</h3>
-                                <p>${c.description}</p>
+                                <p>${c.description || 'কোর্সের বিস্তারিত জানতে যোগাযোগ করুন।'}</p>
                                 <div class="course-meta">
-                                    <span><i class="fa-solid fa-clock"></i> ৩ মাস</span>
+                                    <span><i class="fa-solid fa-clock"></i> ${c.duration || '৩ মাস'}</span>
                                     <span class="price">${c.price || 'যোগাযোগ করুন'}</span>
                                 </div>
                             </div>
                         `;
-                        courseGrid.appendChild(card);
+                        courseContainer.appendChild(card);
                     });
                 }
             }
         } catch (e) { console.error('Courses Load Error:', e); }
 
-        // 4. Load Instructors
+        // 3. Load Instructors
         try {
             const { data: dbInstructors } = await window.supabase.from('instructors').select('*').order('created_at', { ascending: true });
             if (dbInstructors && dbInstructors.length > 0) {
-                const trainerTrack = document.querySelector('.gallery-track');
+                const trainerTrack = document.getElementById('dynamic-instructors');
                 if (trainerTrack) {
                     trainerTrack.innerHTML = '';
                     dbInstructors.forEach((t, idx) => {
+                        const isGold = idx % 2 !== 0;
                         const trainer = document.createElement('div');
-                        trainer.className = `trainer-card ${idx === 1 ? 'active' : ''}`;
+                        trainer.className = 'gallery-frame-wrapper trainer-card';
                         trainer.innerHTML = `
-                            <div class="trainer-img-wrapper">
-                                <img src="${t.image_url}" alt="${t.name}">
-                                <div class="trainer-social">
-                                    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                            <div class="luxury-frame ${isGold ? 'gold-heavy' : ''}">
+                                <div class="inner-border"></div>
+                                <div class="trainer-img-box">
+                                    <img src="${t.image_url}" alt="${t.name}">
                                 </div>
                             </div>
-                            <div class="trainer-info">
-                                <h3>${t.name}</h3>
-                                <p>${t.designation}</p>
+                            <div class="frame-label">
+                                <h4>${t.name}</h4>
+                                <span>${t.designation}</span>
                             </div>
                         `;
                         trainerTrack.appendChild(trainer);
                     });
-                    initTrainerSlider(); // Re-init
+                    
+                    if (typeof initTrainerSlider === 'function') {
+                        initTrainerSlider();
+                    }
                 }
             }
         } catch (e) { console.error('Instructors Load Error:', e); }
+
+        // 4. Load Gallery Items
+        try {
+            const { data: dbGallery } = await window.supabase.from('gallery_items').select('*').order('created_at', { ascending: false });
+            if (dbGallery && dbGallery.length > 0) {
+                const galleryGrid = document.getElementById('dynamic-gallery');
+                if (galleryGrid) {
+                    galleryGrid.innerHTML = '';
+                    dbGallery.forEach(g => {
+                        const item = document.createElement('div');
+                        item.className = `gallery-item ${g.category}`;
+                        item.innerHTML = `
+                            <div class="gallery-card">
+                                <img src="${g.image_url}" alt="${g.title}">
+                                <div class="gallery-overlay">
+                                    <span class="category">${g.category === 'events' ? 'ইভেন্টস' : (g.category === 'ceremony' ? 'সার্টিফিকেট' : 'মিডিয়া')}</span>
+                                    <h3>${g.title}</h3>
+                                    <a href="${g.image_url}" target="_blank" class="view-btn"><i class="fa-solid fa-expand"></i></a>
+                                </div>
+                            </div>
+                        `;
+                        galleryGrid.appendChild(item);
+                    });
+                }
+            }
+        } catch (e) { console.error('Gallery Load Error:', e); }
     }
+
+    // Call it immediately
+    loadSiteDynamicContent();
 
     // --- Hero Slider Logic (with diverse animations) ---
     let currentSlide = 0;
@@ -204,26 +213,58 @@ document.addEventListener('DOMContentLoaded', () => {
         const trainers = document.querySelectorAll('.trainer-card');
         if (!track || trainers.length === 0) return;
 
-        let trainerIndex = 1;
+        // Start at the middle card (or 0 if only 1 card)
+        let trainerIndex = trainers.length <= 2 ? 0 : Math.floor(trainers.length / 2);
+
         function updateTrainer() {
-            trainers.forEach((t, idx) => t.classList.toggle('active', idx === trainerIndex));
-            const cardWidth = trainers[0].offsetWidth;
-            const containerWidth = track.parentElement.offsetWidth;
-            const offset = (containerWidth / 2) - (cardWidth / 2) - (trainerIndex * cardWidth);
-            track.style.transform = `translateX(${offset}px)`;
+            trainers.forEach((t, idx) => {
+                t.classList.toggle('active', idx === trainerIndex);
+            });
+            
+            if (trainers.length === 1) {
+                // Single card: center it, no transform needed
+                track.style.transform = 'translateX(0)';
+                track.style.justifyContent = 'center';
+            } else {
+                track.style.justifyContent = 'flex-start';
+                const cardWidth = trainers[0].offsetWidth + 80; // Include negative margins
+                const containerWidth = track.parentElement.offsetWidth;
+                const offset = (containerWidth / 2) - (trainers[0].offsetWidth / 2) - (trainerIndex * cardWidth);
+                track.style.transform = `translateX(${offset}px)`;
+            }
         }
 
-        document.querySelector('.next-btn')?.addEventListener('click', () => {
-            trainerIndex = (trainerIndex + 1) % trainers.length;
-            updateTrainer();
-        });
-        document.querySelector('.prev-btn')?.addEventListener('click', () => {
-            trainerIndex = (trainerIndex - 1 + trainers.length) % trainers.length;
-            updateTrainer();
-        });
+        // Remove old event listeners by cloning buttons
+        const nextBtn = document.querySelector('.next-btn');
+        const prevBtn = document.querySelector('.prev-btn');
+        
+        if (nextBtn) {
+            const newNext = nextBtn.cloneNode(true);
+            nextBtn.parentNode.replaceChild(newNext, nextBtn);
+            newNext.addEventListener('click', () => {
+                trainerIndex = (trainerIndex + 1) % trainers.length;
+                updateTrainer();
+            });
+        }
+        if (prevBtn) {
+            const newPrev = prevBtn.cloneNode(true);
+            prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+            newPrev.addEventListener('click', () => {
+                trainerIndex = (trainerIndex - 1 + trainers.length) % trainers.length;
+                updateTrainer();
+            });
+        }
 
         window.addEventListener('resize', updateTrainer);
         updateTrainer();
+
+        // Auto-rotate every 4 seconds if more than 1 card
+        if (trainers.length > 1) {
+            setInterval(() => {
+                trainerIndex = (trainerIndex + 1) % trainers.length;
+                updateTrainer();
+            }, 4000);
+        }
     }
 
     // --- Reveal Animations ---
