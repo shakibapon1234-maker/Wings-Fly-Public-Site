@@ -243,7 +243,177 @@
         <div class="stars-layer-2"></div>
         <div class="planet-1"></div>
         <div class="planet-2"></div>
+        <!-- Flying Airplane -->
+        <div class="flying-airplane" id="flyingPlane">
+            <div class="plane-body">✈</div>
+            <div class="plane-trail"></div>
+        </div>
+        <div class="flying-airplane plane-2" id="flyingPlane2">
+            <div class="plane-body">✈</div>
+            <div class="plane-trail"></div>
+        </div>
     </div>
+
+    <style>
+        /* === Flying Airplane on Starry Background === */
+        .flying-airplane {
+            position: fixed;
+            z-index: 1;
+            pointer-events: none;
+            animation: flyAcross 25s linear infinite;
+            opacity: 0;
+        }
+        .flying-airplane.plane-2 {
+            animation: flyAcross2 35s linear infinite;
+            animation-delay: 12s;
+        }
+        .plane-body {
+            font-size: 22px;
+            color: rgba(255, 255, 255, 0.7);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.8), 0 0 30px rgba(0, 212, 255, 0.4);
+            transform: rotate(-15deg);
+            filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.6));
+        }
+        .plane-2 .plane-body {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            transform: rotate(-20deg);
+        }
+        .plane-trail {
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(to left, rgba(255,255,255,0.5), transparent);
+            transform: translateY(-50%);
+            animation: trailPulse 2s ease-in-out infinite;
+        }
+        .plane-2 .plane-trail {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(to left, rgba(255,255,255,0.2), transparent);
+        }
+        @keyframes flyAcross {
+            0% { left: -5%; top: 20%; opacity: 0; }
+            5% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% { left: 105%; top: 8%; opacity: 0; }
+        }
+        @keyframes flyAcross2 {
+            0% { left: 105%; top: 65%; opacity: 0; }
+            5% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { left: -5%; top: 40%; opacity: 0; }
+        }
+        @keyframes trailPulse {
+            0%, 100% { opacity: 0.6; width: 120px; }
+            50% { opacity: 1; width: 160px; }
+        }
+
+        /* Shooting stars */
+        .shooting-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            box-shadow: 0 0 6px 2px rgba(255,255,255,0.6);
+        }
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 100%;
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to left, white, transparent);
+        }
+    </style>
+
+    <!-- Welcome Speech System -->
+    <script>
+        (function() {
+            let hasWelcomed = false;
+            let voicesReady = false;
+            
+            // Pre-load voices
+            function loadVoices() {
+                const voices = speechSynthesis.getVoices();
+                if (voices.length > 0) voicesReady = true;
+            }
+            loadVoices();
+            speechSynthesis.onvoiceschanged = loadVoices;
+            
+            function speakWelcome() {
+                if (hasWelcomed) return;
+                if (!('speechSynthesis' in window)) return;
+                hasWelcomed = true;
+                
+                // Cancel any pending speech
+                speechSynthesis.cancel();
+                
+                setTimeout(() => {
+                    const msg = new SpeechSynthesisUtterance('Welcome to Wings Fly Aviation Academy!');
+                    msg.lang = 'en-US';
+                    msg.rate = 0.85;
+                    msg.pitch = 1.05;
+                    msg.volume = 1.0;
+                    
+                    // Pick best available voice
+                    const voices = speechSynthesis.getVoices();
+                    if (voices.length > 0) {
+                        const googleVoice = voices.find(v => v.name.includes('Google') && v.lang.includes('en'));
+                        const microsoftVoice = voices.find(v => v.name.includes('Microsoft') && v.lang.includes('en'));
+                        const anyEnglish = voices.find(v => v.lang.startsWith('en'));
+                        msg.voice = googleVoice || microsoftVoice || anyEnglish || voices[0];
+                    }
+                    
+                    speechSynthesis.speak(msg);
+                    
+                    // Chrome bug fix: keep speech alive
+                    const keepAlive = setInterval(() => {
+                        if (!speechSynthesis.speaking) {
+                            clearInterval(keepAlive);
+                        }
+                    }, 200);
+                }, 500);
+            }
+
+            // Trigger on first user interaction (browser policy requires this)
+            ['click', 'scroll', 'touchstart', 'keydown'].forEach(evt => {
+                document.addEventListener(evt, speakWelcome, { once: true });
+            });
+            
+            // Shooting stars effect
+            function createShootingStar() {
+                const star = document.createElement('div');
+                star.className = 'shooting-star';
+                star.style.top = Math.random() * 50 + '%';
+                star.style.left = Math.random() * 80 + '%';
+                star.style.animation = `shootStar ${0.8 + Math.random() * 0.5}s linear forwards`;
+                document.body.appendChild(star);
+                setTimeout(() => star.remove(), 1500);
+            }
+            
+            // Create shooting stars randomly
+            setInterval(() => {
+                if (Math.random() > 0.6) createShootingStar();
+            }, 4000);
+            
+            // Add shooting star keyframe
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shootStar {
+                    0% { transform: translate(0, 0) rotate(-45deg); opacity: 1; }
+                    100% { transform: translate(300px, 300px) rotate(-45deg); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        })();
+    </script>
 
 
     <!-- Header / Navbar -->
@@ -256,16 +426,16 @@
                 </div>
             </div>
             <nav class="nav-links">
-                <a href="#home">হোম</a>
-                <a href="#chairman">চেয়ারম্যান</a>
-                <a href="#courses">কোর্সসমূহ</a>
-                <a href="#visa">ভিসা</a>
-                <a href="#trainers">ইন্সট্রাক্টর</a>
-                <a href="#contact">যোগাযোগ</a>
+                <a href="#home">Home</a>
+                <a href="#chairman">Chairman</a>
+                <a href="#courses">Courses</a>
+                <a href="#visa">Visa</a>
+                <a href="#trainers">Instructors</a>
+                <a href="#footer">Contact</a>
             </nav>
             <div class="nav-actions">
-                <button class="btn-login" id="openAuthBtn">স্টুডেন্ট লগইন</button>
-                <button class="btn-primary" id="openAdmissionBtn">ভর্তি ফরম</button>
+                <button class="btn-login" id="openAuthBtn">Student Login</button>
+                <button class="btn-primary" id="openAdmissionBtn">Enroll Now</button>
             </div>
             <button class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
         </div>
@@ -851,7 +1021,7 @@
     <!-- Moved Auth and Admission modals to end of body -->
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" id="footer">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-about">

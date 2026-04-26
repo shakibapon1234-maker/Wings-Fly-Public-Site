@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="course-img">
                                 <img src="${c.image_url}" alt="${c.title}">
                                 <div class="course-overlay">
-                                    <button class="btn-primary" onclick="document.getElementById('enroll').scrollIntoView({behavior:'smooth'})">ভর্তি হোন</button>
+                                    <button class="btn-primary" onclick="var m=document.getElementById('admissionModal');if(m){m.style.display='flex';m.classList.add('active');}">Enroll Now</button>
                                 </div>
                             </div>
                             <div class="course-content">
