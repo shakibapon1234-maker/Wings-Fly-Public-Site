@@ -1710,5 +1710,105 @@
         </div>
     </div>
 
+    <!-- ===== WhatsApp Floating Button ===== -->
+    <a href="https://wa.me/8801782202433?text=%E0%A6%B9%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%B2%E0%A7%8B%2C%20Wings%20Fly%20Aviation%20Academy%20%E0%A6%B8%E0%A6%AE%E0%A7%8D%E0%A6%AA%E0%A6%B0%E0%A7%8D%E0%A6%95%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4" 
+       target="_blank" id="whatsappFloat" class="whatsapp-float" title="WhatsApp-এ মেসেজ করুন">
+        <div class="wa-pulse"></div>
+        <div class="wa-pulse wa-pulse-2"></div>
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="wa-tooltip">আমাদের মেসেজ করুন!</span>
+    </a>
+
+    <style>
+        /* ===== WhatsApp Floating Button ===== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 34px;
+            z-index: 99990;
+            text-decoration: none;
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5), 0 0 0 0 rgba(37, 211, 102, 0.4);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.15) translateY(-5px);
+            box-shadow: 0 10px 40px rgba(37, 211, 102, 0.6);
+        }
+        .whatsapp-float:hover .wa-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-110%) translateY(-50%) scale(1);
+        }
+
+        /* Pulse rings */
+        .wa-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(37, 211, 102, 0.3);
+            animation: waPulse 2s ease-out infinite;
+            pointer-events: none;
+        }
+        .wa-pulse-2 {
+            animation-delay: 1s;
+        }
+        @keyframes waPulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            100% { transform: scale(2.2); opacity: 0; }
+        }
+
+        /* Tooltip */
+        .wa-tooltip {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateX(-100%) translateY(-50%) scale(0.8);
+            background: linear-gradient(135deg, #1a1a2e, #0f3460);
+            color: #25D366;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Hind Siliguri', sans-serif;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            margin-right: 15px;
+        }
+        .wa-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 8px solid transparent;
+            border-left-color: #0f3460;
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+                font-size: 28px;
+            }
+        }
+    </style>
+
 </body>
 </html>
