@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (adminPassInput.value === ADMIN_TOKEN) {
             loginOverlay.style.display = 'none';
             adminPanel.style.display = 'flex';
+            window.scrollTo(0, 0);
             loadSubmissions();
             loadGallery();
         } else {

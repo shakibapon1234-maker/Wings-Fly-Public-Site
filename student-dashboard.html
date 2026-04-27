@@ -185,6 +185,7 @@
     <script>
         // Simple Dashboard Logic
         document.addEventListener('DOMContentLoaded', async () => {
+            window.scrollTo(0, 0);
             const { data: { user } } = await window.supabase.auth.getUser();
             
             if (!user) {
