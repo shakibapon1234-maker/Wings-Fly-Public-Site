@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 90">
+  <defs>
+    <linearGradient id="amGlow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffe0e0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+    <filter id="amShadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.25)"/>
+    </filter>
+  </defs>
+  <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle"
+    font-family="'Segoe UI', Arial, sans-serif" font-size="62" font-weight="900" 
+    fill="url(#amGlow)" letter-spacing="10" filter="url(#amShadow)">
+    AMADEUS
+  </text>
+</svg>

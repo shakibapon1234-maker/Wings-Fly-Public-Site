@@ -660,9 +660,9 @@ body {
 }
 
 .partner-card img {
-    max-width: 90%;
-    max-height: 60px;
-    filter: brightness(0) invert(1);
+    max-width: 95%;
+    max-height: 80px;
+    filter: none;
     transition: var(--transition);
     position: relative;
     z-index: 2;
