@@ -170,14 +170,14 @@
     .theme-btn-neon .t-icon { color: #00FF9F; text-shadow: 0 0 8px #00FF9F; }
     .theme-btn-neon:hover, .theme-btn-neon.active { background: #1a1a2e; box-shadow: inset 0 0 20px rgba(0,255,159,0.1); }
     
-    /* Gradient Deep Button */
-    .theme-btn-gradient {
-        background: linear-gradient(135deg, #020617, #0F172A);
-        color: #00D9FF;
+    /* Holographic Button */
+    .theme-btn-holographic {
+        background: linear-gradient(135deg, #010b14, #00234b);
+        color: #00f5ff;
     }
-    .theme-btn-gradient::before { background: #00D9FF; }
-    .theme-btn-gradient .t-icon { color: #7F39FB; text-shadow: 0 0 8px #7F39FB; }
-    .theme-btn-gradient:hover, .theme-btn-gradient.active { background: #0F172A; box-shadow: inset 0 0 20px rgba(0,217,255,0.1); }
+    .theme-btn-holographic::before { background: #00f5ff; }
+    .theme-btn-holographic .t-icon { color: #00f5ff; text-shadow: 0 0 8px #00f5ff; }
+    .theme-btn-holographic:hover, .theme-btn-holographic.active { background: #00234b; box-shadow: inset 0 0 20px rgba(0,245,255,0.2); }
     
     /* American Eagle Button */
     .theme-btn-american {
@@ -225,9 +225,9 @@
             <span class="t-icon">⚡</span>
             <span class="t-label">NEON<br>CYBER</span>
         </button>
-        <button class="theme-btn theme-btn-gradient" data-theme="gradient" title="Modern Gradient">
-            <span class="t-icon">🌌</span>
-            <span class="t-label">GRADIENT<br>DEEP</span>
+        <button class="theme-btn theme-btn-holographic" data-theme="holographic" title="Holographic Space">
+            <span class="t-icon">🧊</span>
+            <span class="t-label">HOLO<br>GRAPHIC</span>
         </button>
         <button class="theme-btn theme-btn-american" data-theme="american" title="American Patriotic">
             <span class="t-icon">🦅</span>
@@ -1525,14 +1525,14 @@
         const themeMap = {
             original: 'css/theme-original.css',
             neon:     'css/theme-neon.css',
-            gradient: 'css/theme-gradient.css',
+            holographic: 'css/theme-holographic.css',
             american: 'css/theme-american.css',
         };
 
         const themeColors = {
             original: { cursor: '#00d4ff',  tab: 'linear-gradient(135deg,#031b33,#7303c0)' },
             neon:     { cursor: '#00FF9F',  tab: 'linear-gradient(135deg,#00FF9F,#FF006E)' },
-            gradient: { cursor: '#7F39FB',  tab: 'linear-gradient(135deg,#00D9FF,#7F39FB)' },
+            holographic: { cursor: '#00f5ff',  tab: 'linear-gradient(135deg,#00f5ff,#0080ff)' },
             american: { cursor: '#FFD700',  tab: 'linear-gradient(135deg,#E31B23,#1B3A8C)' },
         };
 

@@ -1,0 +1,1241 @@
+/*
+  ██╗  ██╗ ██████╗ ██╗      ██████╗      ████████╗██╗  ██╗███████╗███╗   ███╗███████╗
+  ██║  ██║██╔═══██╗██║     ██╔═══██╗     ╚══██╔══╝██║  ██║██╔════╝████╗ ████║██╔════╝
+  ███████║██║   ██║██║     ██║   ██║        ██║   ███████║█████╗  ██╔████╔██║█████╗  
+  ██╔══██║██║   ██║██║     ██║   ██║        ██║   ██╔══██║██╔══╝  ██║╚██╔╝██║██╔══╝  
+  ██║  ██║╚██████╔╝███████╗╚██████╔╝        ██║   ██║  ██║███████╗██║ ╚═╝ ██║███████╗
+  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝         ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝╚══════╝
+  
+  Wings Fly Aviation Academy — Holographic Theme
+  Deep space | Cyan glows | HUD wireframes | Neon refractions
+*/
+
+/* ═══════════════════════════════════════
+   HOLOGRAPHIC DESIGN TOKENS
+═══════════════════════════════════════ */
+:root {
+  --holo-cyan: #00f5ff;
+  --holo-cyan-dim: rgba(0, 245, 255, 0.5);
+  --holo-cyan-ghost: rgba(0, 245, 255, 0.08);
+  --holo-blue: #0080ff;
+  --holo-electric: #3d9eff;
+  --holo-teal: #00ffcc;
+  --holo-purple: #8a2be2;
+  --holo-gold: #ffd700;
+  --holo-white: rgba(255, 255, 255, 0.92);
+  --holo-muted: rgba(160, 230, 255, 0.6);
+  --holo-dark: #010b14;
+  --holo-panel: rgba(0, 20, 45, 0.75);
+  --holo-panel-bright: rgba(0, 35, 75, 0.88);
+  --holo-border: rgba(0, 245, 255, 0.3);
+  --holo-border-bright: rgba(0, 245, 255, 0.7);
+  --holo-glow: 0 0 20px rgba(0, 245, 255, 0.6), 0 0 60px rgba(0, 245, 255, 0.2);
+  --holo-glow-strong: 0 0 30px rgba(0, 245, 255, 0.9), 0 0 80px rgba(0, 245, 255, 0.4), 0 0 120px rgba(0, 128, 255, 0.2);
+  --holo-shadow: 0 8px 32px rgba(0, 245, 255, 0.15), 0 2px 8px rgba(0, 0, 0, 0.8);
+  --holo-text-glow: 0 0 10px var(--holo-cyan), 0 0 30px rgba(0, 245, 255, 0.5);
+  --holo-font: 'Outfit', 'Hind Siliguri', sans-serif;
+  --holo-transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ═══════════════════════════════════════
+   GLOBAL BACKGROUND OVERRIDE — HOLOGRAPHIC SPACE
+═══════════════════════════════════════ */
+html, body {
+  background-color: var(--holo-dark) !important;
+  color: var(--holo-white) !important;
+}
+
+/* Kill the old gradient background */
+.global-bg-anim {
+  background: var(--holo-dark) !important;
+}
+
+.global-bg-anim .color-layer {
+  background: radial-gradient(ellipse at 20% 20%, rgba(0,80,180,0.25) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 80%, rgba(0,200,255,0.15) 0%, transparent 55%),
+              radial-gradient(ellipse at 50% 50%, rgba(0,30,80,0.9) 0%, #010b14 100%) !important;
+  animation: none !important;
+}
+
+/* Planets → holographic orbs */
+.global-bg-anim .planet-1 {
+  background: radial-gradient(circle at 35% 35%, rgba(0,245,255,0.9), rgba(0,100,255,0.6), transparent) !important;
+  box-shadow: 0 0 60px rgba(0,245,255,0.5), inset 0 0 40px rgba(0,0,0,0.6) !important;
+  border: 1px solid rgba(0,245,255,0.3) !important;
+  animation: holoOrbFloat 20s ease-in-out infinite alternate !important;
+  width: 140px !important;
+  height: 140px !important;
+}
+.global-bg-anim .planet-2 {
+  background: radial-gradient(circle at 35% 35%, rgba(0,255,200,0.9), rgba(0,150,255,0.5), transparent) !important;
+  box-shadow: 0 0 40px rgba(0,255,200,0.4), inset 0 0 25px rgba(0,0,0,0.6) !important;
+  border: 1px solid rgba(0,255,200,0.3) !important;
+  animation: holoOrbFloat2 15s ease-in-out infinite alternate !important;
+}
+
+/* Stars → holographic data particles */
+.global-bg-anim .stars-layer-1,
+.global-bg-anim .stars-layer-2 {
+  filter: drop-shadow(0 0 3px var(--holo-cyan)) !important;
+  opacity: 0.5 !important;
+}
+
+/* ─── Holographic grid overlay on body ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -998;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+/* ─── Scanline overlay ─── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -997;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 245, 255, 0.012) 3px,
+    rgba(0, 245, 255, 0.012) 4px
+  );
+  pointer-events: none;
+  animation: scanlineMove 8s linear infinite;
+}
+
+@keyframes scanlineMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100vh; }
+}
+
+@keyframes holoOrbFloat {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.7; }
+  100% { transform: translate(-30px, 20px) scale(1.08); opacity: 1; }
+}
+@keyframes holoOrbFloat2 {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+  100% { transform: translate(25px, -20px) scale(1.05); opacity: 0.9; }
+}
+
+
+/* ═══════════════════════════════════════
+   NAVBAR — HUD COMMAND BAR
+═══════════════════════════════════════ */
+.navbar {
+  background: rgba(1, 11, 20, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid var(--holo-border) !important;
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.08), inset 0 -1px 0 var(--holo-border) !important;
+}
+
+/* HUD corner decorations */
+.navbar .container::before,
+.navbar .container::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: var(--holo-cyan);
+  border-style: solid;
+  opacity: 0.6;
+}
+.navbar .container::before {
+  top: 8px; left: 20px;
+  border-width: 2px 0 0 2px;
+}
+.navbar .container::after {
+  top: 8px; right: 20px;
+  border-width: 2px 2px 0 0;
+}
+.navbar .container { position: relative; }
+
+.nav-links a {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.05em;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  position: relative;
+  text-transform: uppercase;
+  transition: var(--holo-transition) !important;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -4px;
+  width: 0; height: 1px;
+  background: var(--holo-cyan);
+  box-shadow: 0 0 8px var(--holo-cyan);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+.nav-links a:hover::after { width: 100%; }
+
+/* Logo ring → holographic spinner */
+.logo-spin-ring {
+  border-top-color: var(--holo-cyan) !important;
+  border-right-color: var(--holo-teal) !important;
+  box-shadow: 0 0 12px rgba(0,245,255,0.5) !important;
+}
+.logo img {
+  filter: drop-shadow(0 0 8px rgba(0,245,255,0.6)) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   BUTTONS — HOLOGRAPHIC INTERFACE
+═══════════════════════════════════════ */
+.btn-primary {
+  background: transparent !important;
+  border: 1px solid var(--holo-cyan) !important;
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.88rem !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0,245,255,0.2), inset 0 0 15px rgba(0,245,255,0.05) !important;
+  transition: var(--holo-transition) !important;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,245,255,0.12), rgba(0,128,255,0.08));
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.btn-primary:hover {
+  color: #010b14 !important;
+  background: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow-strong) !important;
+  transform: translateY(-2px) !important;
+}
+.btn-primary:hover::before { opacity: 1; }
+
+/* Corner bracket effect on primary buttons */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 8px; height: 8px;
+  border-right: 1px solid var(--holo-cyan);
+  border-bottom: 1px solid var(--holo-cyan);
+  opacity: 0.8;
+}
+
+.btn-login {
+  background: transparent !important;
+  border: 1px solid rgba(0,245,255,0.4) !important;
+  color: rgba(0,245,255,0.8) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem !important;
+  transition: var(--holo-transition) !important;
+}
+.btn-login:hover {
+  background: rgba(0,245,255,0.1) !important;
+  color: var(--holo-cyan) !important;
+  border-color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow) !important;
+}
+
+.btn-outline {
+  background: transparent !important;
+  border: 1px solid rgba(0,245,255,0.5) !important;
+  color: rgba(0,245,255,0.9) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.88rem !important;
+  transition: var(--holo-transition) !important;
+}
+.btn-outline:hover {
+  background: rgba(0,245,255,0.12) !important;
+  border-color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow) !important;
+  color: var(--holo-white) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   HERO SECTION — HOLOGRAPHIC PROJECTION
+═══════════════════════════════════════ */
+.hero {
+  background: transparent !important;
+  color: var(--holo-white) !important;
+}
+
+.hero-overlay::before, .hero-overlay::after {
+  display: none !important;
+}
+
+.hero-overlay {
+  background: transparent !important;
+}
+
+/* Holographic hero grid lines */
+.hero-bg-pattern {
+  background-image:
+    linear-gradient(rgba(0,245,255,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.07) 1px, transparent 1px) !important;
+  background-size: 60px 60px !important;
+  opacity: 1 !important;
+}
+
+.hero-content .badge {
+  background: rgba(0,245,255,0.1) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.75rem !important;
+  text-shadow: var(--holo-text-glow) !important;
+  box-shadow: 0 0 15px rgba(0,245,255,0.15) !important;
+}
+
+.hero-content h1 {
+  color: var(--holo-white) !important;
+  font-family: var(--holo-font) !important;
+  text-shadow: 0 0 40px rgba(0,245,255,0.2) !important;
+  letter-spacing: -0.02em;
+}
+
+.hero-content h1 .highlight {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+  position: relative;
+}
+
+.hero-content p {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+
+/* Hero waves → dark tinted */
+.hero-waves svg path {
+  fill: rgba(1, 11, 20, 0.95) !important;
+}
+
+/* Stats */
+.stat-num {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+  font-family: var(--holo-font) !important;
+}
+.stat-label {
+  color: var(--holo-muted) !important;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.stat-item {
+  border-left: 1px solid var(--holo-border) !important;
+  padding-left: 20px;
+}
+
+/* Hero slider images → holographic frame */
+.parallax-img-wrapper {
+  border: 1px solid var(--holo-border) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 0 40px rgba(0,245,255,0.15), 0 0 2px var(--holo-cyan) !important;
+  position: relative !important;
+}
+
+/* Corner brackets on image frame */
+.parallax-img-wrapper::before,
+.parallax-img-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  z-index: 10;
+  pointer-events: none;
+}
+.parallax-img-wrapper::before {
+  top: 8px; left: 8px;
+  border-top: 2px solid var(--holo-cyan);
+  border-left: 2px solid var(--holo-cyan);
+  box-shadow: -2px -2px 8px rgba(0,245,255,0.3);
+}
+.parallax-img-wrapper::after {
+  bottom: 8px; right: 8px;
+  border-bottom: 2px solid var(--holo-cyan);
+  border-right: 2px solid var(--holo-cyan);
+  box-shadow: 2px 2px 8px rgba(0,245,255,0.3);
+}
+
+.parallax-img {
+  filter: brightness(0.85) saturate(1.1) hue-rotate(5deg) !important;
+}
+
+.floating-card {
+  background: rgba(0, 20, 45, 0.85) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow), inset 0 0 10px rgba(0,245,255,0.05) !important;
+  backdrop-filter: blur(12px) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.05em;
+}
+.floating-card i {
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+/* Slider dots */
+.dot {
+  background: rgba(0,245,255,0.3) !important;
+  border: 1px solid rgba(0,245,255,0.5) !important;
+}
+.dot.active {
+  background: var(--holo-cyan) !important;
+  box-shadow: 0 0 8px var(--holo-cyan) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   PARTNERS SECTION — DATA FEED STRIP
+═══════════════════════════════════════ */
+.partners {
+  background: rgba(0, 10, 25, 0.9) !important;
+  border-top: 1px solid var(--holo-border) !important;
+  border-bottom: 1px solid var(--holo-border) !important;
+  box-shadow: 0 0 30px rgba(0,245,255,0.05) !important;
+}
+
+.partner-card {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 15px rgba(0,245,255,0.08) !important;
+  transition: var(--holo-transition) !important;
+  filter: grayscale(0.5) brightness(0.8) !important;
+}
+.partner-card:hover {
+  border-color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow) !important;
+  filter: grayscale(0) brightness(1.1) !important;
+  transform: translateY(-3px) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   SECTION HEADERS — HUD DISPLAY
+═══════════════════════════════════════ */
+.section-header h2,
+.chairman-title,
+.courses h2,
+h2 {
+  color: var(--holo-white) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: -0.01em;
+}
+
+.section-header h2 .highlight,
+.highlight {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+.section-header p,
+.section-subtitle {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+
+/* Section decoration badge */
+.section-badge, .badge-tag {
+  background: rgba(0,245,255,0.08) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-cyan) !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+/* Divider lines → holographic */
+.section-divider, hr {
+  border-color: var(--holo-border) !important;
+  background: linear-gradient(90deg, transparent, var(--holo-cyan), transparent) !important;
+  height: 1px !important;
+  box-shadow: 0 0 8px rgba(0,245,255,0.4) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   CHAIRMAN SECTION — HOLOGRAPHIC DOSSIER
+═══════════════════════════════════════ */
+.chairman-section {
+  background: transparent !important;
+  position: relative;
+}
+
+.chairman-bg-decoration {
+  opacity: 0.15 !important;
+}
+
+.chairman-portrait {
+  border: 2px solid var(--holo-border) !important;
+  box-shadow: 0 0 50px rgba(0,245,255,0.2), 0 0 2px var(--holo-cyan) !important;
+  position: relative;
+}
+
+.chairman-portrait::before {
+  content: 'IDENTITY VERIFIED';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,245,255,0.1);
+  border: 1px solid var(--holo-border);
+  color: var(--holo-cyan);
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  padding: 2px 10px;
+  white-space: nowrap;
+  font-family: var(--holo-font);
+}
+
+.chairman-visual::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse at center, rgba(0,245,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+.chairman-visual { position: relative; }
+
+.chairman-message-card {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  border-left: 3px solid var(--holo-cyan) !important;
+  box-shadow: var(--holo-shadow) !important;
+  color: rgba(200,240,255,0.85) !important;
+  font-family: var(--holo-font) !important;
+  position: relative;
+}
+
+.chairman-message-card::before {
+  content: '// MESSAGE TRANSCRIPT';
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  background: #010b14;
+  padding: 0 8px;
+  font-size: 0.62rem;
+  color: var(--holo-cyan);
+  letter-spacing: 0.1em;
+  font-family: var(--holo-font);
+}
+
+.chairman-identity {
+  color: var(--holo-muted) !important;
+}
+
+.chairman-seal {
+  background: rgba(0,245,255,0.06) !important;
+  border: 1px solid var(--holo-border) !important;
+  box-shadow: 0 0 15px rgba(0,245,255,0.1) !important;
+}
+
+.chairman-quote-icon {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   COURSE CARDS — HOLOGRAPHIC DATA MODULES
+═══════════════════════════════════════ */
+.courses {
+  background: transparent !important;
+}
+
+.courses-bg-stars {
+  opacity: 0 !important;
+}
+
+.course-card {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--holo-shadow) !important;
+  transition: var(--holo-transition) !important;
+  position: relative;
+  overflow: hidden !important;
+}
+
+/* Holographic shimmer effect on hover */
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 30%;
+  height: 200%;
+  background: linear-gradient(90deg, transparent, rgba(0,245,255,0.08), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.7s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.course-card:hover::before {
+  left: 130%;
+}
+
+.course-card:hover {
+  border-color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow), 0 8px 32px rgba(0,0,0,0.6) !important;
+  transform: translateY(-5px) !important;
+}
+
+/* Course tag → HUD badge */
+.course-tag {
+  background: rgba(0,245,255,0.12) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.7rem !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+.course-info h3, .course-info h4 {
+  color: var(--holo-white) !important;
+  font-family: var(--holo-font) !important;
+}
+
+.course-meta, .course-duration, .course-level {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+.course-meta i {
+  color: var(--holo-cyan) !important;
+}
+
+.course-price {
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  text-shadow: var(--holo-text-glow) !important;
+  font-weight: 700 !important;
+}
+
+.course-img {
+  position: relative;
+  overflow: hidden;
+}
+.course-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,245,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Other courses chips */
+.other-course-item {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+  transition: var(--holo-transition) !important;
+  position: relative;
+}
+.other-course-item:hover {
+  border-color: var(--holo-cyan) !important;
+  color: var(--holo-cyan) !important;
+  box-shadow: 0 0 12px rgba(0,245,255,0.2) !important;
+  background: rgba(0,245,255,0.05) !important;
+}
+.other-course-item i {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   VISA SECTION
+═══════════════════════════════════════ */
+.visa-card, .visa-item {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-white) !important;
+  transition: var(--holo-transition) !important;
+}
+.visa-card:hover, .visa-item:hover {
+  border-color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow) !important;
+}
+.visa-card h3, .visa-item h3 {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+  font-family: var(--holo-font) !important;
+}
+.visa-card p, .visa-item p {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+.visa-card .icon-box, .visa-icon {
+  background: rgba(0,245,255,0.1) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-cyan) !important;
+  box-shadow: 0 0 15px rgba(0,245,255,0.15) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   TRAINER CARDS — PERSONNEL FILES
+═══════════════════════════════════════ */
+.trainer-card, .instructor-card {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--holo-shadow) !important;
+  transition: var(--holo-transition) !important;
+  overflow: hidden;
+}
+
+.trainer-card:hover, .instructor-card:hover {
+  border-color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow) !important;
+  transform: translateY(-4px) !important;
+}
+
+.trainer-card img, .instructor-card img {
+  filter: brightness(0.9) saturate(0.8) !important;
+  border-bottom: 1px solid var(--holo-border) !important;
+}
+
+.trainer-card:hover img, .instructor-card:hover img {
+  filter: brightness(1) saturate(1.1) !important;
+}
+
+.trainer-info h3, .instructor-name {
+  color: var(--holo-white) !important;
+  font-family: var(--holo-font) !important;
+}
+.trainer-role, .instructor-role {
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem !important;
+  text-transform: uppercase;
+}
+.trainer-bio, .instructor-bio {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+
+/* Status badge */
+.trainer-badge {
+  background: rgba(0,245,255,0.1) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.06em;
+}
+
+
+/* ═══════════════════════════════════════
+   TESTIMONIALS / REVIEWS
+═══════════════════════════════════════ */
+.review-card, .testimonial-card {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  box-shadow: var(--holo-shadow) !important;
+  transition: var(--holo-transition) !important;
+}
+.review-card:hover, .testimonial-card:hover {
+  border-color: var(--holo-cyan) !important;
+  box-shadow: var(--holo-glow) !important;
+}
+.review-text, .testimonial-text {
+  color: rgba(200,240,255,0.8) !important;
+  font-family: var(--holo-font) !important;
+}
+.review-author, .testimonial-author {
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+}
+.star-rating .fa-star {
+  color: var(--holo-gold) !important;
+  text-shadow: 0 0 8px rgba(255,215,0,0.5) !important;
+}
+.quote-icon {
+  color: var(--holo-cyan) !important;
+  opacity: 0.4 !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   CONTACT SECTION
+═══════════════════════════════════════ */
+.contact-section, #contact {
+  background: transparent !important;
+}
+
+.contact-card, .contact-info-card {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-muted) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--holo-shadow) !important;
+}
+.contact-card h3, .contact-info-card h3 {
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+.contact-icon {
+  background: rgba(0,245,255,0.1) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-cyan) !important;
+  box-shadow: 0 0 12px rgba(0,245,255,0.15) !important;
+}
+
+/* Map or contact visual */
+.contact-map {
+  border: 1px solid var(--holo-border) !important;
+  box-shadow: var(--holo-glow) !important;
+  filter: hue-rotate(170deg) saturate(1.5) brightness(0.7) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   FORM INPUTS — HOLOGRAPHIC TERMINAL
+═══════════════════════════════════════ */
+.form-group label {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(0, 20, 45, 0.8) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-white) !important;
+  font-family: var(--holo-font) !important;
+  border-radius: 6px !important;
+  transition: var(--holo-transition) !important;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(0,245,255,0.3) !important;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none !important;
+  border-color: var(--holo-cyan) !important;
+  box-shadow: 0 0 0 2px rgba(0,245,255,0.1), 0 0 15px rgba(0,245,255,0.15) !important;
+  background: rgba(0,30,60,0.9) !important;
+}
+
+.form-group select option {
+  background: #010b14 !important;
+  color: var(--holo-white) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   ADMISSION SECTION — ENROLLMENT TERMINAL
+═══════════════════════════════════════ */
+.admission-section {
+  background: transparent !important;
+}
+
+.admission-card {
+  background: var(--holo-panel-bright) !important;
+  border: 1px solid var(--holo-border) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--holo-glow), 0 20px 60px rgba(0,0,0,0.6) !important;
+  position: relative;
+}
+
+.admission-card::before {
+  content: 'ENROLLMENT TERMINAL';
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  background: #010b14;
+  padding: 0 12px;
+  font-size: 0.65rem;
+  color: var(--holo-cyan);
+  letter-spacing: 0.15em;
+  font-family: var(--holo-font);
+  text-shadow: var(--holo-text-glow);
+  border: 1px solid var(--holo-border);
+}
+
+.admission-title {
+  color: var(--holo-white) !important;
+  font-family: var(--holo-font) !important;
+}
+.admission-info p {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+.benefit-list li {
+  color: rgba(200,240,255,0.8) !important;
+  font-family: var(--holo-font) !important;
+}
+.benefit-list li i {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   FOOTER — MISSION CONTROL
+═══════════════════════════════════════ */
+.footer {
+  background: rgba(0, 5, 15, 0.98) !important;
+  border-top: 1px solid var(--holo-border) !important;
+  box-shadow: 0 -10px 40px rgba(0,245,255,0.05) !important;
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+
+.footer h4 {
+  color: var(--holo-cyan) !important;
+  font-family: var(--holo-font) !important;
+  text-shadow: var(--holo-text-glow) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85rem !important;
+}
+
+.footer-links a {
+  color: rgba(140,210,240,0.7) !important;
+  font-family: var(--holo-font) !important;
+  transition: var(--holo-transition) !important;
+  letter-spacing: 0.03em;
+}
+.footer-links a:hover {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+  padding-left: 6px !important;
+}
+
+.footer-about p, .footer-contact p {
+  color: rgba(140,210,240,0.65) !important;
+  font-family: var(--holo-font) !important;
+}
+.footer-contact i {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+.footer img {
+  filter: brightness(0.9) drop-shadow(0 0 8px rgba(0,245,255,0.3)) !important;
+}
+
+.social-links a {
+  background: rgba(0,245,255,0.08) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-muted) !important;
+  transition: var(--holo-transition) !important;
+}
+.social-links a:hover {
+  background: rgba(0,245,255,0.15) !important;
+  border-color: var(--holo-cyan) !important;
+  color: var(--holo-cyan) !important;
+  box-shadow: 0 0 12px rgba(0,245,255,0.25) !important;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(0,245,255,0.1) !important;
+  color: rgba(0,245,255,0.4) !important;
+  font-family: var(--holo-font) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.06em;
+}
+
+
+/* ═══════════════════════════════════════
+   AUTH MODAL — SECURE ACCESS PANEL
+═══════════════════════════════════════ */
+.auth-modal {
+  background: rgba(0, 5, 15, 0.92) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+.auth-card {
+  background: var(--holo-panel-bright) !important;
+  border: 1px solid var(--holo-border) !important;
+  box-shadow: var(--holo-glow-strong), 0 30px 80px rgba(0,0,0,0.8) !important;
+  border-radius: 12px !important;
+  color: var(--holo-white) !important;
+  position: relative;
+}
+
+.auth-card::before {
+  content: 'SECURE ACCESS';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #010b14;
+  padding: 2px 16px;
+  font-size: 0.62rem;
+  color: var(--holo-cyan);
+  letter-spacing: 0.2em;
+  font-family: var(--holo-font);
+  text-shadow: var(--holo-text-glow);
+  border: 1px solid var(--holo-border);
+  white-space: nowrap;
+}
+
+.auth-card h3 {
+  color: var(--holo-white) !important;
+  font-family: var(--holo-font) !important;
+}
+.auth-card p {
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+}
+
+.tab-btn {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  color: var(--holo-muted) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.82rem !important;
+  transition: var(--holo-transition) !important;
+}
+.tab-btn.active, .tab-btn:hover {
+  color: var(--holo-cyan) !important;
+  border-color: var(--holo-border) !important;
+  background: rgba(0,245,255,0.06) !important;
+}
+
+.close-auth {
+  color: var(--holo-muted) !important;
+  background: rgba(0,245,255,0.06) !important;
+  border: 1px solid var(--holo-border) !important;
+  transition: var(--holo-transition) !important;
+  border-radius: 50% !important;
+}
+.close-auth:hover {
+  color: var(--holo-cyan) !important;
+  border-color: var(--holo-cyan) !important;
+  box-shadow: 0 0 12px rgba(0,245,255,0.3) !important;
+}
+
+.forgot-link {
+  color: rgba(0,245,255,0.5) !important;
+  font-family: var(--holo-font) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.04em;
+}
+.forgot-link:hover {
+  color: var(--holo-cyan) !important;
+  text-shadow: var(--holo-text-glow) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   MOBILE MENU
+═══════════════════════════════════════ */
+.mobile-menu-btn {
+  color: var(--holo-cyan) !important;
+  background: transparent !important;
+  border: 1px solid var(--holo-border) !important;
+  transition: var(--holo-transition) !important;
+}
+.mobile-menu-btn:hover {
+  box-shadow: 0 0 12px rgba(0,245,255,0.3) !important;
+}
+
+.mobile-nav {
+  background: rgba(0, 8, 20, 0.97) !important;
+  border-top: 1px solid var(--holo-border) !important;
+  backdrop-filter: blur(20px) !important;
+}
+.mobile-nav a {
+  color: var(--holo-muted) !important;
+  border-bottom: 1px solid rgba(0,245,255,0.06) !important;
+  font-family: var(--holo-font) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.9rem !important;
+}
+.mobile-nav a:hover {
+  color: var(--holo-cyan) !important;
+  background: rgba(0,245,255,0.04) !important;
+  text-shadow: var(--holo-text-glow) !important;
+  padding-left: 28px !important;
+}
+
+
+/* ═══════════════════════════════════════
+   GENERIC ELEMENTS
+═══════════════════════════════════════ */
+/* Any white sections → dark holo */
+section {
+  position: relative;
+}
+
+/* Headings throughout */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--holo-font) !important;
+}
+
+p, li, span, a, label, input, textarea, select, button {
+  font-family: var(--holo-font) !important;
+}
+
+/* Generic card/box */
+.card, .box, .panel {
+  background: var(--holo-panel) !important;
+  border: 1px solid var(--holo-border) !important;
+  color: var(--holo-white) !important;
+}
+
+/* Icon accent */
+.fa-solid, .fa-brands, .fa-regular {
+  color: inherit;
+}
+
+/* Scroll bar → holographic */
+::-webkit-scrollbar {
+  width: 6px;
+  background: #010b14;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--holo-cyan);
+  border-radius: 3px;
+  box-shadow: 0 0 6px var(--holo-cyan);
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,245,255,0.03);
+}
+
+/* Selection color */
+::selection {
+  background: rgba(0,245,255,0.25);
+  color: var(--holo-white);
+}
+
+
+/* ═══════════════════════════════════════
+   HOLOGRAPHIC PULSE ANIMATION
+   Applied to key interactive elements
+═══════════════════════════════════════ */
+@keyframes holoPulse {
+  0%, 100% { box-shadow: 0 0 15px rgba(0,245,255,0.3), 0 0 40px rgba(0,245,255,0.1); }
+  50% { box-shadow: 0 0 25px rgba(0,245,255,0.6), 0 0 70px rgba(0,245,255,0.25); }
+}
+
+@keyframes holoTextPulse {
+  0%, 100% { text-shadow: 0 0 10px rgba(0,245,255,0.5), 0 0 30px rgba(0,245,255,0.2); }
+  50% { text-shadow: 0 0 20px rgba(0,245,255,0.9), 0 0 50px rgba(0,245,255,0.4); }
+}
+
+@keyframes holoLineFlicker {
+  0%, 95%, 100% { opacity: 1; }
+  96% { opacity: 0.4; }
+  97% { opacity: 0.9; }
+  98% { opacity: 0.3; }
+  99% { opacity: 1; }
+}
+
+.highlight {
+  animation: holoTextPulse 3s ease-in-out infinite !important;
+}
+
+.logo-spin-ring {
+  animation: spinLogoRing 4s linear infinite, holoPulse 2s ease-in-out infinite !important;
+}
+
+/* HUD corner decorations throughout site */
+.holo-frame {
+  position: relative;
+}
+.holo-frame::before,
+.holo-frame::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 10;
+}
+.holo-frame::before {
+  top: 6px; left: 6px;
+  border-top: 1px solid var(--holo-cyan);
+  border-left: 1px solid var(--holo-cyan);
+}
+.holo-frame::after {
+  bottom: 6px; right: 6px;
+  border-bottom: 1px solid var(--holo-cyan);
+  border-right: 1px solid var(--holo-cyan);
+}
+
+
+/* ═══════════════════════════════════════
+   DATA-REVEAL ANIMATION OVERRIDE
+═══════════════════════════════════════ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s ease, transform 0.7s ease !important;
+}
+[data-reveal].revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+
+/* ═══════════════════════════════════════
+   RESPONSIVE ADJUSTMENTS
+═══════════════════════════════════════ */
+@media (max-width: 768px) {
+  body::before {
+    background-size: 30px 30px;
+  }
+
+  .floating-card {
+    font-size: 0.75rem !important;
+  }
+
+  .chairman-portrait::before {
+    font-size: 0.5rem;
+  }
+}
+
+
+/* ═══════════════════════════════════════
+   FLICKER TRANSITION for page feel
+═══════════════════════════════════════ */
+body {
+  animation: holoLineFlicker 12s ease infinite;
+}
